@@ -17,7 +17,10 @@ UMAKER 官网与后续产品展示体系的 TypeScript monorepo。当前以前�
 - `apps/web`: UMAKER public website，优先承载 Homepage、Engine、Strategy Detail、Strategy Monitor。
 - `apps/api`: 预留的 TS API / Worker 示例，后续有真实数据接口时再扩展。
 - `contracts/*`: 公开指标、策略状态、监控数据等跨服务契约的单一真源。
+- `docs/design/brand_design.md`: UMAKER 品牌定位、视觉语言、文案边界和禁用表达。
+- `docs/design/website_design.md`: UMAKER 官网信息架构、页面体系、数据真实性和实施顺序。
 - `docs/design/umaker_design_system.md`: UMAKER 官网设计系统与前端实施约束。
+- `docs/design/umaker_design_skill_adaptation_plan.md`: 基于 Quiet Signal 派生 UMAKER 专属设计 skill 的借鉴修改方案。
 
 不要把 UMAKER 包装成开放 SaaS 或交易机器人。公开网站表达生态关系：Market Data -> Structure -> Factor -> Signal -> Strategy -> Performance。任何 LIVE、收益、Sharpe、回撤等指标必须来自真实数据源；演示、回测、模拟和研究数据必须明确标注。
 
