@@ -24,9 +24,11 @@ Use:
 - Quant Terminal
 - Financial Research Interface
 - Scientific Instrument
+- Deep Black Canvas
 - Emerald Signal
 - Particle Data Topology
 - Pixel Data Visualization
+- Progressive Scroll Narrative
 
 Avoid:
 
@@ -56,15 +58,17 @@ Avoid:
 
 ```css
 :root {
-  --color-bg: #080a09;
-  --color-surface: #0d1110;
-  --color-surface-elevated: #111715;
-  --color-border: #1b2421;
-  --color-border-strong: #2a3732;
-  --color-text-primary: #e8ecea;
-  --color-text-secondary: #9aa39f;
-  --color-text-tertiary: #68716d;
-  --color-text-disabled: #414946;
+  --color-bg: #050706;
+  --color-hero-canvas: #000000;
+  --color-canvas-soft: #030403;
+  --color-surface: #0a0f0d;
+  --color-surface-elevated: #0d1110;
+  --color-border: #18211e;
+  --color-border-strong: #26332e;
+  --color-text-primary: #f1f5f3;
+  --color-text-secondary: #8b9691;
+  --color-text-tertiary: #5f6b66;
+  --color-text-disabled: #3b4440;
   --color-brand: #0d9488;
   --color-brand-bright: #34d399;
   --color-positive: #22c55e;
@@ -77,6 +81,8 @@ Avoid:
 Use Inter for UI, Noto Sans SC for Chinese, and JetBrains Mono for data values, ids, timestamps, factors, strategy ids, and metrics.
 
 Use a 4px spacing unit. Default radius is 4px, with 2px to 6px allowed. Avoid large shadows; prefer hairline borders, typography, alignment, and spacing.
+
+Use pure black only for immersive hero or particle canvases. Default page reading surfaces should use deep near-black colors such as `#050706` or `#030403`, not full-page `#000000`, to avoid excessive contrast and pressure.
 
 ## Data State
 
@@ -151,12 +157,38 @@ type ParticleEdge = {
 
 Brand particles may use abstract or illustrative data. Data particles must declare source, update time, and unavailable or stale state.
 
+Homepage particles should be sparse and staged. The default homepage sequence is:
+
+```text
+scattered data -> market structure -> factor -> strategy -> monitor
+```
+
+Do not show a full terminal, dense metrics, full factor table, full monitor table, and agent network in the same first viewport.
+
+## Motion and Scroll Narrative
+
+Homepage motion should explain product logic through scrolling:
+
+1. Scattered market data appears.
+2. Data nodes cluster into market structure.
+3. A small number of factor nodes become active.
+4. Signals flow toward strategy nodes.
+5. Monitor content appears as verification, with explicit mode and freshness labels.
+
+Motion rules:
+
+- Animation must represent data flow, relationship, state change, or system progress.
+- Prefer slow, semantic movement over constant background motion.
+- Avoid button glow, floating panels, random particle storms, and decorative looped gradients.
+- Support `prefers-reduced-motion`.
+- Mobile should reduce particle count or use static topology.
+
 ## Page Density
 
 | Page | Density | Particle | Charts | Pixel | Marketing |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Homepage | Low | High | Low | Low | High |
-| Engine | Medium | Medium | Medium | Medium | Medium |
+| Homepage | Very Low to Low | High | Minimal | Low | High |
+| Engine | Low to Medium | Medium | Medium | Medium | Medium |
 | Strategy | Medium | Low | High | Low | Low |
 | Monitor | High | Minimal | High | Low | Minimal |
 | Research | Medium | Low | Medium | Medium | Low |

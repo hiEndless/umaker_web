@@ -141,14 +141,16 @@ FAQ
 
 ```text
 01 Hero
-02 System Snapshot
-03 What is UMAKER
-04 Market Intelligence
-05 Factor Engine
-06 Strategy Ecosystem
-07 Strategy Monitor Preview
-08 Agent-driven Workflow
-09 Request Access
+02 Scroll Narrative: Data -> Structure
+03 Scroll Narrative: Structure -> Factor
+04 Scroll Narrative: Factor -> Strategy
+05 Minimal System Snapshot
+06 Market Intelligence
+07 Factor Engine
+08 Strategy Ecosystem
+09 Strategy Monitor Preview
+10 Agent-driven Workflow
+11 Request Access
 ```
 
 首页的目标是在 5 秒内传达：
@@ -188,6 +190,47 @@ Data -> Structure -> Factor -> Signal -> Strategy
 
 移动端可以降级为静态拓扑或轻量 Canvas。
 
+### Hero v2 密度
+
+首屏应更简洁：
+
+```text
+UMAKER
+
+The Intelligence Layer
+for Quantitative Trading
+
+Structure the market.
+Discover factors.
+Drive systematic strategies.
+
+[Explore Engine] [View Strategies]
+```
+
+首屏不展示完整 Monitor、完整 factor table、大量 strategy metrics 或多列 dashboard。只保留：
+
+- 品牌定位
+- 一句核心副标题
+- 一个稀疏 Particle Data Topology
+- 1 到 2 个 CTA
+- 很小的 demo / data provenance 提示
+
+Hero 可以使用接近纯黑的画布，例如 `#000000` 或 `#030403`，但正文区域不应整站纯黑。页面背景默认使用 `#050706`，保留比纯黑更柔和的阅读环境。
+
+### Scroll Narrative
+
+首页滚动应承担解释产品逻辑的任务：
+
+```text
+Frame 01: scattered data nodes
+Frame 02: nodes cluster into market structure
+Frame 03: selected structure nodes reveal factor signals
+Frame 04: factors compose into strategy inputs
+Frame 05: strategy outputs are verified in Monitor
+```
+
+每一屏只解释一个转换关系。动画是内容表达，不是装饰。`prefers-reduced-motion` 必须提供静态等价图。
+
 ## System Snapshot
 
 Hero 下方可以展示极简状态带：
@@ -211,6 +254,8 @@ SYSTEM UPTIME    99.99%
 - RESEARCH
 
 如果没有真实公开数据，必须标记 `DEMO` 或 `PREVIEW`，不得伪装为 live。
+
+System Snapshot 不应在首页首屏占用过多面积。推荐放在滚动叙事之后，作为系统可信度的过渡，而不是第一视觉主角。
 
 ## Engine Page
 
@@ -406,12 +451,14 @@ type PublicMetric = {
 
 | 页面 | 密度 | Particle | Charts | Pixel | Marketing |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Homepage | Low | High | Low | Low | High |
-| Engine | Medium | Medium | Medium | Medium | Medium |
+| Homepage | Very Low to Low | High | Minimal | Low | High |
+| Engine | Low to Medium | Medium | Medium | Medium | Medium |
 | Strategy | Medium | Low | High | Low | Low |
 | Monitor | High | Minimal | High | Low | Minimal |
 | Research | Medium | Low | Medium | Medium | Low |
 | Client | Very High | None | High | Minimal | None |
+
+首页和 Engine 不应复制 Monitor 的高密度终端布局。Homepage 是品牌叙事，Engine 是技术解释，Monitor 才是数据终端。
 
 ## 第一阶段实现顺序
 
