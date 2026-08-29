@@ -1,0 +1,18 @@
+# 复制为 .dev.vars。wrangler dev 读取本文件，对应线上 wrangler secret put。
+# 不要把 CLOUDFLARE_API_TOKEN（部署用）放进 Worker 运行时，除非代码要调 Cloudflare REST。
+
+ENVIRONMENT=development
+
+# 若 Worker 内直接调 Cloudflare API（Images / AI / Stream 等）
+# CLOUDFLARE_ACCOUNT_ID=
+# CLOUDFLARE_API_TOKEN=
+
+# R2 S3 凭证（通常用 binding，仅在 Worker 走 S3 API 时需要）
+# CLOUDFLARE_R2_ACCESS_KEY_ID=
+# CLOUDFLARE_R2_SECRET_ACCESS_KEY=
+
+# CLOUDFLARE_HYPERDRIVE_CONNECTION_STRING=
+# CLOUDFLARE_TURNSTILE_SECRET_KEY=
+# CLOUDFLARE_IMAGES_SIGNING_KEY=
+# CLOUDFLARE_STREAM_SIGNING_KEY=
+# CLOUDFLARE_AI_GATEWAY_TOKEN=

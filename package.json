@@ -1,0 +1,26 @@
+{
+  "name": "umaker-web",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r run build",
+    "typecheck": "pnpm -r run typecheck",
+    "typecheck:workers": "pnpm --filter @umaker/api typecheck:workers && pnpm --filter @umaker/cloudflare-adapters typecheck",
+    "lint": "eslint .",
+    "generate:contracts": "pnpm --filter @umaker/contracts-ts run generate",
+    "verify:quick": "bash tools/local/verify_quick.sh",
+    "verify:all": "bash tools/ci/verify_all.sh"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/node": "^22.13.10",
+    "eslint": "^9.22.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.1",
+    "zod": "^3.24.2"
+  }
+}

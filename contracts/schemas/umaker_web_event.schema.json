@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "umaker_web_event",
+  "title": "UmakerWebEvent",
+  "type": "object",
+  "x-version": "1.0.0",
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["accepted", "rejected"]
+    },
+    "reason_code": {
+      "type": "string",
+      "enum": ["none", "invalid_input", "system_error"]
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "required": ["event_id", "status", "reason_code"],
+  "additionalProperties": false
+}

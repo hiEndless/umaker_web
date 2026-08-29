@@ -1,0 +1,10 @@
+{
+  "schema": "umaker_web_event.schema.json",
+  "version": "1.0.0",
+  "field_mappings": [
+    { "from": "event_id", "to": "event_id" },
+    { "from": "status", "to": "status" },
+    { "from": "reason_code", "to": "reason_code" },
+    { "from": "payload", "to": "payload" }
+  ]
+}

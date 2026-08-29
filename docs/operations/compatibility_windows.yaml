@@ -1,0 +1,8 @@
+windows:
+  - contract_id: umaker_web_event
+    schema: umaker_web_event.schema.json
+    owner_service: api
+    introduced_at: 2026-08-19
+    compatibility_window: v1
+    sunset_condition: 示例契约无生产下游；作为模板样板保留
+    rollback_note: 复跑 replay/snapshot 并回退 contracts-ts 生成物

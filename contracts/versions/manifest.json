@@ -1,0 +1,12 @@
+{
+  "contracts": [
+    {
+      "schema": "umaker_web_event.schema.json",
+      "mapping": "umaker_web_event.mapping.json",
+      "version": "1.0.0",
+      "compatibility_window": "v1",
+      "tier": "example",
+      "owner_service": "api"
+    }
+  ]
+}

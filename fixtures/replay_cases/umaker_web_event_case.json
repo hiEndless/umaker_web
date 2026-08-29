@@ -1,0 +1,16 @@
+{
+  "input": {
+    "event_id": "evt-001",
+    "status": "accepted",
+    "reason_code": "none",
+    "payload": {
+      "source": "fixture"
+    }
+  },
+  "expected": {
+    "event_id": "evt-001",
+    "status": "accepted",
+    "reason_code": "none",
+    "processed": true
+  }
+}

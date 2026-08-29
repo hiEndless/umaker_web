@@ -1,0 +1,26 @@
+{
+  "name": "@umaker/api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:workers": "tsc -p tsconfig.workers.json --noEmit",
+    "start": "tsx src/main.ts",
+    "dev:workers": "wrangler dev",
+    "deploy:workers": "wrangler deploy",
+    "replay": "tsx test/replay-once.ts"
+  },
+  "dependencies": {
+    "@umaker/cloudflare-adapters": "workspace:*",
+    "@umaker/contracts-ts": "workspace:*",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250812.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "wrangler": "^4.0.0"
+  }
+}

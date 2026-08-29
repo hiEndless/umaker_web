@@ -1,0 +1,30 @@
+name = "umaker-web-api"
+main = "src/worker.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# wrangler dev 使用本地模拟，无需真实账号 id
+[[kv_namespaces]]
+binding = "KV"
+id = "00000000000000000000000000000000"
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "umaker-web-api-db"
+# database_id = "YOUR_DATABASE_ID"
+
+# [[r2_buckets]]
+# binding = "BUCKET"
+# bucket_name = "umaker-web-api-bucket"
+
+# [[queues.producers]]
+# binding = "QUEUE"
+# queue = "umaker-web-api-queue"
+
+# [[queues.consumers]]
+# queue = "umaker-web-api-queue"
+# max_batch_size = 10
+# max_batch_timeout = 5
+
+[vars]
+ENVIRONMENT = "development"

@@ -1,0 +1,4 @@
+{
+  "name": "umaker_web_workflow",
+  "steps": ["validate_contract", "process_event", "compare_snapshot"]
+}

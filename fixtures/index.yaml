@@ -1,0 +1,4 @@
+cases:
+  - id: umaker_web_event_valid
+    schema: umaker_web_event.schema.json
+    path: contract_cases/umaker_web_event_valid.json
