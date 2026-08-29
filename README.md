@@ -18,6 +18,7 @@ UMAKER 官网与后续产品展示体系的 TypeScript monorepo。当前以前�
 - `apps/api`: 预留的 TS API / Worker 示例，后续有真实数据接口时再扩展。
 - `contracts/*`: 公开指标、策略状态、监控数据等跨服务契约的单一真源。
 - `docs/design/brand_design.md`: UMAKER 品牌定位、视觉语言、文案边界和禁用表达。
+- `docs/design/logo_design.md`: UMAKER logo 隐喻、交付规格、尺寸测试和使用规范。
 - `docs/design/website_design.md`: UMAKER 官网信息架构、页面体系、数据真实性和实施顺序。
 - `docs/design/umaker_design_system.md`: UMAKER 官网设计系统与前端实施约束。
 - `docs/design/umaker_design_skill_adaptation_plan.md`: 基于 Quiet Signal 派生 UMAKER 专属设计 skill 的借鉴修改方案。
