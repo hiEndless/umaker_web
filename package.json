@@ -10,6 +10,7 @@
     "typecheck": "pnpm -r run typecheck",
     "typecheck:workers": "pnpm --filter @umaker/api typecheck:workers && pnpm --filter @umaker/cloudflare-adapters typecheck",
     "lint": "eslint .",
+    "generate:brand-assets": "node tools/local/generate_logo_assets.mjs",
     "generate:contracts": "pnpm --filter @umaker/contracts-ts run generate",
     "verify:quick": "bash tools/local/verify_quick.sh",
     "verify:all": "bash tools/ci/verify_all.sh"

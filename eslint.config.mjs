@@ -6,13 +6,27 @@ export default tseslint.config(
     ignores: [
       "**/dist/**",
       "**/node_modules/**",
+      "**/.next/**",
+      "**/out/**",
       "**/.wrangler/**",
+      ".tmp/**",
+      "**/.tmp/**",
       "packages/contracts-ts/src/generated/**",
-      "apps/**/public/**",
     ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
+  {
+    files: ["tools/**/*.mjs"],
+    languageOptions: {
+      globals: {
+        Buffer: "readonly",
+        console: "readonly",
+        process: "readonly",
+        URL: "readonly",
+      },
+    },
+  },
   {
     files: ["**/*.ts"],
     rules: {

@@ -134,8 +134,10 @@ UMAKER 官网只负责建立统一世界观；产品页面解释具体能力；M
 ```text
 Quiet Signal
   + Quant Terminal
-  + Deep Black Canvas
-  + Emerald Signal
+  + Deep Graphite
+  + Intelligence Blue
+  + Cyan Data Flow
+  + Sparse Emerald Signal
   + Particle Data Topology
   + Pixel Data Visualization
   + Progressive Scroll Narrative
@@ -147,29 +149,43 @@ Quiet Signal
 
 ## 色彩
 
+UMAKER 的品牌色体系从 “绿色主品牌” 调整为 “冷蓝科技氛围 + Emerald 稀缺信号”。当前 Jarvis 模板里的蓝色粒子和空间光效更适合表达 intelligence、computation、agentic system 和 research infrastructure，不应为了旧版绿色规范强行替换成全站绿色。
+
 基础色：
 
 ```text
-Page Background       #050706
-Hero Canvas           #000000
-Canvas Soft Black     #030403
-Surface               #0A0F0D
-Surface Elevated      #0D1110
-Border                #18211E
-Border Strong         #26332E
-Primary Text          #F1F5F3
-Secondary Text        #8B9691
-Tertiary Text         #5F6B66
-Disabled Text         #3B4440
+Page Background       #05070B
+Hero Canvas           #030712
+Canvas Graphite       #080B12
+Surface               #0B1018
+Surface Elevated      #111827
+Border                #172033
+Border Strong         #253247
+Primary Text          #F5F7FA
+Secondary Text        #CBD5E1
+Tertiary Text         #7B8798
+Disabled Text         #3A4453
 ```
 
-纯黑可以用于 Hero particle canvas、全屏滚动转场和局部沉浸式拓扑画布，但不建议整站全部使用 `#000000`。纯黑会强化粒子对比，也会放大阅读压力和 neon 风险。默认页面背景应使用接近黑色的深灰绿黑，例如 `#050706` 或 `#030403`，让界面保留一点空气感。
+纯黑可以用于 Hero 粒子画布的最暗区域，但正文区域仍应保留深灰层次，避免整站压成纯黑。UMAKER 的高级感应主要来自冰白文字、冷蓝空间、银灰结构线、石墨黑层次和稀缺 Emerald 信号，而不是大面积绿色氛围。
 
-品牌信号：
+主科技氛围：
 
 ```text
-Brand               #0D9488
-Brand Bright        #34D399
+Intelligence Blue   #3B82F6
+Tech Blue Bright    #60A5FA
+Cyan Data Flow      #22D3EE
+Cyan Soft           #67E8F9
+Blue Deep           #1D4ED8
+Blue Mist           #93C5FD
+```
+
+UMAKER 信号：
+
+```text
+Brand Emerald       #0D9488
+Signal Active       #14B8A6
+Signal Bright       #34D399
 ```
 
 语义色：
@@ -184,10 +200,10 @@ Neutral             #6B7280
 重要规则：
 
 ```text
-Brand Green != Financial Positive Green
+Blue != Emerald != Financial Positive Green
 ```
 
-品牌绿色代表 UMAKER system signal、focus、active、selected、live。金融正向绿色代表收益、价格上涨、positive return。Factor 强度不一定等于赚钱，不得简单全部染成 positive green。
+冷蓝代表 intelligence、system、computation、agentic flow、particle field 和官网主视觉氛围。Emerald 代表 UMAKER system signal、focus、active、selected、live、validated。金融正向绿色代表收益、价格上涨、positive return。Factor 强度不一定等于赚钱，不得简单全部染成 positive green。UMAKER 不是绿色品牌，Emerald 只是稀缺信号色。
 
 ## 字体
 

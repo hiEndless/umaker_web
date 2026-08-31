@@ -104,6 +104,25 @@ K 线、行情图和币种符号会把 UMAKER 拉向普通交易工具或投机�
 
 ## Logo 体系
 
+当前建议进入主线的方向是：
+
+```text
+Framed Signal Structure
+```
+
+它以开放式研究边界承载信号拓扑：外框表达实验边界、系统约束和研究容器，内部节点与连接表达市场结构、因子关系和信号路径。这个方向和 UMAKER 的核心叙事最贴近：
+
+```text
+market data -> structure -> factor -> signal
+```
+
+对应项目资产与使用规则见：
+
+```text
+docs/design/logo_usage_system.md
+apps/web/public/assets/brand/
+```
+
 正式 logo 至少需要以下形态：
 
 ```text
@@ -168,11 +187,27 @@ single-color
 推荐：
 
 ```text
-Symbol primary stroke/fill: #0D9488
-Symbol highlight: #34D399
-Wordmark: #F1F5F3
-Background: #050706 or #000000
+Symbol primary stroke/fill: #3B82F6 / #22D3EE
+Symbol accent: use the same blue/cyan family; do not add green dots inside the logo.
+Wordmark: #F5F7FA
+Background: #030712 / #05070B / #0B1018
 ```
+
+### Ice White / Signal on Dark
+
+用于高级宣传物料、报告封面和极简品牌展示。
+
+推荐：
+
+```text
+Symbol base: #CBD5E1 / #F5F7FA
+Technology accent: #3B82F6 / #22D3EE
+Signal accent: not used inside the logo mark. Keep the logo blue/cyan only.
+Wordmark: #F5F7FA
+Background: #030712
+```
+
+Logo 图形内部不使用绿色点。蓝色/青色承载主要科技氛围，Emerald 只保留给网页交互状态或产品 UI 信号。
 
 ### Monochrome
 
@@ -232,33 +267,41 @@ report cover   96px+
 正式 logo 交付应包含：
 
 ```text
-assets/brand/logo-symbol.svg
-assets/brand/logo-wordmark.svg
-assets/brand/logo-lockup-horizontal.svg
-assets/brand/logo-lockup-stacked.svg
-assets/brand/favicon.svg
-assets/brand/favicon-32.png
-assets/brand/social-avatar.png
+docs/design/samples/logo-master-flat.png
+docs/design/samples/logo-master-flat-transparent.png
+docs/design/brand/core/*
+docs/design/brand/icons/*
+docs/design/brand/lockups/*
+docs/design/brand/social/*
+docs/design/brand/marketing/*
+docs/design/brand/transparent/*
+apps/web/public/favicon-16.png
+apps/web/public/favicon-32.png
+apps/web/public/favicon-64.png
+apps/web/public/apple-touch-icon.png
+apps/web/public/logo.png
+apps/web/public/logo-horizontal.png
+apps/web/public/logo-stacked.png
+apps/web/public/og-image.png
 ```
-
-SVG 要求：
-
-- 不嵌入位图。
-- 不依赖外部字体文件。
-- 不包含编辑器私有 metadata。
-- path / stroke 命名清楚。
-- viewBox 稳定。
 
 PNG 要求：
 
-- 从 SVG 导出。
-- 背景透明版本和深色背景预览版本分开。
+- 网站 favicon 使用 flat PNG，不使用 SVG。
+- 必须提供透明背景版本和深色背景版本。
+- 小尺寸 favicon 必须从 flat master 裁切后的有效区域导出，不使用带大面积空边的原图直接缩放。
+- 带 wordmark 的 lockup 必须提供横版和竖版。
+
+矢量源文件要求：
+
+- 当前项目不维护手写 SVG。
+- 如果未来需要矢量源，应由正式设计工具输出，并确保与 flat PNG master 一致。
 
 ## 使用场景
 
 ### 官网导航
 
-使用 horizontal lockup。
+使用 flat horizontal lockup。
 
 要求：
 
@@ -268,7 +311,7 @@ PNG 要求：
 
 ### Hero
 
-可以使用 wordmark 或 full lockup。
+可以使用 flat master 或 flat full lockup。
 
 要求：
 
@@ -316,7 +359,7 @@ PNG 要求：
 6. 深色和浅色背景是否都可用？
 7. 是否不依赖 glow、渐变或粒子特效？
 8. symbol 和 wordmark 是否能独立使用？
-9. 是否和 `#050706` / `#0D9488` / `#34D399` 体系一致？
+9. 是否和 `#030712` / `#05070B` / `#0B1018` / `#F5F7FA` / 冷蓝科技氛围 / 稀缺 emerald signal 体系一致？
 10. 是否与官网低密度、高级、克制的视觉方向一致？
 
 任一方案如果只能在大尺寸、发光、多色或复杂背景下成立，不进入正式候选。

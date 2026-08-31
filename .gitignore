@@ -1,5 +1,7 @@
 node_modules/
 dist/
+.next/
+out/
 .wrangler/
 .pnpm-store/
 .env
@@ -9,5 +11,6 @@ dist/
 .idea/
 coverage/
 .turbo/
+.tmp/
 verification/reports/*.json
 !verification/reports/README.md

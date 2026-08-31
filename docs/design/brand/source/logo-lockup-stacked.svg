@@ -1,0 +1,36 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" fill="none">
+  <g transform="translate(112 40) scale(1.14)"><defs>
+    <linearGradient id="umakerBlue" x1="184" y1="812" x2="812" y2="184" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2563EB"/>
+      <stop offset="0.52" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#60A5FA"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#umakerBlue)" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M184 344V184H636" stroke-width="28"/>
+    <path d="M812 274V398" stroke-width="28"/>
+    <path d="M812 632V812H322" stroke-width="28"/>
+    <path d="M184 618V758" stroke-width="28"/>
+  </g>
+  <g stroke="url(#umakerBlue)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M258 496L340 642"/>
+    <path d="M340 642L270 786"/>
+    <path d="M340 642L548 590"/>
+    <path d="M548 590L718 514"/>
+    <path d="M413 365L640 323"/>
+    <path d="M640 323L718 514"/>
+    <path d="M640 323L732 200"/>
+  </g>
+  <circle cx="228" cy="448" r="64" fill="url(#umakerBlue)"/>
+  <circle cx="402" cy="365" r="46" fill="url(#umakerBlue)"/>
+  <circle cx="552" cy="590" r="50" fill="url(#umakerBlue)"/>
+  <circle cx="729" cy="514" r="64" fill="url(#umakerBlue)"/>
+  <circle cx="270" cy="786" r="36" fill="url(#umakerBlue)"/>
+  <circle cx="732" cy="200" r="40" fill="url(#umakerBlue)"/>
+  <circle cx="640" cy="323" r="12" fill="url(#umakerBlue)" opacity="0.92"/>
+</g>
+  <g transform="translate(126 0) skewX(-8) scale(0.82 1)">
+    <text x="0" y="944" fill="#F5F7FA" font-family="Arial Narrow, Helvetica Neue, Arial, Helvetica, sans-serif" font-size="160" font-weight="900" letter-spacing="16">UMAKER</text>
+  </g>
+</svg>

@@ -41,7 +41,7 @@ Quiet Signal 适合作为 UMAKER 设计 skill 的方法论母体，但不能原�
 必须替换：
 
 - `near-white canvas` -> `dark quant environment`
-- `purple signal` -> `emerald / teal brand signal`
+- `purple signal` -> `ice white / deep graphite system with intelligence blue, cyan data flow, and sparse emerald signal`
 - `editorial general interface` -> `quant terminal / financial research interface`
 - `generic visual artifact` -> `market intelligence / factor / strategy / monitor / report`
 
@@ -75,7 +75,7 @@ Quiet Signal 适合作为 UMAKER 设计 skill 的方法论母体，但不能原�
 
 必须修改内容：
 
-- 颜色系统从浅色/紫色改为深色/emerald。
+- 颜色系统从浅色/紫色改为 Ice White + Deep Graphite + Intelligence Blue + Cyan Data Flow + Sparse Emerald Signal。
 - 字体系统从偏 editorial display 改为 Inter / Noto Sans SC / JetBrains Mono。
 - 图像规则新增真实数据图、策略表现图、行情图和截图 provenance。
 - 动效规则新增实时数据、factor stream、particle topology 的语义。
@@ -103,7 +103,7 @@ Quiet Signal 适合作为 UMAKER 设计 skill 的方法论母体，但不能原�
 - 小红书内容不应营销“稳赚”“自动交易”“AI 预测”。
 - 策略表现图文必须标注数据模式与来源。
 - 因子解释类图文必须区分 factor strength、profit、risk、confidence。
-- 视觉风格从浅色紫色改为 UMAKER 深色/emerald，也可为小红书保留浅色派生版，但必须记录为媒介 token，不反向污染核心品牌。
+- 视觉风格从浅色紫色改为 UMAKER 冰白、深石墨、冷蓝科技氛围、青色数据流与稀缺 emerald 信号，也可为小红书保留浅色派生版，但必须记录为媒介 token，不反向污染核心品牌。
 
 ### quiet-signal-reports
 
@@ -238,7 +238,7 @@ Audit 输出：
 UMAKER Core Visual Specification 应定义：
 
 ```text
-Quiet Signal x Quant Terminal x Emerald Signal
+Ice White x Deep Graphite x Intelligence Blue x Cyan Data Flow x Sparse Emerald Signal
 ```
 
 核心原则：
@@ -251,7 +251,7 @@ Quiet Signal x Quant Terminal x Emerald Signal
 6. Animation must represent system state.
 7. AI is infrastructure.
 8. Live means real.
-9. Brand green is not financial positive green.
+9. Intelligence blue, UMAKER emerald, and financial positive green are separate meanings.
 10. Public performance must carry provenance.
 
 ### Core Token 替换
@@ -268,16 +268,21 @@ color.signal.primary #7C3AED
 替换为 UMAKER：
 
 ```text
-color.canvas                 #080A09
-color.surface                #0D1110
-color.surface.elevated       #111715
-color.ink.primary            #E8ECEA
-color.ink.secondary          #9AA39F
-color.ink.faint              #68716D
-color.line.default           #1B2421
-color.line.strong            #2A3732
-color.signal.primary         #0D9488
-color.signal.strong          #0F766E
+color.canvas                 #030712
+color.background             #05070B
+color.surface                #0B1018
+color.surface.elevated       #111827
+color.ink.primary            #F5F7FA
+color.ink.secondary          #CBD5E1
+color.ink.faint              #7B8798
+color.line.default           #172033
+color.line.strong            #253247
+color.intelligence.blue      #3B82F6
+color.tech.blue.bright       #60A5FA
+color.cyan.flow              #22D3EE
+color.cyan.soft              #67E8F9
+color.brand.emerald          #0D9488
+color.signal.active          #14B8A6
 color.signal.bright          #34D399
 color.semantic.positive      #22C55E
 color.semantic.negative      #EF4444
@@ -287,10 +292,11 @@ color.semantic.neutral       #6B7280
 
 颜色治理规则：
 
-- `color.signal.*` 表示 UMAKER 品牌、焦点、active、selected、live。
+- `color.intelligence.*` / `color.cyan.*` 表示主科技氛围、数据流和粒子空间。
+- `color.brand.emerald` / `color.signal.*` 表示 UMAKER 稀缺信号、焦点、active、selected、live。
 - `color.semantic.positive` 只表示金融正向、成功或 PASS。
 - Factor strength、confidence、alignment 不自动使用 positive green。
-- 页面不得被 emerald 覆盖；信号色必须稀缺。
+- 页面不得被 emerald 覆盖；信号色必须稀缺。UMAKER 不是绿色品牌，而是冰白/深石墨/冷蓝的数据系统。
 
 ### 字体替换
 
@@ -723,8 +729,8 @@ skills/umaker-signal-design/references/QA_CHECKLIST.md
 ### 通用 QA
 
 1. 页面是否看起来像量化研究基础设施，而不是通用 AI/Web3 网站？
-2. 是否使用 dark quant surface、emerald signal、mono data、hairline border？
-3. emerald 是否稀缺且有语义？
+2. 是否使用 graphite surface、ice white typography、mono data、hairline border？
+3. blue/cyan 是否承担科技氛围，emerald 是否稀缺且有语义？
 4. 是否存在大圆角卡片墙、玻璃拟态、过度 neon、AI brain、robot 或 3D coin？
 5. 层级是否主要由 typography、spacing、alignment、hairline 建立？
 6. 动画是否表达数据、状态或关系？
@@ -761,7 +767,7 @@ skills/umaker-signal-design/references/QA_CHECKLIST.md
 | Quiet Signal 规则 | UMAKER 处理 | 原因 |
 | --- | --- | --- |
 | 近白表面 | 替换为深色量化背景 | UMAKER 需要 terminal / research infrastructure 气质 |
-| 有限紫色 | 替换为有限 emerald / teal | 品牌语义从 AI/editorial 转为 market signal |
+| 有限紫色 | 替换为冰白/深石墨系统中的冷蓝科技氛围、青色数据流与稀缺 emerald | 品牌语义从 AI/editorial 转为 quantitative intelligence / market signal |
 | 层级优先于容器 | 继承 | 避免 SaaS 卡片墙 |
 | 紫色必须有语义 | 改为 signal color 必须有语义 | 保留稀缺信号原则 |
 | 图片必须有角色 | 继承并扩展 | 图表、截图、行情图必须有来源 |
@@ -880,4 +886,3 @@ Layout
 - 是否避免 Quiet Signal 原始浅色/紫色残留
 - 是否具备 live/paper/backtest/demo/research 数据状态表达
 - 是否为后续 Homepage、Engine、Strategy、Monitor 复用做好基础
-

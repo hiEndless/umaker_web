@@ -24,8 +24,11 @@ Use:
 - Quant Terminal
 - Financial Research Interface
 - Scientific Instrument
-- Deep Black Canvas
-- Emerald Signal
+- Ice White
+- Deep Graphite
+- Intelligence Blue
+- Cyan Data Flow
+- Sparse Emerald Signal
 - Particle Data Topology
 - Pixel Data Visualization
 - Progressive Scroll Narrative
@@ -58,18 +61,25 @@ Avoid:
 
 ```css
 :root {
-  --color-bg: #050706;
-  --color-hero-canvas: #000000;
-  --color-canvas-soft: #030403;
-  --color-surface: #0a0f0d;
-  --color-surface-elevated: #0d1110;
-  --color-border: #18211e;
-  --color-border-strong: #26332e;
-  --color-text-primary: #f1f5f3;
-  --color-text-secondary: #8b9691;
-  --color-text-tertiary: #5f6b66;
-  --color-text-disabled: #3b4440;
+  --color-bg: #05070b;
+  --color-hero-canvas: #030712;
+  --color-canvas-soft: #080b12;
+  --color-surface: #0b1018;
+  --color-surface-elevated: #111827;
+  --color-border: #172033;
+  --color-border-strong: #253247;
+  --color-text-primary: #f5f7fa;
+  --color-text-secondary: #cbd5e1;
+  --color-text-tertiary: #7b8798;
+  --color-text-disabled: #3a4453;
+  --color-intelligence-blue: #3b82f6;
+  --color-tech-blue-bright: #60a5fa;
+  --color-cyan-flow: #22d3ee;
+  --color-cyan-soft: #67e8f9;
+  --color-blue-deep: #1d4ed8;
+  --color-blue-mist: #93c5fd;
   --color-brand: #0d9488;
+  --color-brand-active: #14b8a6;
   --color-brand-bright: #34d399;
   --color-positive: #22c55e;
   --color-negative: #ef4444;
@@ -82,7 +92,9 @@ Use Inter for UI, Noto Sans SC for Chinese, and JetBrains Mono for data values, 
 
 Use a 4px spacing unit. Default radius is 4px, with 2px to 6px allowed. Avoid large shadows; prefer hairline borders, typography, alignment, and spacing.
 
-Use pure black only for immersive hero or particle canvases. Default page reading surfaces should use deep near-black colors such as `#050706` or `#030403`, not full-page `#000000`, to avoid excessive contrast and pressure.
+Use cold blue and cyan for the main technology atmosphere, particle fields, data flow, and computational depth. Use emerald as UMAKER's scarce system signal only. Financial positive green remains separate and should only represent profit, price-up, pass, or positive return semantics.
+
+Default page reading surfaces should use deep graphite colors such as `#05070B`, `#080B12`, `#0B1018`, and `#111827`. Full black can appear inside hero canvases or particle voids, but not as the only page layer.
 
 ## Data State
 

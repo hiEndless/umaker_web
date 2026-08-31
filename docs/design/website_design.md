@@ -215,7 +215,7 @@ Drive systematic strategies.
 - 1 到 2 个 CTA
 - 很小的 demo / data provenance 提示
 
-Hero 可以使用接近纯黑的画布，例如 `#000000` 或 `#030403`，但正文区域不应整站纯黑。页面背景默认使用 `#050706`，保留比纯黑更柔和的阅读环境。
+Hero 可以使用接近纯黑的局部画布，但正文区域不应整站纯黑。页面背景默认使用 `#05070B`，Hero canvas 可使用 `#030712`，正文 surface 使用 `#0B1018` / `#111827`，以 Ice White 文字、冷蓝空间、青色数据流和银灰结构线建立高级感。Emerald 只作为 UMAKER 稀缺信号、焦点节点、CTA 确认边线和 active / live 状态出现。
 
 ### Scroll Narrative
 

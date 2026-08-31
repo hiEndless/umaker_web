@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UMAKER Flat Logo Preview</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #050706;
+        --surface: #0a0f0d;
+        --border: #1b2421;
+        --text: #f1f5f3;
+        --muted: #7b8580;
+        --brand: #0d9488;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, Arial, sans-serif;
+      }
+
+      main {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 48px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 24px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+      }
+
+      p {
+        margin: 0 0 40px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      section {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+
+      .panel {
+        padding: 24px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+      }
+
+      .checker {
+        background-color: #dfe5e1;
+        background-image:
+          linear-gradient(45deg, #c8d1cc 25%, transparent 25%),
+          linear-gradient(-45deg, #c8d1cc 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #c8d1cc 75%),
+          linear-gradient(-45deg, transparent 75%, #c8d1cc 75%);
+        background-position:
+          0 0,
+          0 12px,
+          12px -12px,
+          -12px 0;
+        background-size: 24px 24px;
+      }
+
+      .wide {
+        grid-column: 1 / -1;
+      }
+
+      .label {
+        margin-bottom: 20px;
+        color: var(--brand);
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+
+      .sizes {
+        display: flex;
+        align-items: flex-end;
+        gap: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>UMAKER FLAT LOGO PREVIEW</h1>
+      <p>当前网站与宣传物料默认使用 flat PNG，不再使用手写 SVG logo。</p>
+
+      <section>
+        <div class="panel">
+          <div class="label">Flat master 512</div>
+          <img src="brand/core/logo-flat-512.png" width="360" alt="UMAKER flat logo 512" />
+        </div>
+        <div class="panel checker">
+          <div class="label">Flat transparent 512</div>
+          <img src="brand/transparent/core/logo-flat-transparent-512.png" width="360" alt="UMAKER flat transparent logo 512" />
+        </div>
+      </section>
+
+      <section>
+        <div class="panel wide">
+          <div class="label">Horizontal lockup 1200 x 360</div>
+          <img src="brand/lockups/logo-lockup-horizontal-flat-1200x360.png" width="900" alt="UMAKER flat horizontal raster lockup" />
+        </div>
+      </section>
+
+      <section>
+        <div class="panel">
+          <div class="label">Stacked lockup 1024</div>
+          <img src="brand/lockups/logo-lockup-stacked-flat-1024.png" width="360" alt="UMAKER flat stacked lockup" />
+        </div>
+        <div class="panel checker">
+          <div class="label">Transparent horizontal lockup</div>
+          <img src="brand/transparent/lockups/logo-lockup-horizontal-flat-transparent-1200x360.png" width="500" alt="UMAKER flat transparent horizontal lockup" />
+        </div>
+      </section>
+
+      <section>
+        <div class="panel wide">
+          <div class="label">Open Graph lockup 1200 x 630</div>
+          <img src="brand/marketing/og-lockup-card-1200x630.png" width="900" alt="UMAKER Open Graph flat lockup card" />
+        </div>
+      </section>
+
+      <section>
+        <div class="panel">
+          <div class="label">Social square lockup 1080</div>
+          <img src="brand/marketing/social-square-lockup-1080.png" width="360" alt="UMAKER flat square social lockup" />
+        </div>
+        <div class="panel checker">
+          <div class="label">Transparent social square lockup</div>
+          <img src="brand/transparent/marketing/social-square-lockup-flat-transparent-1080.png" width="360" alt="UMAKER transparent square social lockup" />
+        </div>
+      </section>
+
+      <section>
+        <div class="panel">
+          <div class="label">Portrait 1080 x 1350</div>
+          <img src="brand/marketing/social-portrait-1080x1350.png" width="360" alt="UMAKER flat portrait social logo" />
+        </div>
+        <div class="panel">
+          <div class="label">Story 1080 x 1920</div>
+          <img src="brand/marketing/social-story-1080x1920.png" width="260" alt="UMAKER flat story logo" />
+        </div>
+      </section>
+
+      <section>
+        <div class="panel wide">
+          <div class="label">Icon sizes</div>
+          <div class="sizes">
+            <img src="brand/icons/favicon-16.png" width="16" alt="16 favicon" />
+            <img src="brand/icons/favicon-32.png" width="32" alt="32 favicon" />
+            <img src="brand/icons/favicon-64.png" width="64" alt="64 favicon" />
+            <img src="brand/icons/apple-touch-icon-180.png" width="90" alt="180 apple touch icon" />
+            <img src="brand/icons/app-icon-192.png" width="96" alt="192 app icon" />
+            <img src="brand/icons/app-icon-512.png" width="160" alt="512 app icon" />
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

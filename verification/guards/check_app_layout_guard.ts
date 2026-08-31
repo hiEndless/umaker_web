@@ -21,14 +21,26 @@ const SERVICE_REQUIRED = [
 ];
 
 const WEB_REQUIRED = [
-  "public/index.html",
+  "public",
   "wrangler.toml",
   "package.json",
   "README.md",
 ];
 
 function isWebApp(appDir: string): boolean {
-  return fs.existsSync(path.join(appDir, "public", "index.html"));
+  const packageJsonPath = path.join(appDir, "package.json");
+  if (!fs.existsSync(packageJsonPath)) return false;
+
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8")) as {
+    name?: string;
+  };
+  if (packageJson.name === "@umaker/web") return true;
+
+  const wranglerPath = path.join(appDir, "wrangler.toml");
+  if (!fs.existsSync(wranglerPath)) return false;
+
+  const wranglerConfig = fs.readFileSync(wranglerPath, "utf8");
+  return wranglerConfig.includes("pages_build_output_dir");
 }
 
 const missing: string[] = [];
