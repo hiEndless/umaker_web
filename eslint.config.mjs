@@ -9,6 +9,7 @@ export default tseslint.config(
       "**/.next/**",
       "**/out/**",
       "**/.wrangler/**",
+      "**/.open-next/**",
       ".tmp/**",
       "**/.tmp/**",
       "packages/contracts-ts/src/generated/**",

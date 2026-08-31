@@ -1,6 +1,6 @@
 # umaker_web
 
-UMAKER 官网与后续产品展示体系的 TypeScript monorepo。当前以前端官网为主，保留 Cloudflare Pages / Workers、契约、验证和回放骨架，方便后续逐步扩展 API、公开策略监控、研究页和私有客户系统。
+UMAKER 官网与后续产品展示体系的 TypeScript monorepo。当前以前端官网为主，`apps/web` 使用 Next.js App Router 并通过 OpenNext 部署到 Cloudflare Workers，方便后续逐步扩展 GitHub 动态博客、API、公开策略监控、研究页和私有客户系统。
 
 核心目标：
 
@@ -14,7 +14,7 @@ UMAKER 官网与后续产品展示体系的 TypeScript monorepo。当前以前�
 
 ## 产品边界
 
-- `apps/web`: UMAKER public website，优先承载 Homepage、Engine、Strategy Detail、Strategy Monitor。
+- `apps/web`: UMAKER public website，当前承载 Homepage；后续支持 GitHub 内容源的 SSR 博客，并逐步扩展 Engine、Strategy Detail、Strategy Monitor。
 - `apps/api`: 预留的 TS API / Worker 示例，后续有真实数据接口时再扩展。
 - `contracts/*`: 公开指标、策略状态、监控数据等跨服务契约的单一真源。
 - `docs/design/brand_design.md`: UMAKER 品牌定位、视觉语言、文案边界和禁用表达。
@@ -48,8 +48,11 @@ docker compose -f docker/docker-compose.yml up --build
 # Cloudflare Workers（本地 KV 模拟）
 pnpm --filter @umaker/api dev:workers
 
-# 前端官网占位（Pages）
+# 前端官网（Next.js，本地开发）
 pnpm --filter @umaker/web dev
+
+# 前端官网（Cloudflare Workers SSR 构建）
+pnpm --filter @umaker/web build:worker
 ```
 
 ## 新增服务

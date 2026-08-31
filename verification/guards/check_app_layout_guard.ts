@@ -40,7 +40,10 @@ function isWebApp(appDir: string): boolean {
   if (!fs.existsSync(wranglerPath)) return false;
 
   const wranglerConfig = fs.readFileSync(wranglerPath, "utf8");
-  return wranglerConfig.includes("pages_build_output_dir");
+  return (
+    wranglerConfig.includes("pages_build_output_dir") ||
+    (wranglerConfig.includes("main =") && wranglerConfig.includes("[assets]"))
+  );
 }
 
 const missing: string[] = [];
