@@ -1,153 +1,108 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const TESTIMONIALS = [
+const RESEARCH_CASES = [
   {
-    quote: "JARVIS cut our agentic workflow build time from months to days. The orchestration layer is exactly what enterprise scale demands.",
-    author: "Sarah Chen",
-    role: "CTO",
-    company: "MERIDIAN_LABS",
-    metric: "12X",
-    metricLabel: "FASTER DELIVERY",
+    statement: "多周期判断出现分歧时，保留不确定性，而不是强行给出交易结论。",
+    source: "ETHUSDT · Forecast 回放样本",
+    context: "方向倾向 neutral_to_bearish · 分歧状态 conflicted · 研究状态 risk_only",
+    metric: "CONFLICTED",
+    metricLabel: "FORECAST ALIGNMENT",
   },
   {
-    quote: "We run 8,000 concurrent research agents in production. JARVIS just handles it. Zero tuning, zero ops overhead.",
-    author: "Marcus Webb",
-    role: "Engineering Lead",
-    company: "FLUX_SYSTEMS",
-    metric: "8K",
-    metricLabel: "AGENTS IN PROD",
+    statement: "结构快照记录市场状态与置信度，作为可回放、可比较的时点基线。",
+    source: "ETHUSDT · Snapshot 回放样本",
+    context: "主要状态 bullish_continuation · 方向偏向 neutral · 质量状态 available",
+    metric: "0.357",
+    metricLabel: "STRUCTURE CONFIDENCE",
   },
   {
-    quote: "The audit trail alone was worth switching. Our compliance team can finally see exactly what every agent did and why.",
-    author: "Elena Rodriguez",
-    role: "VP Engineering",
-    company: "BEACON_AI",
-    metric: "100%",
-    metricLabel: "AUDIT COVERAGE",
+    statement: "结构事件独立记录突破、反转和失效，支持后续归因，而不把一次变化直接等同于交易信号。",
+    source: "ETHUSDT · Event 回放样本",
+    context: "1h · reversal · upthrust_reversal · status active",
+    metric: "0.98",
+    metricLabel: "EVENT CONFIDENCE",
   },
   {
-    quote: "Multi-agent reasoning was a black box before JARVIS. Now we trace every decision, every tool call. Absolute game changer.",
-    author: "James Liu",
-    role: "Founder",
-    company: "PRISM_ANALYTICS",
-    metric: "∞",
-    metricLabel: "OBSERVABILITY",
+    statement: "策略消费结构化市场证据，但执行判断仍属于独立策略自己的风险与持仓边界。",
+    source: "策略交付层 · 系统设计原则",
+    context: "结构化输出 → 策略分发 → 风险门控 → 独立策略执行",
+    metric: "STRATEGY",
+    metricLabel: "EXECUTION BOUNDARY",
   },
 ];
 
-const LOGOS = [
-  "MERIDIAN_LABS", "FLUX_SYSTEMS", "BEACON_AI", "PRISM_ANALYTICS",
-  "NOVA_INTELLIGENCE", "QUANTUM_AGENTS", "ATLAS_DIGITAL", "VERTEX_AI_CO",
-];
+const SYSTEM_OBJECTS = ["FORECAST", "SNAPSHOT", "EVENT", "FACTOR", "RISK_GATE", "REPLAY", "STRATEGY", "CONTRACT"];
 
 export function TestimonialsSection() {
   const [active, setActive] = useState(0);
   const [fading, setFading] = useState(false);
+  const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLElement>(null);
-  const [vis, setVis] = useState(false);
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVis(true); },
-      { threshold: 0.1 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setVisible(true);
+    }, { threshold: 0.1 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
   }, []);
+
+  const changeCase = (next: number) => {
+    if (next === active) return;
+    setFading(true);
+    window.setTimeout(() => {
+      setActive(next);
+      setFading(false);
+    }, 250);
+  };
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setFading(true);
-      setTimeout(() => {
-        setActive(a => (a + 1) % TESTIMONIALS.length);
-        setFading(false);
-      }, 250);
-    }, 5500);
-    return () => clearInterval(id);
-  }, []);
+    const id = window.setInterval(() => changeCase((active + 1) % RESEARCH_CASES.length), 5500);
+    return () => window.clearInterval(id);
+  }, [active]);
 
-  const t = TESTIMONIALS[active];
+  const report = RESEARCH_CASES[active];
 
   return (
-    <section ref={ref} className="relative border-t border-[#1e1e1e]">
+    <section id="research-cases" ref={ref} className="relative border-t border-[#1e1e1e] scroll-mt-[88px]">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-
-        {/* Header */}
-        <div
-          className={`border-b border-[#1e1e1e] py-8 flex items-end justify-between transition-all duration-500 ${vis ? "opacity-100" : "opacity-0"}`}
-        >
-          <span className="sys-tag">FIELD REPORTS</span>
-          <span className="font-mono text-[10px] text-[#3a3a3a]">
-            {String(active + 1).padStart(2, "0")} / {String(TESTIMONIALS.length).padStart(2, "0")}
-          </span>
+        <div className={`border-b border-[#1e1e1e] py-8 flex items-end justify-between transition-all duration-500 ${visible ? "opacity-100" : "opacity-0"}`}>
+          <span className="sys-tag">研究案例</span>
+          <span className="font-mono text-[10px] text-[#3a3a3a]">{String(active + 1).padStart(2, "0")} / {String(RESEARCH_CASES.length).padStart(2, "0")}</span>
         </div>
 
-        {/* Testimonial grid */}
         <div className="grid lg:grid-cols-[1fr_280px] border-b border-[#1e1e1e]">
-          {/* Quote */}
           <div className="border-r border-[#1e1e1e] p-8 lg:p-12">
-            <blockquote
-              className={`transition-all duration-250 ${fading ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"}`}
-            >
-              <p className="font-display text-3xl lg:text-5xl leading-[0.95] tracking-tight text-[#f2ede6] mb-10">
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <footer className="flex items-center gap-4">
-                <div className="w-10 h-10 border border-[#2e2e2e] flex items-center justify-center bg-[#0e0e0e]">
-                  <span className="font-display text-lg text-[#2196f3]">{t.author.charAt(0)}</span>
-                </div>
+            <div className={`transition-all duration-250 ${fading ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"}`}>
+              <p className="font-display text-3xl lg:text-5xl leading-[0.95] tracking-tight text-[#f2ede6] mb-10">{report.statement}</p>
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 border border-[#2e2e2e] flex items-center justify-center bg-[#0e0e0e]"><span className="font-display text-lg text-[#2196f3]">R</span></div>
                 <div>
-                  <p className="font-mono text-[11px] text-[#f2ede6] tracking-wider">{t.author}</p>
-                  <p className="font-mono text-[10px] text-[#3a3a3a] tracking-wider">
-                    {t.role} &nbsp;·&nbsp; {t.company}
-                  </p>
+                  <p className="font-mono text-[11px] text-[#f2ede6] tracking-wider">{report.source}</p>
+                  <p className="font-mono text-[10px] text-[#3a3a3a] tracking-wider mt-1">{report.context}</p>
                 </div>
-              </footer>
-            </blockquote>
+              </div>
+            </div>
           </div>
 
-          {/* Metric + nav */}
           <div className="flex flex-col">
-            {/* Metric */}
-            <div
-              className={`flex-1 p-8 border-b border-[#1e1e1e] row-hover transition-all duration-250 ${fading ? "opacity-0" : "opacity-100"}`}
-            >
-              <span className="sys-tag text-[9px] mb-4 block">KEY_RESULT</span>
-              <div className="font-display text-6xl text-[#2196f3]">{t.metric}</div>
-              <div className="font-mono text-[10px] text-[#3a3a3a] tracking-widest mt-2">{t.metricLabel}</div>
+            <div className={`flex-1 p-8 border-b border-[#1e1e1e] row-hover transition-all duration-250 ${fading ? "opacity-0" : "opacity-100"}`}>
+              <span className="sys-tag text-[9px] mb-4 block">RESEARCH SIGNAL</span>
+              <div className={`font-display text-[#2196f3] ${report.metric.length > 8 ? "text-3xl lg:text-4xl" : "text-6xl"}`}>{report.metric}</div>
+              <div className="font-mono text-[10px] text-[#3a3a3a] tracking-widest mt-2">{report.metricLabel}</div>
             </div>
-
-            {/* Nav dots */}
             <div className="p-6 flex items-center gap-2">
-              {TESTIMONIALS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => { setFading(true); setTimeout(() => { setActive(i); setFading(false); }, 250); }}
-                  className={`h-1 transition-all duration-300 ${
-                    i === active ? "w-8 bg-[#2196f3]" : "w-2 bg-[#2e2e2e] hover:bg-[#5a5a5a]"
-                  }`}
-                />
-              ))}
+              {RESEARCH_CASES.map((_, index) => <button key={index} onClick={() => changeCase(index)} className={`h-1 transition-all duration-300 ${index === active ? "w-8 bg-[#2196f3]" : "w-2 bg-[#2e2e2e] hover:bg-[#5a5a5a]"}`} aria-label={`查看研究案例 ${index + 1}`} />)}
             </div>
           </div>
         </div>
-
       </div>
 
-      {/* Logo marquee — full viewport width */}
       <div className="border-t border-[#1e1e1e] py-5 overflow-hidden">
         <div className="marquee-fast flex gap-16 whitespace-nowrap">
-          {[...Array(2)].map((_, ri) => (
-            <span key={ri} className="inline-flex gap-16 shrink-0">
-              {LOGOS.map(l => (
-                <span key={`${l}-${ri}`} className="font-mono text-[11px] tracking-[0.2em] text-[#2e2e2e] hover:text-[#5a5a5a] transition-colors cursor-default">
-                  {l}
-                </span>
-              ))}
-            </span>
-          ))}
+          {[...Array(2)].map((_, repeat) => <span key={repeat} className="inline-flex gap-16 shrink-0">{SYSTEM_OBJECTS.map((item) => <span key={`${item}-${repeat}`} className="font-mono text-[11px] tracking-[0.2em] text-[#2e2e2e] hover:text-[#5a5a5a] transition-colors cursor-default">{item}</span>)}</span>)}
         </div>
       </div>
     </section>

@@ -49,64 +49,36 @@ function AnimCounter({
   );
 }
 
-// Each day: 0 = healthy, 1 = degraded, 2 = incident
-const UPTIME_DATA: number[] = (() => {
-  const d: number[] = [];
-  for (let i = 0; i < 90; i++) {
-    if (i === 14 || i === 51) d.push(2);      // incident
-    else if (i === 22 || i === 63 || i === 77) d.push(1); // degraded
-    else d.push(0);
-  }
-  return d;
-})();
-
-const STATUS_COLOR: Record<number, string> = {
-  0: "#22c55e",
-  1: "#f59e0b",
-  2: "#ef4444",
-};
-
 const METRICS = [
   {
-    end: 15,
-    suffix: "",
-    label: "AGENT ACTIONS / DAY",
-    sub: "across all running pipelines",
-    display: "1.5M+",
+    end: 2174,
+    label: "市场预测",
+    sub: "每日持续生成的 Forecast 记录",
+    density: 52,
   },
   {
-    end: 9997,
-    suffix: "",
-    label: "COMPLETION RATE",
-    sub: "out of 10,000 tasks",
-    display: "99.97%",
+    end: 4204,
+    label: "结构快照",
+    sub: "多周期市场状态审计记录",
+    density: 100,
   },
   {
-    end: 78,
-    suffix: "ms",
-    label: "AVG SPAWN TIME",
-    sub: "from trigger to live agent",
+    end: 800,
+    label: "1H 结构事件",
+    sub: "突破、反转与失效事件样本",
+    density: 19,
   },
   {
-    end: 10400,
-    suffix: "+",
-    label: "PEAK CONCURRENCY",
-    sub: "simultaneous agents",
+    end: 9,
+    label: "研究周期",
+    sub: "从 5m 到 1d 的市场视角",
+    density: 32,
   },
 ];
 
 export function MetricsSection() {
   const [vis, setVis] = useState(false);
-  const [time, setTime] = useState("");
   const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const tick = () =>
-      setTime(new Date().toLocaleTimeString("en-US", { hour12: false }));
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -130,21 +102,20 @@ export function MetricsSection() {
           }`}
         >
           <div>
-            <span className="sys-tag mb-3 block">LIVE METRICS</span>
+            <span className="sys-tag mb-3 block">研究验证</span>
             <h2 className="font-display text-6xl lg:text-8xl leading-[0.88] tracking-tight text-[#f2ede6]">
-              SCALE YOU
+              让市场判断
               <br />
               <span
                 style={{ WebkitTextStroke: "1px #3a3a3a", color: "transparent" }}
               >
-                CAN MEASURE
+                可以被验证
               </span>
             </h2>
           </div>
           <div className="flex items-center gap-3 font-mono text-[10px] text-[#3a3a3a]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] inline-block animate-pulse" />
-            <span className="text-[#22c55e]">LIVE</span>
-            <span className="tabular-nums">{time}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#2196f3] inline-block" />
+            <span>ETHUSDT · 每日研究产出 · 统计窗口 2026-09-01</span>
           </div>
         </div>
 
@@ -158,14 +129,8 @@ export function MetricsSection() {
               }`}
               style={{ transitionDelay: `${i * 80}ms` }}
             >
-              {m.display ? (
-                <div className="font-display text-[clamp(2rem,5vw,4rem)] leading-none tracking-tight text-[#f2ede6] tabular-nums">
-                  {m.display}
-                </div>
-              ) : (
-                <AnimCounter end={m.end} suffix={m.suffix} />
-              )}
-              <div className="mt-3 font-mono text-[10px] text-[#2196f3] tracking-[0.18em]">
+              <AnimCounter end={m.end} />
+              <div className="mt-3 font-mono text-[10px] text-[#2196f3] tracking-[0.12em]">
                 {m.label}
               </div>
               <div className="mt-1 font-mono text-[10px] text-[#3a3a3a]">
@@ -175,41 +140,41 @@ export function MetricsSection() {
           ))}
         </div>
 
-        {/* Uptime — pill-bar style matching reference design */}
+        {/* Research evidence density */}
         <div className="py-6">
           <div className="flex items-center justify-between mb-3">
             <span className="font-mono text-[10px] text-[#3a3a3a] tracking-widest uppercase">
-              Uptime last 90 days
+              研究证据记录
             </span>
-            <span className="font-mono text-[10px] text-[#22c55e] tracking-widest">
-              99.97%
+            <span className="font-mono text-[10px] text-[#2196f3] tracking-widest">
+              ETHUSDT
             </span>
           </div>
-          <div className="flex gap-[3px] items-end h-10">
-            {UPTIME_DATA.map((status, i) => (
+          <div className="space-y-3">
+            {METRICS.slice(0, 3).map((metric, index) => (
               <div
-                key={i}
-                title={
-                  status === 0
-                    ? "Operational"
-                    : status === 1
-                    ? "Degraded"
-                    : "Incident"
-                }
-                className="flex-1 rounded-sm transition-opacity hover:opacity-80 cursor-default"
-                style={{
-                  height: status === 2 ? "100%" : status === 1 ? "80%" : "70%",
-                  background: STATUS_COLOR[status],
-                  alignSelf: "flex-end",
-                  opacity: vis ? 1 : 0,
-                  transition: `opacity 0.4s ease ${i * 8}ms, height 0.3s ease`,
-                }}
-              />
+                key={metric.label}
+                className={`grid grid-cols-[120px_1fr_64px] items-center gap-4 transition-all duration-500 ${
+                  vis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+                }`}
+                style={{ transitionDelay: `${index * 90}ms` }}
+              >
+                <span className="font-mono text-[10px] text-[#5a5a5a]">{metric.label}</span>
+                <div className="h-1 bg-[#1e1e1e] overflow-hidden">
+                  <div
+                    className="h-full bg-[#2196f3] transition-[width] duration-1000"
+                    style={{ width: vis ? `${metric.density}%` : "0%" }}
+                  />
+                </div>
+                <span className="font-mono text-[10px] text-right text-[#3a3a3a]">
+                  {metric.end.toLocaleString()} 条
+                </span>
+              </div>
             ))}
           </div>
           <div className="flex justify-between mt-2">
-            <span className="font-mono text-[9px] text-[#3a3a3a]">90 days</span>
-            <span className="font-mono text-[9px] text-[#3a3a3a]">Today</span>
+            <span className="font-mono text-[9px] text-[#3a3a3a]">市场预测 · 结构快照 · 结构事件</span>
+            <span className="font-mono text-[9px] text-[#3a3a3a]">用于回放、归因与研究</span>
           </div>
         </div>
 

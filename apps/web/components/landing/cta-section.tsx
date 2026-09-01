@@ -75,7 +75,7 @@ export function CtaSection() {
   }, []);
 
   return (
-    <section className="relative border-t border-[#1e1e1e]">
+    <section id="contact" className="relative border-t border-[#1e1e1e] scroll-mt-[88px]">
       <div
         ref={ref}
         className={`max-w-[1400px] mx-auto px-6 lg:px-12 transition-all duration-700 ${vis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
@@ -98,53 +98,46 @@ export function CtaSection() {
           />
 
           <div className="relative z-10 px-8 lg:px-20 py-16 lg:py-24 text-center">
-            {/* Status */}
+            {/* Service mode */}
             <div className="flex items-center justify-center gap-3 mb-10">
-              <span className="status-pulse w-2 h-2 rounded-full bg-[#22c55e] inline-block" />
-              <span className="font-mono text-[11px] tracking-[0.2em] text-[#22c55e]">JARVIS RUNTIME · READY</span>
+              <span className="w-2 h-2 rounded-full bg-[#2196f3] inline-block" />
+              <span className="font-mono text-[11px] tracking-[0.2em] text-[#2196f3]">策略合作与托管接入</span>
             </div>
 
             {/* Headline */}
-            <h2 className="font-display text-[clamp(3.5rem,12vw,10rem)] leading-[0.88] tracking-tight text-[#f2ede6] uppercase mb-4">
-              YOUR FIRST<br />
-              <span className="text-[#2196f3]">AGENT</span><br />
-              STARTS NOW.
+            <h2 className="font-display text-[clamp(3.5rem,10vw,8rem)] leading-[0.88] tracking-tight text-[#f2ede6] mb-6">
+              定制策略<br />
+              <span className="text-[#2196f3]">托管运行</span>
             </h2>
 
-            <p className="font-mono text-sm text-[#5a5a5a] mb-12 max-w-lg mx-auto leading-relaxed">
-              Join 4,200+ engineers deploying autonomous AI workflows. Free tier includes 10K agent actions/month. No credit card required.
+            <p className="text-sm text-[#737373] mb-4 max-w-2xl mx-auto leading-relaxed">
+              UMAKER 为有明确交易需求的客户提供定制策略与 API 托管服务。
+            </p>
+            <p className="font-mono text-[11px] text-[#4d4d4d] mb-12 max-w-2xl mx-auto leading-relaxed">
+              根据标的、交易周期、风险约束与执行要求设计策略；或在客户提供交易所 API 后，通过托管基础设施持续运行已验证策略，并在私有看板查看持仓、风险和绩效。
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="#"
-                className="group inline-flex items-center gap-4 bg-[#2196f3] text-[#050505] font-mono text-sm tracking-widest px-8 py-5 hover:bg-[#fbbf24] transition-colors font-semibold"
-              >
-                DEPLOY FIRST AGENT
-                <span className="transition-transform group-hover:translate-x-1">→</span>
-              </a>
-              <a
-                href="#"
-                className="group inline-flex items-center gap-4 border border-[#2e2e2e] text-[#5a5a5a] font-mono text-sm tracking-widest px-8 py-5 hover:border-[#2196f3]/40 hover:text-[#2196f3] transition-colors"
-              >
-                TALK TO SALES
-                <span className="transition-transform group-hover:translate-x-1">→</span>
-              </a>
+            {/* Contact details are intentionally direct while private access is handled manually. */}
+            <div className="max-w-xl mx-auto border border-[#2e2e2e] bg-[#080808]/80 grid sm:grid-cols-2 text-left">
+              <div className="px-6 py-5 border-b sm:border-b-0 sm:border-r border-[#2e2e2e]">
+                <span className="font-mono text-[9px] tracking-[0.2em] text-[#3a3a3a] block mb-2">微信咨询</span>
+                <span className="font-mono text-sm tracking-wider text-[#f2ede6] select-all">copyapes_admin</span>
+              </div>
+              <div className="px-6 py-5">
+                <span className="font-mono text-[9px] tracking-[0.2em] text-[#3a3a3a] block mb-2">邮箱咨询</span>
+                <span className="font-mono text-sm tracking-wider text-[#f2ede6] select-all">service@umaker.org</span>
+              </div>
             </div>
 
-            {/* Social proof row */}
+            {/* Service scope */}
             <div className="flex items-center justify-center gap-8 mt-10 flex-wrap">
               {[
-                { v: "4.2K+",  l: "engineers" },
-                { v: "1.2B+",  l: "actions / day" },
-                { v: "99.97%", l: "uptime SLA" },
-                { v: "SOC 2",  l: "certified" },
+                "定制策略",
+                "交易所 API 托管",
+                "私有交易看板",
+                "运行与风险监控",
               ].map(s => (
-                <div key={s.l} className="text-center">
-                  <div className="font-display text-2xl text-[#2196f3]">{s.v}</div>
-                  <div className="font-mono text-[9px] text-[#3a3a3a] tracking-widest">{s.l}</div>
-                </div>
+                <span key={s} className="font-mono text-[10px] tracking-widest text-[#4d4d4d]">{s}</span>
               ))}
             </div>
           </div>

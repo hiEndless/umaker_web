@@ -5,14 +5,12 @@ import { Menu, X } from "lucide-react";
 import { BrandLogo } from "./brand-logo";
 
 const navLinks = [
-  { name: "AGENTS",       href: "#features" },
-  { name: "PLATFORM",     href: "#how-it-works" },
-  { name: "INFRA",        href: "#infrastructure" },
-  { name: "METRICS",      href: "#metrics" },
-  { name: "INTEGRATIONS", href: "#integrations" },
-  { name: "SECURITY",     href: "#security" },
-  { name: "DOCS",         href: "#developers" },
-  { name: "PRICING",      href: "#pricing" },
+  { name: "市场理解", href: "#features" },
+  { name: "系统架构", href: "#architecture" },
+  { name: "决策边界", href: "#security" },
+  { name: "核心输出", href: "#outputs" },
+  { name: "数据节奏", href: "#infrastructure" },
+  { name: "研究验证", href: "#metrics" },
 ];
 
 export function Navigation() {
@@ -43,11 +41,11 @@ export function Navigation() {
         {/* Top status bar */}
         <div className="border-b border-[#1e1e1e] px-6 lg:px-12 h-8 flex items-center justify-between">
           <span className="font-mono text-[10px] text-[#3a3a3a] tracking-widest uppercase">
-            SYS:UMAKER-OS &nbsp;/&nbsp; BUILD 2026.01
+            UMAKER &nbsp;/&nbsp; QUANT RESEARCH INFRASTRUCTURE
           </span>
           <div className="hidden md:flex items-center gap-6">
             <span className="font-mono text-[10px] text-[#3a3a3a]">
-              <span className="text-[#22c55e]">●</span>&nbsp;ALL_SYSTEMS_NOMINAL
+              PRIVATE ACCESS
             </span>
             <span className="font-mono text-[10px] text-[#3a3a3a] tabular-nums">{time} UTC</span>
           </div>
@@ -56,7 +54,7 @@ export function Navigation() {
         {/* Main nav */}
         <div className="px-6 lg:px-12 h-14 flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group">
+            <a href="#" className="flex items-center gap-3 group" aria-label="返回页面顶部">
             <BrandLogo />
             <span className="hidden lg:block font-mono text-[10px] text-[#3a3a3a] border-l border-[#1e1e1e] pl-3 ml-1 tracking-widest">
               FACTOR ENGINE
@@ -64,7 +62,7 @@ export function Navigation() {
           </a>
 
           {/* Desktop links */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-7">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -78,14 +76,11 @@ export function Navigation() {
 
           {/* CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <a href="#" className="font-mono text-[11px] tracking-widest text-[#5a5a5a] hover:text-[#f2ede6] transition-colors">
-              SIGN_IN
-            </a>
             <a
-              href="#"
+              href="#contact"
               className="font-mono text-[11px] tracking-widest bg-[#2196f3] text-[#050505] px-5 h-9 flex items-center hover:bg-[#42a5f5] transition-colors font-semibold"
             >
-              DEPLOY_NOW →
+              咨询合作 →
             </a>
           </div>
 
@@ -127,11 +122,11 @@ export function Navigation() {
         </div>
         <div className="mt-auto p-8 border-t border-[#1e1e1e]">
           <a
-            href="#"
+            href="#contact"
             onClick={() => setOpen(false)}
             className="w-full block text-center font-mono text-sm tracking-widest bg-[#2196f3] text-[#050505] py-5 font-semibold"
           >
-            DEPLOY_NOW →
+            咨询合作 →
           </a>
         </div>
       </div>

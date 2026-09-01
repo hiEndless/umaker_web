@@ -1,203 +1,69 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Copy, Check } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-const TABS = [
-  {
-    label: "INSTALL",
-    code: `# npm
-npm install @jarvis/sdk
+type ArchitectureLayer = {
+  id: string;
+  tab: string;
+  name: string;
+  description: string;
+  inputs: string[];
+  core: string;
+  outputs: string[];
+};
 
-# pnpm
-pnpm add @jarvis/sdk
-
-# yarn
-yarn add @jarvis/sdk`,
-  },
-  {
-    label: "CREATE",
-    code: `import { jarvis } from '@jarvis/sdk'
-
-const agent = jarvis.agent({
-  name: 'data-analyst',
-  model: 'claude-opus-4',
-  tools: ['db.query', 'code.run'],
-  memory: { scope: 'persistent' }
-})
-
-const result = await agent.run(
-  'Analyze Q2 revenue trends'
-)
-// → runs autonomously, returns report`,
-  },
-  {
-    label: "ORCHESTRATE",
-    code: `const pipeline = jarvis.workflow({
-  agents: [researcher, analyst, writer],
-  strategy: 'parallel',
-  onComplete: async (results) => {
-    await jarvis.notify(results)
-  },
-  timeout: '10m',
-})
-
-const run = await pipeline.execute(task)
-// → 3 agents · 4.2s · $0.003 cost`,
-  },
-  {
-    label: "OBSERVE",
-    code: `// Stream agent thoughts in real time
-const stream = jarvis.stream(agentId)
-
-stream.on('thought',  (t) => console.log(t))
-stream.on('tool_use', (t) => logTool(t))
-stream.on('complete', (r) => save(r))
-
-// Query audit trail
-const logs = await jarvis.audit({
-  agentId,
-  from: '2025-04-01',
-  actions: ['tool_call', 'api_request'],
-})`,
-  },
+const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
+  { id: "01", tab: "接入", name: "市场接入层", description: "交易所行情、衍生品、清算、资金流和动态标的，以各自节奏进入统一输入层。", inputs: ["交易所 WebSocket", "衍生品与清算", "聪明钱数据"], core: "标准化市场输入", outputs: ["市场特征", "统一数据契约"] },
+  { id: "02", tab: "智能", name: "市场智能层", description: "独立的市场智能模块从多周期结构与市场特征中生产可解释、可回放的研究输出。", inputs: ["标准化市场输入", "市场特征", "多周期窗口"], core: "市场智能引擎", outputs: ["Forecast", "结构快照", "结构事件"] },
+  { id: "03", tab: "交付", name: "策略交付层", description: "结构化输出由策略分发、风险门控与回放研究消费；策略保持独立，并拥有自己的执行边界。", inputs: ["Forecast", "结构快照", "结构事件", "因子流"], core: "策略分发", outputs: ["风险门控", "独立量化策略", "回放与研究"] },
 ];
 
-const SDK_PROPS = [
-  { k: "TypeScript native",  v: "Full type-safety, auto-generated types from your schema." },
-  { k: "Streaming output",   v: "Real-time agent thoughts via SSE and WebSockets." },
-  { k: "Edge-compatible",    v: "Node, Deno, Bun, Cloudflare Workers, Vercel Edge." },
-  { k: "8KB gzipped",        v: "Lightweight core. Tree-shakeable plugins." },
-];
+function FlowLine({ active }: { active: boolean }) {
+  return <span className={`relative hidden h-px flex-1 overflow-hidden bg-[#202020] md:block ${active ? "bg-[#215a8d]" : ""}`}><span className={`absolute top-0 h-px w-10 bg-[#58b4ff] ${active ? "animate-[topology-flow_2.3s_linear_infinite]" : "opacity-0"}`} /></span>;
+}
 
 export function DevelopersSection() {
-  const [tab, setTab]     = useState(0);
-  const [copied, setCopied] = useState(false);
-  const [vis, setVis]     = useState(false);
+  const [active, setActive] = useState(0);
+  const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLElement>(null);
+  const layer = ARCHITECTURE_LAYERS[active];
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVis(true); },
-      { threshold: 0.1 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setVisible(true);
+    }, { threshold: 0.1 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    const id = setInterval(() => setActive((current) => (current + 1) % ARCHITECTURE_LAYERS.length), 5000);
+    return () => clearInterval(id);
   }, []);
 
-  const copy = () => {
-    navigator.clipboard.writeText(TABS[tab].code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
-    <section id="developers" ref={ref} className="relative border-t border-[#1e1e1e] scroll-mt-[88px]">
+    <section id="architecture" ref={ref} className="relative border-t border-[#1e1e1e] scroll-mt-[88px]">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-
-        {/* Header row */}
-        <div
-          className={`border-b border-[#1e1e1e] py-8 transition-all duration-500 ${vis ? "opacity-100" : "opacity-0"}`}
-        >
-          <span className="sys-tag mb-3 block">DEVELOPER SDK</span>
-          <h2 className="font-display text-6xl lg:text-8xl leading-[0.88] tracking-tight text-[#f2ede6]">
-            BUILT FOR<br />
-            <span style={{ WebkitTextStroke: "1px #3a3a3a", color: "transparent" }}>BUILDERS</span>
-          </h2>
+        <div className={`border-b border-[#1e1e1e] py-8 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 transition-all duration-500 ${visible ? "opacity-100" : "opacity-0"}`}>
+          <div><span className="sys-tag mb-3 block">系统架构</span><h2 className="font-display text-5xl sm:text-6xl lg:text-8xl leading-[0.88] tracking-tight text-[#f2ede6]">UMAKER 系统<br /><span style={{ WebkitTextStroke: "1px #3a3a3a", color: "transparent" }}>三层架构</span></h2></div>
+          <span className="font-mono text-[10px] text-[#3a3a3a] tracking-widest">独立模块 &nbsp;·&nbsp; 清晰契约 &nbsp;·&nbsp; 策略自治</span>
         </div>
-
-        <div className="grid lg:grid-cols-2 border-b border-[#1e1e1e]">
-          {/* Left — SDK properties */}
+        <div className="grid lg:grid-cols-[330px_1fr] border-b border-[#1e1e1e]">
           <div className="border-r border-[#1e1e1e]">
-            <div className="border-b border-[#1e1e1e] p-6">
-              <p className="text-sm text-[#5a5a5a] leading-relaxed max-w-md">
-                A zero-friction SDK to spawn, orchestrate, and observe agents in production. Ship your first autonomous workflow in under 10 minutes.
-              </p>
-            </div>
-
-            {SDK_PROPS.map((p, i) => (
-              <div
-                key={p.k}
-                className={`border-b border-[#1e1e1e] px-6 py-5 row-hover transition-all duration-400 ${
-                  vis ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-                }`}
-                style={{ transitionDelay: `${i * 60 + 100}ms` }}
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <span className="font-mono text-[11px] text-[#2196f3] tracking-wider">{p.k}</span>
-                  <span className="font-mono text-[10px] text-[#3a3a3a]">{String(i + 1).padStart(2, "0")}</span>
-                </div>
-                <p className="mt-1 text-sm text-[#5a5a5a]">{p.v}</p>
-              </div>
-            ))}
-
-            <div className="p-6 flex items-center gap-6">
-              <a href="#" className="font-mono text-[11px] text-[#2196f3] tracking-wider hover:underline">
-                READ THE DOCS →
-              </a>
-              <a href="#" className="font-mono text-[11px] text-[#5a5a5a] tracking-wider hover:text-[#f2ede6] transition-colors">
-                GITHUB ↗
-              </a>
-            </div>
+            <div className="border-b border-[#1e1e1e] p-6"><p className="text-sm text-[#5a5a5a] leading-relaxed">市场数据、智能研究与策略消费保持模块独立，通过清晰契约交换结构化市场信息。</p></div>
+            {ARCHITECTURE_LAYERS.map((item, index) => <button key={item.id} onClick={() => setActive(index)} className={`w-full text-left border-b border-[#1e1e1e] px-6 py-5 transition-colors ${active === index ? "bg-[#0e0e0e]" : "hover:bg-[#0a0a0a]"}`}><div className="flex items-center justify-between"><span className={`font-mono text-[11px] tracking-wider ${active === index ? "text-[#2196f3]" : "text-[#595959]"}`}>{item.name}</span><span className="font-mono text-[10px] text-[#3a3a3a]">{item.id}</span></div><p className="mt-2 text-xs leading-relaxed text-[#4d4d4d]">{item.description}</p>{active === index && <div className="mt-4 h-px overflow-hidden bg-[#1e1e1e]"><div key={active} className="h-full bg-[#2196f3]" style={{ width: 0, animation: "draw-line 5s linear forwards" }} /></div>}</button>)}
+            <div className="p-6"><a href="#" className="font-mono text-[11px] text-[#2196f3] tracking-wider hover:underline">查看系统架构 →</a></div>
           </div>
-
-          {/* Right — code block */}
-          <div
-            className={`flex flex-col transition-all duration-600 delay-200 ${
-              vis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}
-          >
-            {/* Tabs */}
-            <div className="flex border-b border-[#1e1e1e]">
-              {TABS.map((t, i) => (
-                <button
-                  key={t.label}
-                  onClick={() => setTab(i)}
-                  className={`flex-1 py-3 font-mono text-[10px] tracking-[0.15em] transition-colors relative ${
-                    tab === i
-                      ? "text-[#2196f3] bg-[#0e0e0e]"
-                      : "text-[#3a3a3a] hover:text-[#5a5a5a] hover:bg-[#0a0a0a]"
-                  }`}
-                >
-                  {t.label}
-                  {tab === i && (
-                    <span className="absolute bottom-0 left-0 right-0 h-px bg-[#2196f3]" />
-                  )}
-                </button>
-              ))}
-              <button
-                onClick={copy}
-                className="px-4 border-l border-[#1e1e1e] text-[#3a3a3a] hover:text-[#2196f3] transition-colors"
-                aria-label="Copy"
-              >
-                {copied ? <Check className="w-3.5 h-3.5 text-[#22c55e]" /> : <Copy className="w-3.5 h-3.5" />}
-              </button>
-            </div>
-
-            {/* Code lines */}
-            <div className="flex-1 bg-[#050505] p-6 font-mono text-[12px] min-h-[300px]">
-              <pre>
-                {TABS[tab].code.split("\n").map((line, li) => (
-                  <div
-                    key={`${tab}-${li}`}
-                    className="leading-7 flex gap-4"
-                    style={{ animation: `fade-up 0.25s ease ${li * 45}ms both` }}
-                  >
-                    <span className="text-[#2e2e2e] select-none w-4 text-right shrink-0">{li + 1}</span>
-                    <span className="text-[#5a5a5a]">{line}</span>
-                  </div>
-                ))}
-              </pre>
-            </div>
-
-            {/* Footer */}
-            <div className="border-t border-[#1e1e1e] px-6 py-3 flex items-center justify-between bg-[#080808]">
-              <span className="font-mono text-[10px] text-[#3a3a3a]">@jarvis/sdk · v4.0.0 · stable</span>
-              <div className="flex items-center gap-2">
-                <span className="status-pulse w-1.5 h-1.5 rounded-full bg-[#22c55e] inline-block" />
-                <span className="font-mono text-[10px] text-[#22c55e]">STABLE</span>
-              </div>
-            </div>
+          <div className={`min-w-0 transition-all duration-700 delay-150 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+            <div className="flex border-b border-[#1e1e1e]">{ARCHITECTURE_LAYERS.map((item, index) => <button key={item.id} onClick={() => setActive(index)} className={`relative flex-1 py-3 font-mono text-[10px] tracking-[0.15em] transition-colors ${active === index ? "bg-[#0e0e0e] text-[#2196f3]" : "text-[#3a3a3a] hover:bg-[#0a0a0a] hover:text-[#5a5a5a]"}`}>{item.id} / {item.tab}{active === index && <span className="absolute inset-x-0 bottom-0 h-px bg-[#2196f3]" />}</button>)}</div>
+            <div className="overflow-x-auto bg-[#050505]"><div className="min-w-[620px] px-6 py-7 lg:px-8 lg:py-9">
+              <div className="mb-7 flex items-center justify-between"><span className="font-mono text-[10px] tracking-widest text-[#3a3a3a]">{layer.name.toUpperCase()}</span><span className="flex items-center gap-2 font-mono text-[10px] text-[#2196f3]"><span className="h-1.5 w-1.5 rounded-full bg-[#2196f3]" />架构视图</span></div>
+              <div className="space-y-4">{layer.inputs.map((input, index) => <div key={input} className="flex items-center gap-3"><span className="w-[160px] border border-[#2a2a2a] bg-[#0a0a0a] px-3 py-2 font-mono text-[10px] text-[#737373]">{input}</span><FlowLine active={index === 0} /></div>)}</div>
+              <div className="my-5 flex items-center gap-3"><span className="h-7 w-px bg-[#215a8d] ml-[80px]" /><span className="font-mono text-[9px] tracking-widest text-[#3a3a3a]">NORMALIZE / EVALUATE / DISTRIBUTE</span></div>
+              <div className="border border-[#2c5d8d] bg-[#0b1117] px-5 py-4"><div className="flex items-center justify-between"><span className="font-mono text-[11px] tracking-wider text-[#62b8ff]">{layer.core}</span><span className="font-mono text-[9px] text-[#3e7daf]">{layer.id}</span></div><div className="mt-3 h-px overflow-hidden bg-[#173147]"><span className="block h-px w-12 bg-[#58b4ff] animate-[topology-flow_2.3s_linear_infinite]" /></div></div>
+              <div className="my-5 flex items-center gap-3"><span className="h-7 w-px bg-[#215a8d] ml-[80px]" /><span className="font-mono text-[9px] tracking-widest text-[#3a3a3a]">STRUCTURED OUTPUT</span></div>
+              <div className="grid grid-cols-3 gap-3">{layer.outputs.map((output, index) => <div key={output} className={`border px-3 py-3 font-mono text-[10px] transition-colors ${index === 0 ? "border-[#2c5d8d] bg-[#0b1117] text-[#62b8ff]" : "border-[#242424] bg-[#090909] text-[#626262]"}`}>{output}</div>)}</div>
+            </div></div>
+            <div className="border-t border-[#1e1e1e] px-6 py-3 flex items-center justify-between bg-[#080808]"><span className="font-mono text-[10px] text-[#3a3a3a]">模块通过清晰契约保持独立，并在研究与策略链路中协同工作。</span><span className="font-mono text-[10px] text-[#2196f3]">架构视图</span></div>
           </div>
         </div>
       </div>

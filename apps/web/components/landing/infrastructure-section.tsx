@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const REGIONS = [
-  { city: "San Francisco", region: "US-WEST-1",    agents: "2,400", latency: "12ms", load: 72 },
-  { city: "New York",      region: "US-EAST-1",    agents: "3,100", latency: "18ms", load: 88 },
-  { city: "London",        region: "EU-WEST-1",    agents: "2,800", latency: "24ms", load: 65 },
-  { city: "Frankfurt",     region: "EU-CENTRAL-1", agents: "1,900", latency: "28ms", load: 54 },
-  { city: "Tokyo",         region: "AP-EAST-1",    agents: "2,200", latency: "32ms", load: 79 },
-  { city: "Sydney",        region: "AP-SOUTH-1",   agents: "900",   latency: "45ms", load: 41 },
+const DATA_STREAMS = [
+  { source: "交易所实时流", evidence: "价格 / 成交 / 深度 / 强平", cadence: "200ms", output: "原始市场输入", role: "实时观察", intensity: 100 },
+  { source: "市场特征层", evidence: "价格 / OI / 资金费率 / 多空比", cadence: "15s", output: "衍生品与行为因子", role: "特征生产", intensity: 68 },
+  { source: "聪明钱数据", evidence: "巨鲸与交易者行为", cadence: "10s", output: "资金流因子", role: "辅助确认", intensity: 76 },
+  { source: "市场结构事件", evidence: "突破 / 反转 / 失效", cadence: "10s", output: "市场结构事件", role: "变化捕捉", intensity: 76 },
+  { source: "市场结构快照", evidence: "多周期市场状态", cadence: "5m", output: "市场结构快照", role: "状态基线", intensity: 35 },
+  { source: "清算与流动性", evidence: "清算压力 / 流动性路径", cadence: "5m", output: "流动性因子", role: "风险背景", intensity: 35 },
+  { source: "AI 预测", evidence: "结构化市场证据", cadence: "5m", output: "市场预测", role: "概率判断", intensity: 24 },
 ];
 
 export function InfrastructureSection() {
@@ -26,7 +27,7 @@ export function InfrastructureSection() {
   }, []);
 
   useEffect(() => {
-    const id = setInterval(() => setActive(a => (a + 1) % REGIONS.length), 1800);
+    const id = setInterval(() => setActive(a => (a + 1) % DATA_STREAMS.length), 2400);
     return () => clearInterval(id);
   }, []);
 
@@ -39,17 +40,17 @@ export function InfrastructureSection() {
           className={`border-b border-[#1e1e1e] py-8 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 transition-all duration-500 ${vis ? "opacity-100" : "opacity-0"}`}
         >
           <div>
-            <span className="sys-tag mb-3 block">NETWORK</span>
+            <span className="sys-tag mb-3 block">数据源与刷新频率</span>
             <h2 className="font-display text-6xl lg:text-8xl leading-[0.88] tracking-tight text-[#f2ede6]">
-              GLOBAL<br />
-              <span style={{ WebkitTextStroke: "1px #3a3a3a", color: "transparent" }}>AGENT GRID</span>
+              多源数据<br />
+              <span style={{ WebkitTextStroke: "1px #3a3a3a", color: "transparent" }}>异步汇聚</span>
             </h2>
           </div>
           <div className="grid grid-cols-3 gap-8 text-right">
             {[
-              { v: "17",    l: "DATA CENTERS" },
-              { v: "99.97%", l: "SLA UPTIME" },
-              { v: "< 50ms", l: "GLOBAL P99" },
+              { v: "200ms", l: "实时市场流" },
+              { v: "10s", l: "快速结构事件" },
+              { v: "5m", l: "快照与预测" },
             ].map(s => (
               <div key={s.l}>
                 <div className="font-display text-3xl text-[#2196f3]">{s.v}</div>
@@ -59,20 +60,20 @@ export function InfrastructureSection() {
           </div>
         </div>
 
-        {/* Region table */}
-        <div className="border-b border-[#1e1e1e]">
+        {/* Data cadence table */}
+        <div className="border-b border-[#1e1e1e] overflow-x-auto">
           {/* Table header */}
-          <div className="grid grid-cols-[1fr_100px_80px_80px_120px] border-b border-[#1e1e1e] px-6 py-3">
-            {["LOCATION", "REGION", "AGENTS", "LATENCY", "LOAD"].map(h => (
+          <div className="grid min-w-[860px] grid-cols-[1.1fr_1.45fr_1.35fr_1fr_150px] border-b border-[#1e1e1e] px-6 py-3">
+            {["数据源", "市场证据", "结构化输出", "系统角色", "刷新频率"].map(h => (
               <span key={h} className="font-mono text-[9px] text-[#3a3a3a] tracking-widest">{h}</span>
             ))}
           </div>
 
           {/* Rows */}
-          {REGIONS.map((r, i) => (
+          {DATA_STREAMS.map((stream, i) => (
             <div
-              key={r.city}
-              className={`grid grid-cols-[1fr_100px_80px_80px_120px] px-6 py-5 border-b border-[#1e1e1e] last:border-b-0 transition-all duration-300 ${
+              key={stream.source}
+              className={`grid min-w-[860px] grid-cols-[1.1fr_1.45fr_1.35fr_1fr_150px] px-6 py-5 border-b border-[#1e1e1e] last:border-b-0 transition-all duration-300 ${
                 active === i ? "bg-[#0e0e0e]" : "hover:bg-[#0a0a0a]"
               } ${vis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
               style={{ transitionDelay: `${i * 60}ms` }}
@@ -83,24 +84,25 @@ export function InfrastructureSection() {
                     active === i ? "bg-[#2196f3]" : "bg-[#2e2e2e]"
                   }`}
                 />
-                <span className={`font-mono text-sm ${active === i ? "text-[#f2ede6]" : "text-[#5a5a5a]"}`}>
-                  {r.city}
+                <span className={`font-mono text-xs ${active === i ? "text-[#f2ede6]" : "text-[#5a5a5a]"}`}>
+                  {stream.source}
                 </span>
               </div>
-              <span className="font-mono text-[10px] text-[#3a3a3a] tracking-wider self-center">{r.region}</span>
-              <span className={`font-mono text-sm self-center ${active === i ? "text-[#2196f3]" : "text-[#5a5a5a]"}`}>
-                {r.agents}
+              <span className="font-mono text-[10px] text-[#3a3a3a] tracking-wider self-center">{stream.evidence}</span>
+              <span className={`font-mono text-xs self-center ${active === i ? "text-[#2196f3]" : "text-[#5a5a5a]"}`}>
+                {stream.output}
               </span>
-              <span className="font-mono text-sm text-[#5a5a5a] self-center">{r.latency}</span>
-              {/* Load bar */}
-              <div className="flex items-center gap-2 self-center">
-                <div className="flex-1 h-1 bg-[#1e1e1e]">
+              <span className="font-mono text-xs text-[#5a5a5a] self-center">{stream.role}</span>
+              <div className="flex items-center gap-2 self-center pr-5">
+                <div className="flex-1 h-1 bg-[#1e1e1e] overflow-hidden">
                   <div
                     className="h-full bg-[#2196f3] transition-all duration-500"
-                    style={{ width: `${r.load}%`, opacity: active === i ? 1 : 0.4 }}
+                    style={{ width: `${stream.intensity}%`, opacity: active === i ? 1 : 0.35 }}
                   />
                 </div>
-                <span className="font-mono text-[10px] text-[#3a3a3a] w-7 text-right">{r.load}%</span>
+                <span className="font-mono text-[10px] w-8 text-right text-[#3a3a3a]">
+                  {stream.cadence}
+                </span>
               </div>
             </div>
           ))}
@@ -108,7 +110,7 @@ export function InfrastructureSection() {
 
         <div className="py-4 flex justify-end">
           <span className="font-mono text-[10px] text-[#3a3a3a]">
-            SHOWING 6 OF 17 ACTIVE REGIONS &nbsp;· &nbsp;ALL_HEALTHY
+            默认配置：7 类数据流在统一市场上下文中完成对齐
           </span>
         </div>
       </div>

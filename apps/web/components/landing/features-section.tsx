@@ -5,31 +5,31 @@ import { useEffect, useRef, useState } from "react";
 const FEATURES = [
   {
     id: "01",
-    tag: "ORCHESTRATION",
-    title: "MULTI-AGENT\nSWARMS",
-    desc: "Deploy fleets of specialized agents that collaborate, delegate, and self-coordinate. JARVIS manages task graphs, resolves dependencies, and routes work to the right agent — automatically.",
-    stat: { v: "10K+", l: "concurrent agents" },
+    tag: "市场证据",
+    title: "汇聚市场\n数据",
+    desc: "持续接入价格、成交量、持仓、资金费率、清算与资金流等多维数据，为研究提供可追溯的市场证据。",
+    stat: { v: "多维", l: "市场数据" },
   },
   {
     id: "02",
-    tag: "COGNITION",
-    title: "LONG-HORIZON\nREASONING",
-    desc: "Persistent memory, reflective loops, multi-step planning. Not one-shot completions — agents that hold context across hours, days, and complex workflows without losing the thread.",
-    stat: { v: "∞", l: "context retention" },
+    tag: "市场结构",
+    title: "识别多周期\n结构",
+    desc: "将离散行情组织为趋势、波动、流动性、仓位与市场状态，让不同时间尺度上的变化能够被一致地理解。",
+    stat: { v: "多周期", l: "结构视角" },
   },
   {
     id: "03",
-    tag: "EXECUTION",
-    title: "TOOL &\nAPI LAYER",
-    desc: "Give your agents hands. Browse the web, call APIs, write and run code, query databases, trigger stack actions — all with built-in retries, rate limiting, and full audit logging.",
-    stat: { v: "200+", l: "native tool integrations" },
+    tag: "AI 因子研究",
+    title: "发现并验证\n量化因子",
+    desc: "AI Agent 在受约束的研究流程中持续探索市场关系，评估因子强度、稳定性与衰减特征，而不是生成无法验证的结论。",
+    stat: { v: "AI", l: "受约束研究" },
   },
   {
     id: "04",
-    tag: "SECURITY",
-    title: "ZERO-TRUST\nSANDBOX",
-    desc: "Every agent action is sandboxed, policy-controlled, and cryptographically audited. Define permission scopes, SOC 2 Type II, end-to-end encryption. Enterprise-grade from day one.",
-    stat: { v: "SOC2", l: "type II certified" },
+    tag: "策略输入",
+    title: "驱动\n量化策略",
+    desc: "把结构化因子与实时信号交给独立策略、风险门控和验证流程，为后续决策提供清晰、可消费的量化输入。",
+    stat: { v: "实时", l: "可消费信号" },
   },
 ];
 
@@ -109,16 +109,16 @@ export function FeaturesSection() {
           <div className="border-r border-[#1e1e1e] p-5" />
           <div className="col-span-2 lg:col-span-3 p-6 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
             <div>
-              <span className="sys-tag mb-4 block">CAPABILITIES</span>
+              <span className="sys-tag mb-4 block">核心能力</span>
               <h2 className="font-display text-6xl lg:text-8xl text-[#f2ede6] leading-[0.88] tracking-tight">
-                WHAT JARVIS<br />
+                UMAKER 如何<br />
                 <span className="text-[#3a3a3a]" style={{ WebkitTextStroke: "1px #3a3a3a", color: "transparent" }}>
-                  CAN DO
+                  理解市场
                 </span>
               </h2>
             </div>
             <p className="font-mono text-[10px] text-[#3a3a3a] tracking-widest max-w-[200px] text-right hidden lg:block">
-              FOUR CORE MODULES &nbsp;/ &nbsp;ENTERPRISE-GRADE &nbsp;/ &nbsp;PRODUCTION-READY
+              市场数据 &nbsp;/ &nbsp;结构识别 &nbsp;/ &nbsp;因子研究 &nbsp;/ &nbsp;策略输入
             </p>
           </div>
         </div>
@@ -132,8 +132,8 @@ export function FeaturesSection() {
         <div className="grid grid-cols-[56px_1fr] border-b border-[#1e1e1e]">
           <div className="border-r border-[#1e1e1e]" />
           <div className="p-6 flex items-center justify-between">
-            <span className="font-mono text-[10px] text-[#3a3a3a]">VIEW ALL CAPABILITIES IN DOCS →</span>
-            <a href="#" className="font-mono text-xs text-[#2196f3] hover:underline tracking-wider">EXPLORE SDK</a>
+            <span className="font-mono text-[10px] text-[#3a3a3a]">了解 UMAKER 的研究方法 →</span>
+            <a href="#" className="font-mono text-xs text-[#2196f3] hover:underline tracking-wider">查看系统架构</a>
           </div>
         </div>
       </div>

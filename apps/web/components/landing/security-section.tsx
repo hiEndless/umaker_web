@@ -2,32 +2,32 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const CERTS = ["SOC_2_TYPE_II", "ISO_27001", "HIPAA", "GDPR", "CCPA"];
+const PRINCIPLES = ["结构化契约", "质量门控", "概率输出", "原因码", "历史回放"];
 
 const FEATURES = [
   {
     id: "01",
-    tag: "ISOLATION",
-    title: "AGENT SANDBOXING",
-    desc: "Every agent runs in an isolated execution environment. No cross-contamination, no data leakage between pipelines.",
+    tag: "结构化输入",
+    title: "只消费可验证字段",
+    desc: "策略只消费标准化的 Forecast、Snapshot、Event 与因子字段，而不是直接解析自然语言结论。",
   },
   {
     id: "02",
-    tag: "ACCESS CONTROL",
-    title: "PERMISSION SCOPES",
-    desc: "Define exactly what tools, APIs, and data each agent can access. Least-privilege by default, audited always.",
+    tag: "质量门控",
+    title: "缺失数据不会被放行",
+    desc: "数据过期、缺失或质量降级时必须显式标记，不能静默转为可执行信号。",
   },
   {
     id: "03",
-    tag: "OBSERVABILITY",
-    title: "FULL AUDIT TRAIL",
-    desc: "Every agent action, decision, and tool call is logged, traceable, and reviewable in real time. Fully immutable.",
+    tag: "概率判断",
+    title: "Forecast 不是交易指令",
+    desc: "AI 输出方向假设、不确定性与证据摘要，仍需市场结构和风险条件共同确认。",
   },
   {
     id: "04",
-    tag: "COMPLIANCE",
-    title: "ENTERPRISE CERTS",
-    desc: "SOC 2 Type II, ISO 27001, HIPAA, GDPR, and CCPA compliance. Independently audited with continuous monitoring.",
+    tag: "回放归因",
+    title: "每次变化都有证据",
+    desc: "Forecast、快照、事件和原因码保留在历史记录中，支持回放、归因与研究复盘。",
   },
 ];
 
@@ -53,23 +53,23 @@ export function SecuritySection() {
           className={`border-b border-[#1e1e1e] py-8 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 transition-all duration-500 ${vis ? "opacity-100" : "opacity-0"}`}
         >
           <div>
-            <span className="sys-tag mb-3 block">TRUST &amp; SECURITY</span>
-            <h2 className="font-display text-6xl lg:text-8xl leading-[0.88] tracking-tight text-[#f2ede6]">
-              AGENTS YOU<br />
-              <span style={{ WebkitTextStroke: "1px #3a3a3a", color: "transparent" }}>CAN TRUST</span>
+            <span className="sys-tag mb-3 block">决策边界</span>
+            <h2 className="font-display text-5xl lg:text-7xl leading-[0.88] tracking-tight text-[#f2ede6]">
+              让 AI 参与研究<br />
+              <span style={{ WebkitTextStroke: "1px #3a3a3a", color: "transparent" }}>而非替代判断</span>
             </h2>
           </div>
-          {/* Cert badges */}
+          {/* Research boundary principles */}
           <div className="flex flex-wrap gap-2">
-            {CERTS.map((c, i) => (
+            {PRINCIPLES.map((principle, i) => (
               <span
-                key={c}
+                key={principle}
                 className={`font-mono text-[9px] tracking-widest border border-[#2e2e2e] px-3 py-2 text-[#5a5a5a] hover:border-[#2196f3]/40 hover:text-[#2196f3] transition-all duration-200 cursor-default ${
                   vis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
                 }`}
                 style={{ transitionDelay: `${i * 50 + 200}ms` }}
               >
-                {c}
+                {principle}
               </span>
             ))}
           </div>
@@ -194,10 +194,10 @@ export function SecuritySection() {
         {/* Bottom note */}
         <div className="py-5 flex items-center justify-between">
           <span className="font-mono text-[10px] text-[#3a3a3a]">
-            EVERY AGENT ACTION IS CRYPTOGRAPHICALLY SIGNED &amp; IMMUTABLY LOGGED
+            AI 是研究基础设施，不是未经验证的交易裁决者
           </span>
           <a href="#" className="font-mono text-[10px] text-[#2196f3] hover:underline tracking-wider">
-            SECURITY WHITEPAPER →
+            了解决策边界 →
           </a>
         </div>
       </div>

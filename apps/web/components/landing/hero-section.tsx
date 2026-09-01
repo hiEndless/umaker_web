@@ -84,14 +84,14 @@ export function HeroSection() {
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-3 mt-8 w-fit">
                 <a
-                  href="#"
+                  href="#outputs"
                   className="group inline-flex items-center gap-8 bg-[#2196f3] text-[#050505] font-mono text-sm tracking-widest px-6 py-4 hover:bg-[#42a5f5] transition-colors font-semibold whitespace-nowrap"
                 >
-                  查看因子引擎
+                  查看核心输出
                   <span className="transition-transform group-hover:translate-x-1">→</span>
                 </a>
                 <a
-                  href="#"
+                  href="#architecture"
                   className="group inline-flex items-center gap-8 border border-[#1e1e1e] text-[#f2ede6] font-mono text-sm tracking-widest px-6 py-4 hover:border-[#2196f3]/40 hover:text-[#2196f3] transition-colors whitespace-nowrap"
                 >
                   了解系统结构
