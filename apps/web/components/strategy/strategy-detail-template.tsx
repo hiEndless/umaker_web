@@ -54,7 +54,7 @@ export function StrategyDetailTemplate({ strategy }: { strategy: StrategyDetail 
       <section className="relative overflow-hidden border-b border-[#1e1e1e] pt-32 lg:pt-40">
         <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(33,150,243,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(33,150,243,0.08)_1px,transparent_1px)] [background-size:72px_72px]" />
         <div className="absolute left-[12%] top-24 h-px w-[38%] bg-gradient-to-r from-transparent via-[#2196f3] to-transparent opacity-70" />
-        <div className="relative mx-auto max-w-[1400px] px-6 pb-20 lg:px-12 lg:pb-28">
+        <div className="relative mx-auto max-w-[1400px] px-6 pb-10 lg:px-12 lg:pb-12">
           <div className="mb-8 flex flex-wrap items-center gap-3 font-mono text-[10px] tracking-[0.18em] text-[#2196f3]">
             <span>{strategy.category}</span>
             <span className="text-[#3a3a3a]">/</span>
@@ -75,7 +75,7 @@ export function StrategyDetailTemplate({ strategy }: { strategy: StrategyDetail 
             </div>
           </div>
           {strategy.highlights && (
-            <div className="mt-12 border border-[#2e2e2e] bg-[#080808]/80">
+            <div className="mt-8 border border-[#2e2e2e] bg-[#080808]/80 lg:mt-10">
               <div className="flex flex-col gap-3 border-b border-[#1e1e1e] px-6 py-4 lg:flex-row lg:items-center lg:justify-between lg:px-7">
                 <span className="font-mono text-[10px] tracking-[0.2em] text-[#2196f3]">{strategy.highlights.eyebrow}</span>
                 <span className="font-mono text-[10px] tracking-wider text-[#737373]">{strategy.highlights.title}</span>
@@ -96,7 +96,7 @@ export function StrategyDetailTemplate({ strategy }: { strategy: StrategyDetail 
       </section>
 
       <section className="border-b border-[#1e1e1e]">
-        <div className="mx-auto max-w-[1400px] px-6 py-12 lg:px-12 lg:py-16">
+        <div className="mx-auto max-w-[1400px] px-6 py-8 lg:px-12 lg:py-10">
           <p className="font-mono text-[10px] tracking-[0.2em] text-[#2196f3]">策略原则</p>
           <p className="mt-5 max-w-5xl font-display-normal text-3xl leading-tight tracking-wide text-[#d8d8d8] lg:text-5xl">{strategy.principle}</p>
         </div>
