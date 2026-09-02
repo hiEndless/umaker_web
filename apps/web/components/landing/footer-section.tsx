@@ -31,6 +31,12 @@ export function FooterSection() {
             <p className="text-sm text-[#4d4d4d] leading-relaxed max-w-sm">
               实时市场数据、结构化研究输出与独立策略交付基础设施。
             </p>
+            <div className="mt-6 pt-5 border-t border-[#1e1e1e] max-w-sm grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 font-mono text-[10px] tracking-wide">
+              <span className="text-[#3a3a3a]">微信</span>
+              <span className="text-[#737373] select-all">copyapes_admin</span>
+              <span className="text-[#3a3a3a]">邮箱</span>
+              <span className="text-[#737373] select-all">service@umaker.org</span>
+            </div>
             <div className="flex flex-wrap gap-x-5 gap-y-2 mt-6 font-mono text-[10px] tracking-widest text-[#3a3a3a]">
               <span>PRIVATE ACCESS</span>
               <span>RESEARCH INFRASTRUCTURE</span>
@@ -44,12 +50,6 @@ export function FooterSection() {
                 <ul className="space-y-3">
                   {links.map((link) => <li key={link.name}><a href={link.href} className="font-mono text-[11px] text-[#4d4d4d] hover:text-[#f2ede6] transition-colors">{link.name}</a></li>)}
                 </ul>
-                {section === "合作" && (
-                  <div className="mt-5 pt-4 border-t border-[#1e1e1e] space-y-2 font-mono text-[10px] tracking-wide text-[#3a3a3a]">
-                    <p>微信 · copyapes_admin</p>
-                    <p className="select-all">service@umaker.org</p>
-                  </div>
-                )}
               </div>
             ))}
           </div>
