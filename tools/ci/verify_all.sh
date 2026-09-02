@@ -10,6 +10,9 @@ run() {
   pnpm exec tsx "$1"
 }
 
+# The API imports the contracts package through its published dist entrypoint.
+# Build it explicitly so fresh CI checkouts have the declaration files available.
+pnpm --filter @umaker/contracts-ts run build
 pnpm -r run typecheck
 pnpm --filter @umaker/api run typecheck:workers
 pnpm --filter @umaker/cloudflare-adapters run typecheck
