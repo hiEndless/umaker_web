@@ -1,4 +1,5 @@
 import { FooterSection } from "@/components/landing/footer-section";
+import { AgentParticleCanvas } from "@/components/landing/agent-particle-canvas";
 import { Navigation } from "@/components/landing/navigation";
 
 type ContentBlock = {
@@ -52,9 +53,13 @@ export function StrategyDetailTemplate({ strategy }: { strategy: StrategyDetail 
       <Navigation />
 
       <section className="relative overflow-hidden border-b border-[#1e1e1e] pt-32 lg:pt-40">
-        <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(33,150,243,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(33,150,243,0.08)_1px,transparent_1px)] [background-size:72px_72px]" />
-        <div className="absolute left-[12%] top-24 h-px w-[38%] bg-gradient-to-r from-transparent via-[#2196f3] to-transparent opacity-70" />
-        <div className="relative mx-auto max-w-[1400px] px-6 pb-10 lg:px-12 lg:pb-12">
+        <div className="pointer-events-none absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(33,150,243,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(33,150,243,0.08)_1px,transparent_1px)] [background-size:72px_72px]" />
+        <div className="pointer-events-none absolute inset-0 opacity-70 [mask-image:linear-gradient(90deg,transparent_0%,rgba(0,0,0,0.12)_28%,black_60%,black_100%)]">
+          <AgentParticleCanvas variant="strategy" className="h-full w-full" />
+        </div>
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_70%_at_82%_58%,rgba(33,150,243,0.055),transparent_70%)]" />
+        <div className="pointer-events-none absolute left-[12%] top-24 h-px w-[38%] bg-gradient-to-r from-transparent via-[#2196f3] to-transparent opacity-55" />
+        <div className="relative z-10 mx-auto max-w-[1400px] px-6 pb-10 lg:px-12 lg:pb-12">
           <div className="mb-8 flex flex-wrap items-center gap-3 font-mono text-[10px] tracking-[0.18em] text-[#2196f3]">
             <span>{strategy.category}</span>
             <span className="text-[#3a3a3a]">/</span>

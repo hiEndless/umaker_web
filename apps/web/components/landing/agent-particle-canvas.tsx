@@ -17,7 +17,41 @@ const BLUE   = "33,150,243";
 const GREEN  = "34,197,94";
 const WHITE  = "242,237,230";
 
-export function AgentParticleCanvas({ className }: { className?: string }) {
+type ParticleVariant = "hero" | "strategy";
+
+const PARTICLE_CONFIG: Record<ParticleVariant, {
+  density: number;
+  minCount: number;
+  speed: number;
+  connectionDistance: number;
+  edgeOpacity: number;
+  showGreenNodes: boolean;
+}> = {
+  hero: {
+    density: 1,
+    minCount: 40,
+    speed: 1,
+    connectionDistance: 1,
+    edgeOpacity: 1,
+    showGreenNodes: true,
+  },
+  strategy: {
+    density: 0.42,
+    minCount: 22,
+    speed: 0.42,
+    connectionDistance: 0.78,
+    edgeOpacity: 0.48,
+    showGreenNodes: false,
+  },
+};
+
+export function AgentParticleCanvas({
+  className,
+  variant = "hero",
+}: {
+  className?: string;
+  variant?: ParticleVariant;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -26,7 +60,9 @@ export function AgentParticleCanvas({ className }: { className?: string }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animId: number;
+    const config = PARTICLE_CONFIG[variant];
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let animId: number | undefined;
     let W = 0, H = 0;
     let particles: Particle[] = [];
 
@@ -37,18 +73,19 @@ export function AgentParticleCanvas({ className }: { className?: string }) {
       canvas.height = H * window.devicePixelRatio;
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
       init();
+      if (reducedMotion) draw(false);
     };
 
     const init = () => {
-      const COUNT = Math.max(40, Math.floor((W * H) / 4500));
+      const COUNT = Math.max(config.minCount, Math.floor((W * H * config.density) / 4500));
       particles = Array.from({ length: COUNT }, () => {
         const roll = Math.random();
         const type: Particle["type"] = roll < 0.08 ? "hub" : roll < 0.28 ? "relay" : "node";
         return {
           x:           Math.random() * W,
           y:           Math.random() * H,
-          vx:          (Math.random() - 0.5) * (type === "hub" ? 0.15 : 0.4),
-          vy:          (Math.random() - 0.5) * (type === "hub" ? 0.15 : 0.4),
+          vx:          (Math.random() - 0.5) * (type === "hub" ? 0.15 : 0.4) * config.speed,
+          vy:          (Math.random() - 0.5) * (type === "hub" ? 0.15 : 0.4) * config.speed,
           radius:      type === "hub" ? 6 : type === "relay" ? 4 : 2.5,
           baseAlpha:   type === "hub" ? 0.95 : type === "relay" ? 0.8 : 0.55 + Math.random() * 0.35,
           pulseOffset: Math.random() * Math.PI * 2,
@@ -58,9 +95,9 @@ export function AgentParticleCanvas({ className }: { className?: string }) {
     };
 
     let t = 0;
-    const draw = () => {
+    const draw = (animate = true) => {
       ctx.clearRect(0, 0, W, H);
-      t += 0.014;
+      if (animate) t += 0.014 * config.speed;
 
       /* ── EDGES ── */
       for (let i = 0; i < particles.length; i++) {
@@ -70,12 +107,12 @@ export function AgentParticleCanvas({ className }: { className?: string }) {
           const dx = a.x - b.x;
           const dy = a.y - b.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const MAX  = a.type === "hub" || b.type === "hub" ? 220 : 140;
+          const MAX  = (a.type === "hub" || b.type === "hub" ? 220 : 140) * config.connectionDistance;
 
           if (dist < MAX) {
             const t01    = 1 - dist / MAX;
             const isHot  = a.type !== "node" || b.type !== "node";
-            const alpha  = isHot ? t01 * 0.55 : t01 * 0.18;
+            const alpha  = (isHot ? t01 * 0.55 : t01 * 0.18) * config.edgeOpacity;
             const color  = isHot ? BLUE : "80,80,80";
             const width  = isHot ? 1.0  : 0.5;
 
@@ -87,7 +124,7 @@ export function AgentParticleCanvas({ className }: { className?: string }) {
             ctx.stroke();
 
             /* travelling data-dot on hot edges */
-            if (isHot && dist < MAX * 0.8) {
+            if (animate && isHot && dist < MAX * 0.8) {
               const phase = ((t * 0.6 + i * 0.37 + j * 0.19) % 1);
               const px = a.x + (b.x - a.x) * phase;
               const py = a.y + (b.y - a.y) * phase;
@@ -146,7 +183,7 @@ export function AgentParticleCanvas({ className }: { className?: string }) {
 
         } else {
           /* plain node — mostly blue, some green */
-          const isGreen = Math.sin(p.pulseOffset * 3.7) > 0.65;
+        const isGreen = config.showGreenNodes && Math.sin(p.pulseOffset * 3.7) > 0.65;
           ctx.beginPath();
           ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
           ctx.fillStyle = isGreen
@@ -156,16 +193,19 @@ export function AgentParticleCanvas({ className }: { className?: string }) {
         }
       }
 
-      animId = requestAnimationFrame(draw);
+      if (animate) animId = requestAnimationFrame(() => draw(true));
     };
 
     resize();
-    draw();
+    if (!reducedMotion) draw();
 
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
-    return () => { cancelAnimationFrame(animId); ro.disconnect(); };
-  }, []);
+    return () => {
+      if (animId !== undefined) cancelAnimationFrame(animId);
+      ro.disconnect();
+    };
+  }, [variant]);
 
   return (
     <canvas
