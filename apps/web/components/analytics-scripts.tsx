@@ -76,7 +76,6 @@ export function AnalyticsScripts() {
     if (!LA_ID && !GTM_ID) return;
 
     let loaded = false;
-    let cancelIdle: (() => void) | undefined;
     const run = () => {
       if (loaded) return;
       loaded = true;
@@ -84,7 +83,7 @@ export function AnalyticsScripts() {
       loadAnalytics();
     };
 
-    cancelIdle = scheduleIdle(run);
+    const cancelIdle = scheduleIdle(run);
     window.addEventListener("pointerdown", run, { once: true, passive: true });
     window.addEventListener("keydown", run, { once: true });
     window.addEventListener("scroll", run, { once: true, passive: true });
