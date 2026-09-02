@@ -2,15 +2,30 @@ import type { Metadata } from "next";
 
 import { StrategyDetailTemplate, type StrategyDetail } from "@/components/strategy/strategy-detail-template";
 
+const datePublished = "2026-09-03";
+const dateModified = "2026-09-03";
+const strategyUrl = "https://umaker.org/strategies/rebate-volume-arbitrage/";
+
 export const metadata: Metadata = {
   title: "返佣刷量套利策略",
   description:
     "UMAKER OKX 返佣刷量套利策略介绍：低风险交易量管理策略，通过双向网格提升真实交易量，在单边行情由合约趋势策略接管，面向私有小规模实盘与返佣代理客户。",
   alternates: { canonical: "/strategies/rebate-volume-arbitrage" },
   openGraph: {
+    type: "article",
     title: "返佣刷量套利策略 | UMAKER",
     description:
       "OKX 私有小规模实盘策略：网格获取交易量，趋势接管单边行情，并以手续费返佣与账户等级为长期经济性因素。",
+    publishedTime: datePublished,
+    modifiedTime: dateModified,
+    authors: ["UMAKER 研究团队"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "返佣刷量套利策略 | UMAKER",
+    description:
+      "OKX 私有小规模实盘策略：双向网格管理真实交易量，趋势策略在单边行情中接管执行权。",
+    images: ["/og-image.png"],
   },
 };
 
@@ -229,8 +244,84 @@ const strategy: StrategyDetail = {
     description:
       "如需为 OKX 返佣代理或客户账户评估该策略，可通过 UMAKER 的私有合作渠道沟通。咨询阶段以返佣资格、账户等级目标、执行条件和风险边界为先，不以收益承诺替代评估。",
   },
+  publication: {
+    author: "UMAKER 研究团队",
+    authorHref: "/about",
+    datePublished,
+    dateModified,
+  },
+  sources: [
+    {
+      title: "OKX Trading Fee Rules FAQ",
+      href: "https://www.okx.com/en-gb/help/trading-fee-rules-faq",
+      description: "用于核对账户费率、费率等级与交易量规则；具体资格和费率以账户所在地区及 OKX 最新规则为准。",
+    },
+    {
+      title: "OKX API Guide: self-trade prevention",
+      href: "https://www.okx.com/docs-v5/trick_en/",
+      description: "用于说明策略不以自成交或规避交易所规则为前提，实际 API 行为仍受交易所规则和账户限制约束。",
+    },
+    {
+      title: "OKX Risk Warning & Disclosure Statement",
+      href: "https://www.okx.com/cdn/assets/plugins/announcements/contentful/tofttmniq0qv/2OVtbxrpCdjm2P8arwNdVO/b81e7b7fae7cf0146880a25cc5a69e4d/Risk_Warning___Disclosure_Statement.pdf",
+      description: "用于核对衍生品交易、流动性、保证金与 API 执行等外部风险；本策略页面不构成投资建议。",
+    },
+  ],
+  faq: [
+    {
+      question: "返佣刷量套利策略靠什么产生经济性？",
+      answer: "它把真实交易量、账户实际适用的手续费返佣、可能的费率等级变化，以及网格与趋势组合的资金磨损放在同一口径评估。返佣资格和账户权益由交易所及账户实际状态决定，不是 UMAKER 的收益承诺。",
+    },
+    {
+      question: "为什么双向网格不能长期持续运行？",
+      answer: "双向网格在强单边行情中会出现逆势腿持续承压。策略因此将趋势策略设为主策略：当趋势确认和风险门控满足条件时，网格让位、暂停或退出，而不是为了交易量维持双边风险。",
+    },
+    {
+      question: "约 1 USDT 磨损对应 5K 到 10K USDT 交易量是什么意思？",
+      answer: "这是约 1,000 USDT 本金、约 15 天小规模实盘中的组合历史观察，资金磨损已纳入网格与趋势结果、手续费、资金费率和滑点。它会随行情、标的、成交质量和费率变化，不能视为固定效率或未来结果。",
+    },
+    {
+      question: "当前谁可以申请接入？",
+      answer: "当前仅接受 OKX 账户的私有小规模实盘合作，最低接入本金为 1,500 USDT。合作前需要分别确认 API 托管条件、返佣资格、账户规则、预算、杠杆上限与可接受风险边界。",
+    },
+  ],
 };
 
 export default function RebateVolumeArbitragePage() {
-  return <StrategyDetailTemplate strategy={strategy} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${strategyUrl}#article`,
+        mainEntityOfPage: strategyUrl,
+        headline: "返佣刷量套利策略：OKX 合约账户的低风险交易量管理方法",
+        description: strategy.summary,
+        inLanguage: "zh-CN",
+        datePublished,
+        dateModified,
+        author: { "@type": "Organization", name: "UMAKER 研究团队", url: "https://umaker.org/about" },
+        publisher: { "@type": "Organization", name: "UMAKER", url: "https://umaker.org" },
+        about: ["OKX 合约账户", "双向网格", "趋势跟踪", "交易量管理", "手续费返佣"],
+        citation: strategy.sources?.map((source) => source.href),
+        isAccessibleForFree: true,
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${strategyUrl}#faq`,
+        mainEntity: strategy.faq?.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: { "@type": "Answer", text: item.answer },
+        })),
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <StrategyDetailTemplate strategy={strategy} />
+    </>
+  );
 }

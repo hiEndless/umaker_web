@@ -20,6 +20,17 @@ type StrategySection = {
   };
 };
 
+type StrategySource = {
+  title: string;
+  href: string;
+  description: string;
+};
+
+type StrategyFaq = {
+  question: string;
+  answer: string;
+};
+
 export type StrategyDetail = {
   id: string;
   category: string;
@@ -45,6 +56,14 @@ export type StrategyDetail = {
     title: string;
     description: string;
   };
+  publication?: {
+    author: string;
+    authorHref: string;
+    datePublished: string;
+    dateModified: string;
+  };
+  sources?: StrategySource[];
+  faq?: StrategyFaq[];
 };
 
 export function StrategyDetailTemplate({ strategy }: { strategy: StrategyDetail }) {
@@ -79,6 +98,16 @@ export function StrategyDetailTemplate({ strategy }: { strategy: StrategyDetail 
               <p className="mt-4 text-sm leading-6 text-[#737373]">{strategy.statusDescription}</p>
             </div>
           </div>
+          {strategy.publication && (
+            <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] tracking-wide text-[#4d4d4d]">
+              <span>作者</span>
+              <a href={strategy.publication.authorHref} className="text-[#737373] transition-colors hover:text-[#2196f3]">{strategy.publication.author}</a>
+              <span className="text-[#2e2e2e]">/</span>
+              <time dateTime={strategy.publication.datePublished}>发布于 {strategy.publication.datePublished}</time>
+              <span className="text-[#2e2e2e]">/</span>
+              <time dateTime={strategy.publication.dateModified}>更新于 {strategy.publication.dateModified}</time>
+            </div>
+          )}
           {strategy.highlights && (
             <div className="mt-8 border border-[#2e2e2e] bg-[#080808]/80 lg:mt-10">
               <div className="flex flex-col gap-3 border-b border-[#1e1e1e] px-6 py-4 lg:flex-row lg:items-center lg:justify-between lg:px-7">
@@ -147,6 +176,61 @@ export function StrategyDetailTemplate({ strategy }: { strategy: StrategyDetail 
           {sectionIndex === 1 && <div className="mx-auto h-px max-w-[1400px] bg-gradient-to-r from-transparent via-[#2196f3]/55 to-transparent" />}
         </section>
       ))}
+
+      {(strategy.sources || strategy.faq) && (
+        <section className="border-b border-[#1e1e1e]">
+          <div className="mx-auto max-w-[1400px] px-6 py-16 lg:px-12 lg:py-24">
+            <div className="grid gap-10 lg:grid-cols-[minmax(220px,0.55fr)_minmax(0,1.45fr)] lg:gap-20">
+              <header className="lg:sticky lg:top-28 lg:self-start">
+                <p className="font-mono text-[10px] tracking-[0.2em] text-[#2196f3]">06 / 参考与问答</p>
+                <h2 className="mt-5 font-display text-5xl leading-[0.9] tracking-tight lg:text-6xl">规则、边界与运行问题</h2>
+              </header>
+              <div className="space-y-14 lg:space-y-16">
+                {strategy.sources && (
+                  <section aria-labelledby="strategy-sources-title">
+                    <div className="flex items-center justify-between gap-4 border-b border-[#1e1e1e] pb-4">
+                      <h3 id="strategy-sources-title" className="font-mono text-[11px] tracking-[0.16em] text-[#2196f3]">参考依据</h3>
+                      <span className="font-mono text-[10px] tracking-wider text-[#3a3a3a]">PUBLIC SOURCES</span>
+                    </div>
+                    <ul className="divide-y divide-[#1e1e1e]">
+                      {strategy.sources.map((source, index) => (
+                        <li key={source.href} className="grid gap-3 py-5 sm:grid-cols-[2rem_1fr] sm:gap-4">
+                          <span className="font-mono text-[10px] text-[#3a3a3a]">{String(index + 1).padStart(2, "0")}</span>
+                          <div>
+                            <a href={source.href} target="_blank" rel="noreferrer" className="font-mono text-[11px] tracking-wider text-[#d0d0d0] transition-colors hover:text-[#2196f3]">
+                              {source.title} ↗
+                            </a>
+                            <p className="mt-2 text-sm leading-6 text-[#737373]">{source.description}</p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+                {strategy.faq && (
+                  <section aria-labelledby="strategy-faq-title">
+                    <div className="flex items-center justify-between gap-4 border-b border-[#1e1e1e] pb-4">
+                      <h3 id="strategy-faq-title" className="font-mono text-[11px] tracking-[0.16em] text-[#2196f3]">常见问题</h3>
+                      <span className="font-mono text-[10px] tracking-wider text-[#3a3a3a]">FAQ</span>
+                    </div>
+                    <dl className="divide-y divide-[#1e1e1e]">
+                      {strategy.faq.map((item, index) => (
+                        <div key={item.question} className="grid gap-3 py-6 sm:grid-cols-[2rem_1fr] sm:gap-4">
+                          <span className="font-mono text-[10px] text-[#3a3a3a]">{String(index + 1).padStart(2, "0")}</span>
+                          <div>
+                            <dt className="font-display-normal text-xl leading-tight text-[#f2ede6] lg:text-2xl">{item.question}</dt>
+                            <dd className="mt-3 text-sm leading-7 text-[#737373]">{item.answer}</dd>
+                          </div>
+                        </div>
+                      ))}
+                    </dl>
+                  </section>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="border-b border-[#1e1e1e]">
         <div className="mx-auto max-w-[1400px] px-6 py-16 lg:px-12 lg:py-24">

@@ -19,6 +19,12 @@ const LINKS = {
     { name: "私有交易看板", href: "/#contact" },
     { name: "咨询合作", href: "/#contact" },
   ],
+  信息: [
+    { name: "关于 UMAKER", href: "/about" },
+    { name: "联系合作", href: "/contact" },
+    { name: "隐私政策", href: "/privacy" },
+    { name: "服务条款", href: "/terms" },
+  ],
 };
 
 export function FooterSection() {
@@ -43,7 +49,7 @@ export function FooterSection() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {Object.entries(LINKS).map(([section, links]) => (
               <div key={section}>
                 <h3 className="font-mono text-[9px] tracking-[0.2em] text-[#2196f3] mb-5">{section}</h3>

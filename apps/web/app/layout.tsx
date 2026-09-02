@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata, Viewport } from 'next'
 import { Barlow, Barlow_Condensed, IBM_Plex_Mono } from 'next/font/google'
 import { AnalyticsScripts } from "@/components/analytics-scripts"
+import { SiteJsonLd } from "@/components/seo/site-json-ld"
 import { siteDescription, siteName, siteUrl } from './site'
 import './globals.css'
 
@@ -95,6 +96,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body className={`${barlow.variable} ${barlowCondensed.variable} ${ibmPlexMono.variable} font-sans antialiased`}>
+        <SiteJsonLd />
         <AnalyticsScripts />
         {children}
       </body>
