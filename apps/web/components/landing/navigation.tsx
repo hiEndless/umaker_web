@@ -5,26 +5,34 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { BrandLogo } from "./brand-logo";
 
 const navLinks = [
-  { name: "市场理解", href: "#features" },
-  { name: "系统架构", href: "#architecture" },
-  { name: "决策边界", href: "#security" },
-  { name: "核心输出", href: "#outputs" },
-  { name: "数据节奏", href: "#infrastructure" },
-  { name: "研究验证", href: "#metrics" },
+  { name: "市场理解", href: "/#features" },
+  { name: "系统架构", href: "/#architecture" },
+  { name: "决策边界", href: "/#security" },
+  { name: "核心输出", href: "/#outputs" },
+  { name: "数据节奏", href: "/#infrastructure" },
+  { name: "研究验证", href: "/#metrics" },
 ];
 
-const upcomingLinks = ["策略产品", "实盘直播", "博客", "文档"];
+const upcomingLinks = ["实盘直播", "博客", "文档"];
+const strategyProducts = [
+  { name: "返佣刷量套利策略", href: "/strategies/rebate-volume-arbitrage" },
+  { name: "山寨做空策略" },
+  { name: "山寨做多策略" },
+];
 
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [featuresOpen, setFeaturesOpen] = useState(false);
+  const [strategyProductsOpen, setStrategyProductsOpen] = useState(false);
   const [mobileFeaturesOpen, setMobileFeaturesOpen] = useState(false);
+  const [mobileStrategyProductsOpen, setMobileStrategyProductsOpen] = useState(false);
   const [time, setTime] = useState("");
 
   const closeMobileMenu = () => {
     setOpen(false);
     setMobileFeaturesOpen(false);
+    setMobileStrategyProductsOpen(false);
   };
 
   useEffect(() => {
@@ -63,7 +71,7 @@ export function Navigation() {
         {/* Main nav */}
         <div className="px-6 lg:px-12 h-14 flex items-center justify-between">
           {/* Logo */}
-            <a href="#" className="flex items-center gap-3 group" aria-label="返回页面顶部">
+            <a href="/" className="flex items-center gap-3 group" aria-label="返回首页">
             <BrandLogo />
             <span className="hidden lg:block font-mono text-[10px] text-[#3a3a3a] border-l border-[#1e1e1e] pl-3 ml-1 tracking-widest">
               FACTOR ENGINE
@@ -84,15 +92,49 @@ export function Navigation() {
                 <ChevronDown className={`w-3 h-3 transition-transform ${featuresOpen ? "rotate-180" : ""}`} />
               </button>
               {featuresOpen && (
-                <div id="feature-navigation" className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[248px] z-50">
+                <div id="feature-navigation" className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[208px] z-50">
                   <div className="border border-[#2e2e2e] bg-[#080808] shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
                     <div className="py-1">
                       {navLinks.map((link) => (
-                        <a key={link.name} href={link.href} onClick={() => setFeaturesOpen(false)} className="block px-4 py-3 font-mono text-[11px] tracking-wider text-[#737373] hover:text-[#f2ede6] hover:bg-[#0e0e0e] transition-colors">
+                        <a key={link.name} href={link.href} onClick={() => setFeaturesOpen(false)} className="block px-4 py-3 text-center font-mono text-[11px] tracking-wider text-[#737373] hover:text-[#f2ede6] hover:bg-[#0e0e0e] transition-colors">
                           {link.name}
                         </a>
                       ))}
                     </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="relative" onMouseEnter={() => setStrategyProductsOpen(true)} onMouseLeave={() => setStrategyProductsOpen(false)}>
+              <button
+                type="button"
+                onClick={() => setStrategyProductsOpen((value) => !value)}
+                aria-expanded={strategyProductsOpen}
+                aria-controls="strategy-product-navigation"
+                className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.12em] text-[#4d4d4d] hover:text-[#737373] transition-colors duration-200"
+              >
+                策略产品
+                <ChevronDown className={`w-3 h-3 transition-transform ${strategyProductsOpen ? "rotate-180" : ""}`} />
+              </button>
+              {strategyProductsOpen && (
+                <div id="strategy-product-navigation" className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[272px] z-50">
+                  <div className="border border-[#2e2e2e] bg-[#080808] shadow-[0_16px_40px_rgba(0,0,0,0.35)] py-1">
+                    {strategyProducts.map((product) => product.href ? (
+                      <a
+                        key={product.name}
+                        href={product.href}
+                        onClick={() => setStrategyProductsOpen(false)}
+                        className="px-4 py-3 flex items-center justify-between gap-4 hover:bg-[#0e0e0e] transition-colors group"
+                      >
+                        <span className="font-mono text-[11px] tracking-wider text-[#d0d0d0] group-hover:text-[#f2ede6]">{product.name}</span>
+                        <span className="shrink-0 font-mono text-[9px] tracking-widest text-[#2196f3]">了解详情 →</span>
+                      </a>
+                    ) : (
+                      <div key={product.name} className="px-4 py-3 flex items-center justify-between gap-4">
+                        <span className="font-mono text-[11px] tracking-wider text-[#737373]">{product.name}</span>
+                        <span className="shrink-0 border border-[#2196f3]/70 px-2 py-1 font-mono text-[9px] tracking-widest text-[#58b4ff]">待上线</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
@@ -108,7 +150,7 @@ export function Navigation() {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-4">
             <a
-              href="#contact"
+              href="/#contact"
               className="font-mono text-[11px] tracking-widest bg-[#2196f3] text-[#050505] px-5 h-9 flex items-center hover:bg-[#42a5f5] transition-colors font-semibold"
             >
               咨询合作 →
@@ -120,6 +162,7 @@ export function Navigation() {
             onClick={() => {
               setOpen((value) => !value);
               setMobileFeaturesOpen(false);
+              setMobileStrategyProductsOpen(false);
             }}
             className="lg:hidden text-[#f2ede6] p-1"
             aria-label="Toggle menu"
@@ -151,16 +194,46 @@ export function Navigation() {
               {navLinks.map((link) => <a key={link.name} href={link.href} onClick={closeMobileMenu} className="block py-3 font-mono text-sm tracking-wider text-[#737373] hover:text-[#2196f3]">{link.name}</a>)}
             </div>
           )}
+          <button
+            type="button"
+            onClick={() => setMobileStrategyProductsOpen((value) => !value)}
+            aria-expanded={mobileStrategyProductsOpen}
+            className={`border-b border-[#1e1e1e] px-8 py-6 font-display text-4xl tracking-wider text-[#4d4d4d] transition-all duration-300 flex items-center justify-between ${open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`}
+            style={{ transitionDelay: open ? "60ms" : "0ms" }}
+          >
+            <span>策略产品</span>
+            <span className="flex items-center gap-4"><ChevronDown className={`w-5 h-5 transition-transform ${mobileStrategyProductsOpen ? "rotate-180" : ""}`} /><span className="font-mono text-xs text-[#3a3a3a]">02</span></span>
+          </button>
+          {mobileStrategyProductsOpen && (
+            <div className="border-b border-[#1e1e1e] bg-[#080808] px-8 py-2">
+              {strategyProducts.map((product) => product.href ? (
+                <a
+                  key={product.name}
+                  href={product.href}
+                  onClick={closeMobileMenu}
+                  className="py-3 flex items-center justify-between gap-4"
+                >
+                  <span className="font-mono text-sm tracking-wider text-[#d0d0d0]">{product.name}</span>
+                  <span className="shrink-0 font-mono text-[10px] tracking-widest text-[#2196f3]">了解详情 →</span>
+                </a>
+              ) : (
+                <div key={product.name} className="py-3 flex items-center justify-between gap-4">
+                  <span className="font-mono text-sm tracking-wider text-[#737373]">{product.name}</span>
+                  <span className="shrink-0 font-mono text-[9px] tracking-widest border border-[#2196f3]/70 px-2 py-1 text-[#58b4ff]">待上线</span>
+                </div>
+              ))}
+            </div>
+          )}
           {upcomingLinks.map((name, index) => (
-            <div key={name} className={`border-b border-[#1e1e1e] px-8 py-6 font-display text-4xl tracking-wider text-[#4d4d4d] transition-all duration-300 flex items-center justify-between ${open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`} style={{ transitionDelay: open ? `${(index + 1) * 60}ms` : "0ms" }}>
+            <div key={name} className={`border-b border-[#1e1e1e] px-8 py-6 font-display text-4xl tracking-wider text-[#4d4d4d] transition-all duration-300 flex items-center justify-between ${open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`} style={{ transitionDelay: open ? `${(index + 2) * 60}ms` : "0ms" }}>
               <span>{name}</span>
-              <span className="flex items-center gap-4"><span className="font-mono text-[9px] tracking-widest border border-[#2196f3]/70 px-2 py-1 text-[#58b4ff]">待上线</span><span className="font-mono text-xs text-[#3a3a3a]">{String(index + 2).padStart(2, "0")}</span></span>
+              <span className="flex items-center gap-4"><span className="font-mono text-[9px] tracking-widest border border-[#2196f3]/70 px-2 py-1 text-[#58b4ff]">待上线</span><span className="font-mono text-xs text-[#3a3a3a]">{String(index + 3).padStart(2, "0")}</span></span>
             </div>
           ))}
         </div>
         <div className="mt-auto p-8 border-t border-[#1e1e1e]">
           <a
-            href="#contact"
+            href="/#contact"
             onClick={closeMobileMenu}
             className="w-full block text-center font-mono text-sm tracking-widest bg-[#2196f3] text-[#050505] py-5 font-semibold"
           >

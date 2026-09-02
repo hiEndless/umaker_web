@@ -2,22 +2,22 @@ import { BrandLogo } from "./brand-logo";
 
 const LINKS = {
   系统: [
-    { name: "市场理解", href: "#features" },
-    { name: "系统架构", href: "#architecture" },
-    { name: "核心输出", href: "#outputs" },
-    { name: "数据节奏", href: "#infrastructure" },
+    { name: "市场理解", href: "/#features" },
+    { name: "系统架构", href: "/#architecture" },
+    { name: "核心输出", href: "/#outputs" },
+    { name: "数据节奏", href: "/#infrastructure" },
   ],
   研究: [
-    { name: "决策边界", href: "#security" },
-    { name: "研究验证", href: "#metrics" },
-    { name: "研究案例", href: "#research-cases" },
-    { name: "系统生态", href: "#integrations" },
+    { name: "决策边界", href: "/#security" },
+    { name: "研究验证", href: "/#metrics" },
+    { name: "研究案例", href: "/#research-cases" },
+    { name: "系统生态", href: "/#integrations" },
   ],
   合作: [
-    { name: "定制策略", href: "#contact" },
-    { name: "API 托管", href: "#contact" },
-    { name: "私有交易看板", href: "#contact" },
-    { name: "咨询合作", href: "#contact" },
+    { name: "定制策略", href: "/#contact" },
+    { name: "API 托管", href: "/#contact" },
+    { name: "私有交易看板", href: "/#contact" },
+    { name: "咨询合作", href: "/#contact" },
   ],
 };
 
@@ -27,7 +27,7 @@ export function FooterSection() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="border-b border-[#1e1e1e] py-12 grid lg:grid-cols-[1fr_2fr] gap-10">
           <div>
-            <a href="#" className="inline-flex items-center gap-3 mb-5 group" aria-label="返回页面顶部"><BrandLogo size="footer" /></a>
+            <a href="/" className="inline-flex items-center gap-3 mb-5 group" aria-label="返回首页"><BrandLogo size="footer" /></a>
             <p className="text-sm text-[#4d4d4d] leading-relaxed max-w-sm">
               实时市场数据、结构化研究输出与独立策略交付基础设施。
             </p>
