@@ -62,7 +62,7 @@ function DotWaveCanvas() {
 }
 
 export function CtaSection() {
-  const [vis, setVis] = useState(false);
+  const [vis, setVis] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

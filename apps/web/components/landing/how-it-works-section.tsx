@@ -10,7 +10,7 @@ const CORE_OUTPUTS = [
 
 export function HowItWorksSection() {
   const [active, setActive] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {

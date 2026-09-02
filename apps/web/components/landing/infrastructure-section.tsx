@@ -13,7 +13,7 @@ const DATA_STREAMS = [
 ];
 
 export function InfrastructureSection() {
-  const [vis, setVis]       = useState(false);
+  const [vis, setVis]       = useState(true);
   const [active, setActive] = useState(0);
   const ref = useRef<HTMLElement>(null);
 
@@ -108,10 +108,20 @@ export function InfrastructureSection() {
           ))}
         </div>
 
-        <div className="py-4 flex justify-end">
+        <div className="flex flex-col gap-3 py-4 lg:flex-row lg:items-center lg:justify-between">
           <span className="font-mono text-[10px] text-[#3a3a3a]">
             默认配置：7 类数据流在统一市场上下文中完成对齐
           </span>
+          <p className="font-mono text-[10px] leading-5 text-[#3a3a3a] lg:text-right">
+            接口与规则参考：{" "}
+            <a href="https://developers.binance.com/en/docs/products/derivatives-trading-coin-futures/websocket-market-streams/Connect" target="_blank" rel="noreferrer" className="text-[#5a5a5a] transition-colors hover:text-[#2196f3]">
+              Binance WebSocket Market Streams ↗
+            </a>
+            <span className="px-2 text-[#2e2e2e]">/</span>
+            <a href="https://www.okx.com/en-gb/help/trading-fee-rules-faq" target="_blank" rel="noreferrer" className="text-[#5a5a5a] transition-colors hover:text-[#2196f3]">
+              OKX Trading Fee Rules ↗
+            </a>
+          </p>
         </div>
       </div>
     </section>

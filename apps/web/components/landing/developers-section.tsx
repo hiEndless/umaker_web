@@ -24,7 +24,7 @@ function FlowLine({ active }: { active: boolean }) {
 
 export function DevelopersSection() {
   const [active, setActive] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const ref = useRef<HTMLElement>(null);
   const layer = ARCHITECTURE_LAYERS[active];
 

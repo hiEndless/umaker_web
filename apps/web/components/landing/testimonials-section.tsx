@@ -38,7 +38,7 @@ const SYSTEM_OBJECTS = ["FORECAST", "SNAPSHOT", "EVENT", "FACTOR", "RISK_GATE", 
 export function TestimonialsSection() {
   const [active, setActive] = useState(0);
   const [fading, setFading] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {

@@ -9,9 +9,7 @@ const VERBS = ["拆成结构", "提炼因子", "生成信号", "验证证据"];
 
 export function HeroSection() {
   const [verbIdx, setVerbIdx] = useState(0);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => { setVisible(true); }, []);
+  const [visible] = useState(true);
 
   useEffect(() => {
     const id = setInterval(() => setVerbIdx(v => (v + 1) % VERBS.length), 1600);
@@ -54,22 +52,17 @@ export function HeroSection() {
 
               {/* Big headline */}
               <h1 className="font-sans text-[clamp(3.5rem,11vw,10rem)] font-semibold leading-[0.95] tracking-normal text-[#f2ede6]">
-                把复杂市场
-              </h1>
-
-              {/* Animated verb */}
-              <div className="relative overflow-hidden h-[clamp(3.5rem,11vw,10rem)] leading-[0.95]">
-                <h1
+                <span className="block">把复杂市场</span>
+                <span className="relative block h-[clamp(3.5rem,11vw,10rem)] overflow-hidden leading-[0.95]">
+                  <span
                   key={verbIdx}
-                  className="font-sans text-[clamp(3.5rem,11vw,10rem)] font-semibold leading-[0.95] tracking-normal text-[#2196f3] absolute inset-0"
-                  style={{ animation: "fade-up 0.1s ease forwards" }}
-                >
-                  {VERBS[verbIdx]}
-                </h1>
-              </div>
-
-              <h1 className="font-sans text-[clamp(3.5rem,11vw,10rem)] font-semibold leading-[0.95] tracking-normal text-[#f2ede6]">
-                交给量化策略
+                    className="absolute inset-0 text-[#2196f3]"
+                    style={{ animation: "fade-up 0.1s ease forwards" }}
+                  >
+                    {VERBS[verbIdx]}
+                  </span>
+                </span>
+                <span className="block">交给量化策略</span>
               </h1>
             </div>
 

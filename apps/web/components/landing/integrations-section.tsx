@@ -36,7 +36,7 @@ function IntChip({ name, cat }: { name: string; cat: string }) {
 }
 
 export function IntegrationsSection() {
-  const [vis, setVis] = useState(false);
+  const [vis, setVis] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

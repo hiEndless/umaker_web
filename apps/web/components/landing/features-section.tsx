@@ -34,7 +34,7 @@ const FEATURES = [
 ];
 
 function FeatureRow({ f, index }: { f: typeof FEATURES[0]; index: number }) {
-  const [vis, setVis] = useState(false);
+  const [vis, setVis] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -84,7 +84,7 @@ function FeatureRow({ f, index }: { f: typeof FEATURES[0]; index: number }) {
 }
 
 export function FeaturesSection() {
-  const [vis, setVis] = useState(false);
+  const [vis, setVis] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

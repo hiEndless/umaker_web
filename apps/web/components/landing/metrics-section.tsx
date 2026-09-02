@@ -77,7 +77,7 @@ const METRICS = [
 ];
 
 export function MetricsSection() {
-  const [vis, setVis] = useState(false);
+  const [vis, setVis] = useState(true);
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
