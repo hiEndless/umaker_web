@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { BrandLogo } from "./brand-logo";
 
 const navLinks = [
@@ -13,10 +13,19 @@ const navLinks = [
   { name: "研究验证", href: "#metrics" },
 ];
 
+const upcomingLinks = ["策略产品", "实盘直播", "博客", "文档"];
+
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [featuresOpen, setFeaturesOpen] = useState(false);
+  const [mobileFeaturesOpen, setMobileFeaturesOpen] = useState(false);
   const [time, setTime] = useState("");
+
+  const closeMobileMenu = () => {
+    setOpen(false);
+    setMobileFeaturesOpen(false);
+  };
 
   useEffect(() => {
     const tick = () => setTime(new Date().toLocaleTimeString("en-US", { hour12: false }));
@@ -62,20 +71,42 @@ export function Navigation() {
           </a>
 
           {/* Desktop links */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-7">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="font-mono text-[11px] tracking-[0.18em] text-[#5a5a5a] hover:text-[#2196f3] transition-colors duration-200"
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
+            <div className="relative" onMouseEnter={() => setFeaturesOpen(true)} onMouseLeave={() => setFeaturesOpen(false)}>
+              <button
+                type="button"
+                onClick={() => setFeaturesOpen((value) => !value)}
+                aria-expanded={featuresOpen}
+                aria-controls="feature-navigation"
+                className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.18em] text-[#5a5a5a] hover:text-[#2196f3] transition-colors duration-200"
               >
-                {link.name}
-              </a>
+                功能特点
+                <ChevronDown className={`w-3 h-3 transition-transform ${featuresOpen ? "rotate-180" : ""}`} />
+              </button>
+              {featuresOpen && (
+                <div id="feature-navigation" className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[248px] z-50">
+                  <div className="border border-[#2e2e2e] bg-[#080808] shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
+                    <div className="py-1">
+                      {navLinks.map((link) => (
+                        <a key={link.name} href={link.href} onClick={() => setFeaturesOpen(false)} className="block px-4 py-3 font-mono text-[11px] tracking-wider text-[#737373] hover:text-[#f2ede6] hover:bg-[#0e0e0e] transition-colors">
+                          {link.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            {upcomingLinks.map((name) => (
+              <span key={name} className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.12em] text-[#4d4d4d] cursor-default" aria-label={`${name}，待上线`}>
+                {name}
+                <span className="border border-[#2196f3]/70 px-2 py-1 text-[9px] tracking-widest text-[#58b4ff]">待上线</span>
+              </span>
             ))}
           </nav>
 
           {/* CTA */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4">
             <a
               href="#contact"
               className="font-mono text-[11px] tracking-widest bg-[#2196f3] text-[#050505] px-5 h-9 flex items-center hover:bg-[#42a5f5] transition-colors font-semibold"
@@ -86,8 +117,11 @@ export function Navigation() {
 
           {/* Mobile burger */}
           <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden text-[#f2ede6] p-1"
+            onClick={() => {
+              setOpen((value) => !value);
+              setMobileFeaturesOpen(false);
+            }}
+            className="lg:hidden text-[#f2ede6] p-1"
             aria-label="Toggle menu"
           >
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -102,28 +136,32 @@ export function Navigation() {
         }`}
         style={{ paddingTop: "88px" }}
       >
-        <div className="border-t border-[#1e1e1e] flex flex-col">
-          {navLinks.map((link, i) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              className={`border-b border-[#1e1e1e] px-8 py-7 font-display text-5xl tracking-wider text-[#f2ede6] hover:text-[#2196f3] transition-all duration-300 flex items-center justify-between ${
-                open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-              }`}
-              style={{ transitionDelay: open ? `${i * 60}ms` : "0ms" }}
-            >
-              {link.name}
-              <span className="font-mono text-xs text-[#3a3a3a]">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-            </a>
+        <div className="border-t border-[#1e1e1e] flex flex-col overflow-y-auto">
+          <button
+            type="button"
+            onClick={() => setMobileFeaturesOpen((value) => !value)}
+            aria-expanded={mobileFeaturesOpen}
+            className={`border-b border-[#1e1e1e] px-8 py-6 font-display text-4xl tracking-wider text-[#f2ede6] hover:text-[#2196f3] transition-all duration-300 flex items-center justify-between ${open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`}
+          >
+            功能特点
+            <span className="flex items-center gap-4"><ChevronDown className={`w-5 h-5 transition-transform ${mobileFeaturesOpen ? "rotate-180" : ""}`} /><span className="font-mono text-xs text-[#3a3a3a]">01</span></span>
+          </button>
+          {mobileFeaturesOpen && (
+            <div className="border-b border-[#1e1e1e] bg-[#080808] px-8 py-3">
+              {navLinks.map((link) => <a key={link.name} href={link.href} onClick={closeMobileMenu} className="block py-3 font-mono text-sm tracking-wider text-[#737373] hover:text-[#2196f3]">{link.name}</a>)}
+            </div>
+          )}
+          {upcomingLinks.map((name, index) => (
+            <div key={name} className={`border-b border-[#1e1e1e] px-8 py-6 font-display text-4xl tracking-wider text-[#4d4d4d] transition-all duration-300 flex items-center justify-between ${open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`} style={{ transitionDelay: open ? `${(index + 1) * 60}ms` : "0ms" }}>
+              <span>{name}</span>
+              <span className="flex items-center gap-4"><span className="font-mono text-[9px] tracking-widest border border-[#2196f3]/70 px-2 py-1 text-[#58b4ff]">待上线</span><span className="font-mono text-xs text-[#3a3a3a]">{String(index + 2).padStart(2, "0")}</span></span>
+            </div>
           ))}
         </div>
         <div className="mt-auto p-8 border-t border-[#1e1e1e]">
           <a
             href="#contact"
-            onClick={() => setOpen(false)}
+            onClick={closeMobileMenu}
             className="w-full block text-center font-mono text-sm tracking-widest bg-[#2196f3] text-[#050505] py-5 font-semibold"
           >
             咨询合作 →
