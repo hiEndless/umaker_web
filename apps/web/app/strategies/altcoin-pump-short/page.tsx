@@ -7,13 +7,13 @@ const dateModified = "2026-09-03";
 const strategyUrl = "https://umaker.org/strategies/altcoin-pump-short/";
 
 export const metadata: Metadata = {
-  title: "山寨做空策略",
+  title: "山寨做空趋势策略",
   description:
-    "UMAKER 山寨做空策略介绍：山寨选币器识别早期拉升候选，UMAKER 持续监控市场结构与风险证据，策略仅在拉升衰竭和结构转弱确认后以分阶段仓位参与做空。",
+    "UMAKER 山寨做空趋势策略介绍：山寨选币器识别早期拉升候选，UMAKER 持续监控市场结构与风险证据，策略仅在拉升衰竭和结构转弱确认后以分阶段仓位参与做空。",
   alternates: { canonical: "/strategies/altcoin-pump-short" },
   openGraph: {
     type: "article",
-    title: "山寨做空策略 | UMAKER",
+    title: "山寨做空趋势策略 | UMAKER",
     description:
       "不因涨幅大而直接开空。通过候选池、市场结构、风险门控与分阶段仓位，参与快速拉升山寨币的高位转弱阶段。",
     publishedTime: datePublished,
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "山寨做空策略 | UMAKER",
+    title: "山寨做空趋势策略 | UMAKER",
     description:
       "山寨币快速拉升后的结构化做空：候选筛选、转弱确认、试探、确认与风险退出。",
     images: ["/og-image.png"],
@@ -33,7 +33,7 @@ const strategy: StrategyDetail = {
   id: "STRATEGY NOTE 002",
   category: "策略产品",
   title: "山寨做空",
-  highlightedTitle: "策略",
+  highlightedTitle: "趋势策略",
   summary:
     "这是一套面向短期快速拉升山寨币的阶段性做空策略。山寨选币器先发现可能进入拉升周期的交易对，UMAKER 持续生成多周期结构、衍生品与风险证据；策略只在拉升衰竭、结构转弱和完整风控同时成立后，才以小仓试探并逐步确认，而不是因为价格涨得多就直接做空。",
   status: "币安优先 · OKX 支持 · 私有实盘",
@@ -73,7 +73,7 @@ const strategy: StrategyDetail = {
         {
           heading: "与做多策略的关系",
           paragraphs: [
-            "同一候选可以在不同阶段由不同策略评估：上涨延续的证据由山寨做多策略处理，顶部转弱后的证据才进入山寨做空策略。两者通过共享的生命周期状态和同账户同币仓位锁避免重叠执行；做多仓位未退出时，做空准备与开仓会被阻断。山寨做多策略页面上线后将与本页建立双向内链，完整说明前段上涨阶段的处理方式。",
+            "同一候选可以在不同阶段由不同策略评估：上涨延续的证据由山寨做多趋势策略处理，顶部转弱后的证据才进入山寨做空趋势策略。两者通过共享的生命周期状态和同账户同币仓位锁避免重叠执行；做多仓位未退出时，做空准备与开仓会被阻断。页面底部提供山寨做多趋势策略的双向内链，用于说明上涨延续阶段的处理方式。",
           ],
         },
       ],
@@ -258,8 +258,8 @@ const strategy: StrategyDetail = {
       answer: "高位转弱仍可能迅速恢复上行。早期试探仓用于验证结构是否持续有效；只有试探获得后续结构、预测或持仓行为支持，并且账户风险仍可承受时，策略才会评估确认仓位。验证失败、结构失效或超时会优先退出。",
     },
     {
-      question: "山寨做多与做空策略会同时管理同一交易对吗？",
-      answer: "同一账户、同一交易对使用共享生命周期状态和仓位锁管理互斥。做多仓位未退出时，做空准备和开仓会被阻断；顶部转弱观察也不等于直接授权做空。做多策略页面上线后将提供完整的双向策略说明。",
+      question: "山寨做多趋势策略与做空趋势策略会同时管理同一交易对吗？",
+      answer: "同一账户、同一交易对使用共享生命周期状态和仓位锁管理互斥。做多仓位未退出时，做空准备和开仓会被阻断；顶部转弱观察也不等于直接授权做空。两页底部提供双向内链，分别说明上涨延续与高位转弱阶段。",
     },
     {
       question: "当前支持哪些交易所，最低本金是多少？",
@@ -268,7 +268,7 @@ const strategy: StrategyDetail = {
   ],
   relatedStrategies: [
     {
-      title: "山寨做多策略",
+      title: "山寨做多趋势策略",
       description: "查看上涨延续、回踩确认与趋势持仓阶段。",
       href: "/strategies/altcoin-pump-long",
     },
@@ -283,7 +283,7 @@ export default function AltcoinPumpShortPage() {
         "@type": "Article",
         "@id": `${strategyUrl}#article`,
         mainEntityOfPage: strategyUrl,
-        headline: "山寨做空策略：快速拉升山寨币的结构化风险管理方法",
+        headline: "山寨做空趋势策略：快速拉升山寨币的结构化风险管理方法",
         description: strategy.summary,
         inLanguage: "zh-CN",
         datePublished,

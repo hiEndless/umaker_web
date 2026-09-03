@@ -7,13 +7,13 @@ const dateModified = "2026-09-03";
 const strategyUrl = "https://umaker.org/strategies/altcoin-pump-long/";
 
 export const metadata: Metadata = {
-  title: "山寨做多策略",
+  title: "山寨做多趋势策略",
   description:
-    "UMAKER 山寨做多策略介绍：山寨选币器发现早期拉升候选，UMAKER 持续监控多周期结构与风险证据，策略只在上涨延续、回踩确认或结构转强后以分阶段仓位参与做多。",
+    "UMAKER 山寨做多趋势策略介绍：山寨选币器发现早期拉升候选，UMAKER 持续监控多周期结构与风险证据，策略只在上涨延续、回踩确认或结构转强后以分阶段仓位参与做多。",
   alternates: { canonical: "/strategies/altcoin-pump-long" },
   openGraph: {
     type: "article",
-    title: "山寨做多策略 | UMAKER",
+    title: "山寨做多趋势策略 | UMAKER",
     description:
       "不因短期涨幅而追高。通过候选池、市场结构、风险门控与分阶段仓位，参与快速拉升山寨币的有效延续阶段。",
     publishedTime: datePublished,
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "山寨做多策略 | UMAKER",
+    title: "山寨做多趋势策略 | UMAKER",
     description:
       "山寨币快速拉升中的结构化做多：候选筛选、延续确认、试探、确认与风险退出。",
     images: ["/og-image.png"],
@@ -33,7 +33,7 @@ const strategy: StrategyDetail = {
   id: "STRATEGY NOTE 003",
   category: "策略产品",
   title: "山寨做多",
-  highlightedTitle: "策略",
+  highlightedTitle: "趋势策略",
   summary:
     "这是一套面向短期快速拉升山寨币的阶段性做多策略。山寨选币器先识别可能进入拉升周期的交易对，UMAKER 持续生成多周期结构、衍生品与风险证据；策略只在上涨延续、突破收复、回踩不破或假跌破修复被确认后，以小仓试探并逐步确认，而不是因为价格上涨就机械追高。",
   status: "币安优先 · OKX 支持 · 私有实盘",
@@ -73,7 +73,7 @@ const strategy: StrategyDetail = {
         {
           heading: "与做空策略的关系",
           paragraphs: [
-            "同一候选在上涨延续阶段由做多策略评估；当顶部转弱进入观察后，后续的做空机会由山寨做空策略独立评估。两者通过共享生命周期状态与同账户同币仓位锁避免重叠执行：存在空头仓位或空头锁时，新的做多开仓会被阻断。相关页面只说明各自的策略边界，并不代表策略可以同时持有相反方向仓位。",
+            "同一候选在上涨延续阶段由做多趋势策略评估；当顶部转弱进入观察后，后续的做空机会由山寨做空趋势策略独立评估。两者通过共享生命周期状态与同账户同币仓位锁避免重叠执行：存在空头仓位或空头锁时，新的做多开仓会被阻断。相关页面只说明各自的策略边界，并不代表策略可以同时持有相反方向仓位。",
           ],
         },
       ],
@@ -259,7 +259,7 @@ const strategy: StrategyDetail = {
       answer: "上涨延续可能迅速失败。早期试探仓用于验证结构是否持续有效；只有试探获得后续结构、预测或持仓行为支持，并且账户风险仍可承受时，策略才会评估确认仓位。验证失败、结构失效或超时会优先退出。",
     },
     {
-      question: "山寨做多与做空策略会同时管理同一交易对吗？",
+      question: "山寨做多趋势策略与做空趋势策略会同时管理同一交易对吗？",
       answer: "同一账户、同一交易对使用共享生命周期状态和仓位锁管理互斥。存在空头仓位或空头锁时，新的做多开仓会被阻断；相关策略页面解释的是不同阶段的独立评估边界，并不代表相反方向仓位可以同时执行。",
     },
     {
@@ -269,7 +269,7 @@ const strategy: StrategyDetail = {
   ],
   relatedStrategies: [
     {
-      title: "山寨做空策略",
+      title: "山寨做空趋势策略",
       description: "查看高位衰竭、结构转弱与阶段性做空处理。",
       href: "/strategies/altcoin-pump-short",
     },
@@ -284,7 +284,7 @@ export default function AltcoinPumpLongPage() {
         "@type": "Article",
         "@id": `${strategyUrl}#article`,
         mainEntityOfPage: strategyUrl,
-        headline: "山寨做多策略：快速拉升山寨币的结构化趋势参与方法",
+        headline: "山寨做多趋势策略：快速拉升山寨币的结构化趋势参与方法",
         description: strategy.summary,
         inLanguage: "zh-CN",
         datePublished,

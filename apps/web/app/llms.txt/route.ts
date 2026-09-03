@@ -13,8 +13,8 @@ UMAKER is a private quantitative research and market-intelligence infrastructure
 
 - [Homepage](${siteUrl}/): Market intelligence, factors, strategy inputs, validation and private access.
 - [Rebate volume arbitrage strategy](${siteUrl}/strategies/rebate-volume-arbitrage/): A Chinese strategy note for private, small-scale OKX futures account access. It explains intended users, economics, operating mechanism, collaboration boundaries, risks, historical observation scope, and official references.
-- [Altcoin pump short strategy](${siteUrl}/strategies/altcoin-pump-short/): A Chinese strategy note for private live access on Binance and OKX. It explains candidate selection, market-structure confirmation, staged short exposure, risk gates, exits, and operating boundaries for rapid-pump altcoins.
-- [Altcoin pump long strategy](${siteUrl}/strategies/altcoin-pump-long/): A Chinese strategy note for private live access on Binance and OKX. It explains candidate selection, continuation and pullback confirmation, staged long exposure, risk gates, exits, and operating boundaries for rapid-pump altcoins.
+- [Altcoin pump short trend strategy](${siteUrl}/strategies/altcoin-pump-short/): A Chinese strategy note for private live access on Binance and OKX. It explains candidate selection, market-structure confirmation, staged short exposure, risk gates, exits, and operating boundaries for rapid-pump altcoins.
+- [Altcoin pump long trend strategy](${siteUrl}/strategies/altcoin-pump-long/): A Chinese strategy note for private live access on Binance and OKX. It explains candidate selection, continuation and pullback confirmation, staged long exposure, risk gates, exits, and operating boundaries for rapid-pump altcoins.
 - [About UMAKER](${siteUrl}/about/): Organization identity and research scope.
 - [Contact](${siteUrl}/contact/): Private collaboration contact details.
 - [Privacy policy](${siteUrl}/privacy/)
