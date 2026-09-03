@@ -16,8 +16,8 @@ const navLinks = [
 const upcomingLinks = ["实盘直播", "博客", "文档"];
 const strategyProducts = [
   { name: "返佣刷量套利策略", href: "/strategies/rebate-volume-arbitrage" },
-  { name: "山寨做空策略" },
-  { name: "山寨做多策略" },
+  { name: "山寨做空策略", href: "/strategies/altcoin-pump-short" },
+  { name: "山寨做多策略", href: "/strategies/altcoin-pump-long" },
 ];
 
 export function Navigation() {

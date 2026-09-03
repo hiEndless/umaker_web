@@ -64,6 +64,11 @@ export type StrategyDetail = {
   };
   sources?: StrategySource[];
   faq?: StrategyFaq[];
+  relatedStrategies?: Array<{
+    title: string;
+    description: string;
+    href: string;
+  }>;
 };
 
 export function StrategyDetailTemplate({ strategy }: { strategy: StrategyDetail }) {
@@ -226,6 +231,27 @@ export function StrategyDetailTemplate({ strategy }: { strategy: StrategyDetail 
                     </dl>
                   </section>
                 )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {strategy.relatedStrategies && strategy.relatedStrategies.length > 0 && (
+        <section className="border-b border-[#1e1e1e]">
+          <div className="mx-auto max-w-[1400px] px-6 py-12 lg:px-12 lg:py-16">
+            <div className="flex flex-col gap-5 border-l border-[#2196f3] bg-[#080808] px-6 py-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+              <div>
+                <p className="font-mono text-[10px] tracking-[0.2em] text-[#2196f3]">相关策略</p>
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-[#737373]">同一候选在不同市场阶段由独立策略评估。相关页面只解释各自的策略边界，不代表同账户、同交易对可以同时执行相反方向的仓位。</p>
+              </div>
+              <div className="flex flex-col gap-3 lg:min-w-[260px]">
+                {strategy.relatedStrategies.map((relatedStrategy) => (
+                  <a key={relatedStrategy.href} href={relatedStrategy.href} className="group border border-[#2e2e2e] px-5 py-4 transition-colors hover:border-[#2196f3]/70 hover:bg-[#0e0e0e]">
+                    <span className="font-mono text-[11px] tracking-wider text-[#d0d0d0] group-hover:text-[#f2ede6]">{relatedStrategy.title} →</span>
+                    <span className="mt-2 block text-xs leading-5 text-[#4d4d4d]">{relatedStrategy.description}</span>
+                  </a>
+                ))}
               </div>
             </div>
           </div>

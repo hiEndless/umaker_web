@@ -16,6 +16,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${siteUrl}/strategies/altcoin-pump-short`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/strategies/altcoin-pump-long`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     ...["about", "contact", "privacy", "terms"].map((path) => ({
       url: `${siteUrl}/${path}`,
       lastModified: new Date(),
