@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 
 const CORE_OUTPUTS = [
-  { id: "01", tag: "市场预测", title: "概率性\n市场预测", desc: "Forecast 汇总跨周期市场判断，输出方向倾向、一致性与不确定性。它是策略研究的概率性输入，而不是直接交易指令。", file: "ethusdt-forecast.json", code: `{\n  "symbol": "ETHUSDT",\n  "generated_at": "2026-08-29T20:24:53Z",\n  "dominant_bias": "neutral_to_bearish",\n  "alignment": "conflicted",\n  "analytical_status": "risk_only",\n  "quality_status": "available"\n}` },
-  { id: "02", tag: "结构快照", title: "多周期\n结构快照", desc: "Snapshot 描述当前市场的主要状态、方向偏向与结构置信度，为策略和风控提供同一时点的可追溯市场上下文。", file: "ethusdt-structure-snapshot.json", code: `{\n  "symbol": "ETHUSDT",\n  "generated_at": "2026-08-29T20:23:02Z",\n  "primary_state": "bullish_continuation",\n  "direction_bias": "neutral",\n  "structure_confidence": 0.35742,\n  "quality_status": "available"\n}` },
-  { id: "03", tag: "结构事件", title: "捕捉市场\n结构事件", desc: "Event 记录突破、反转和流动性变化等结构转变，并附带时间周期、触发类型与置信度，便于后续回放与归因。", file: "ethusdt-structure-event.json", code: `{\n  "symbol": "ETHUSDT",\n  "created_at": "2026-08-29T16:38:32Z",\n  "timeframe": "1h",\n  "event_family": "reversal",\n  "trigger_type": "upthrust_reversal",\n  "confidence": 0.98,\n  "status": "active"\n}` },
+  { id: "01", tag: "市场预测", title: "概率性\n市场预测", desc: "Forecast 由 AI 对已经计算的跨周期证据进行受控综合，输出方向倾向、一致性、不确定性与失效条件。它是概率性研究输入，而不是直接交易指令。", file: "ethusdt-forecast.json", code: `{\n  "symbol": "ETHUSDT",\n  "generated_at": "2026-08-29T20:24:53Z",\n  "dominant_bias": "neutral_to_bearish",\n  "alignment": "conflicted",\n  "analytical_status": "risk_only",\n  "quality_status": "available"\n}` },
+  { id: "02", tag: "结构快照", title: "多周期\n结构快照", desc: "Snapshot 保存同一时点的多周期结构事实、主要状态、方向偏向、置信度与质量信息，为持续状态研究和策略风控提供可追溯基线。", file: "ethusdt-structure-snapshot.json", code: `{\n  "symbol": "ETHUSDT",\n  "generated_at": "2026-08-29T20:23:02Z",\n  "primary_state": "bullish_continuation",\n  "direction_bias": "neutral",\n  "structure_confidence": 0.35742,\n  "quality_status": "available"\n}` },
+  { id: "03", tag: "结构事件", title: "捕捉市场\n结构事件", desc: "Event 记录突破、反转、失效与流动性变化等边沿证据，便于后续回放与归因。单次事件描述市场变化，但不会独立确认稳定阶段或授予交易动作。", file: "ethusdt-structure-event.json", code: `{\n  "symbol": "ETHUSDT",\n  "created_at": "2026-08-29T16:38:32Z",\n  "timeframe": "1h",\n  "event_family": "reversal",\n  "trigger_type": "upthrust_reversal",\n  "confidence": 0.98,\n  "status": "active"\n}` },
 ];
 
 export function HowItWorksSection() {

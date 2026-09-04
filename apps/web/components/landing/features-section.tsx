@@ -13,23 +13,23 @@ const FEATURES = [
   {
     id: "02",
     tag: "市场结构",
-    title: "识别多周期\n结构",
-    desc: "将离散行情组织为趋势、波动、流动性、仓位与市场状态，让不同时间尺度上的变化能够被一致地理解。",
-    stat: { v: "多周期", l: "结构视角" },
+    title: "组织多周期\n市场状态",
+    desc: "将离散行情组织为可比较的结构事实，区分相对稳定的市场背景与短时变化，为持续状态研究保留一致的多周期基线。",
+    stat: { v: "多周期", l: "结构基线" },
   },
   {
     id: "03",
-    tag: "AI 因子研究",
-    title: "发现并验证\n量化因子",
-    desc: "AI Agent 在受约束的研究流程中持续探索市场关系，评估因子强度、稳定性与衰减特征，而不是生成无法验证的结论。",
-    stat: { v: "AI", l: "受约束研究" },
+    tag: "AI 判断层",
+    title: "解释复杂\n市场证据",
+    desc: "AI 在受约束的判断层中综合已经计算的多周期证据，表达一致性、冲突与不确定性，而不直接生成交易动作。",
+    stat: { v: "AI", l: "证据编译" },
   },
   {
     id: "04",
-    tag: "策略输入",
-    title: "驱动\n量化策略",
-    desc: "把结构化因子与实时信号交给独立策略、风险门控和验证流程，为后续决策提供清晰、可消费的量化输入。",
-    stat: { v: "实时", l: "可消费信号" },
+    tag: "策略上下文",
+    title: "交付可追溯\n策略输入",
+    desc: "将 Forecast、结构快照、结构事件与量化因子通过明确契约交给独立策略；最终动作由策略规则、账户状态与执行风控决定。",
+    stat: { v: "结构化", l: "契约化输入" },
   },
 ];
 
@@ -118,7 +118,7 @@ export function FeaturesSection() {
               </h2>
             </div>
             <p className="font-mono text-[10px] text-[#3a3a3a] tracking-widest max-w-[200px] text-right hidden lg:block">
-              市场数据 &nbsp;/ &nbsp;结构识别 &nbsp;/ &nbsp;因子研究 &nbsp;/ &nbsp;策略输入
+              市场数据 &nbsp;/ &nbsp;结构状态 &nbsp;/ &nbsp;AI 判断 &nbsp;/ &nbsp;策略上下文
             </p>
           </div>
         </div>

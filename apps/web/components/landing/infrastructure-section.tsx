@@ -7,9 +7,9 @@ const DATA_STREAMS = [
   { source: "市场特征层", evidence: "价格 / OI / 资金费率 / 多空比", cadence: "15s", output: "衍生品与行为因子", role: "特征生产", intensity: 68 },
   { source: "聪明钱数据", evidence: "巨鲸与交易者行为", cadence: "10s", output: "资金流因子", role: "辅助确认", intensity: 76 },
   { source: "市场结构事件", evidence: "突破 / 反转 / 失效", cadence: "10s", output: "市场结构事件", role: "变化捕捉", intensity: 76 },
-  { source: "市场结构快照", evidence: "多周期市场状态", cadence: "5m", output: "市场结构快照", role: "状态基线", intensity: 35 },
+  { source: "市场结构快照", evidence: "多周期结构与状态", cadence: "5m", output: "市场结构快照", role: "持续基线", intensity: 35 },
   { source: "清算与流动性", evidence: "清算压力 / 流动性路径", cadence: "5m", output: "流动性因子", role: "风险背景", intensity: 35 },
-  { source: "AI 预测", evidence: "结构化市场证据", cadence: "5m", output: "市场预测", role: "概率判断", intensity: 24 },
+  { source: "AI 判断层", evidence: "结构化市场证据", cadence: "5m", output: "市场预测", role: "概率解释", intensity: 24 },
 ];
 
 export function InfrastructureSection() {

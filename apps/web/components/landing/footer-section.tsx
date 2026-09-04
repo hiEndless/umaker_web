@@ -35,7 +35,7 @@ export function FooterSection() {
           <div>
             <a href="/" className="inline-flex items-center gap-3 mb-5 group" aria-label="返回首页"><BrandLogo size="footer" /></a>
             <p className="text-sm text-[#4d4d4d] leading-relaxed max-w-sm">
-              实时市场数据、结构化研究输出与独立策略交付基础设施。
+              实时市场数据、可回放市场智能与独立策略交付基础设施。
             </p>
             <div className="mt-6 pt-5 border-t border-[#1e1e1e] max-w-sm grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 font-mono text-[10px] tracking-wide">
               <span className="text-[#3a3a3a]">微信</span>

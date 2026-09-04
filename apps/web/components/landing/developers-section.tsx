@@ -14,8 +14,8 @@ type ArchitectureLayer = {
 
 const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
   { id: "01", tab: "接入", name: "市场接入层", description: "交易所行情、衍生品、清算、资金流和动态标的，以各自节奏进入统一输入层。", inputs: ["交易所 WebSocket", "衍生品与清算", "聪明钱数据"], core: "标准化市场输入", outputs: ["市场特征", "统一数据契约"] },
-  { id: "02", tab: "智能", name: "市场智能层", description: "独立的市场智能模块从多周期结构与市场特征中生产可解释、可回放的研究输出。", inputs: ["标准化市场输入", "市场特征", "多周期窗口"], core: "市场智能引擎", outputs: ["Forecast", "结构快照", "结构事件"] },
-  { id: "03", tab: "交付", name: "策略交付层", description: "结构化输出由策略分发、风险门控与回放研究消费；策略保持独立，并拥有自己的执行边界。", inputs: ["Forecast", "结构快照", "结构事件", "因子流"], core: "策略分发", outputs: ["风险门控", "独立量化策略", "回放与研究"] },
+  { id: "02", tab: "智能", name: "市场智能层", description: "确定性计算组织结构事实与状态基线，AI 对多周期、多因子证据进行概率性解释；两条路径都保留可追溯、可回放的输出。", inputs: ["标准化市场输入", "结构事实与因子", "多周期窗口"], core: "市场智能引擎", outputs: ["Forecast", "结构快照", "结构事件"] },
+  { id: "03", tab: "交付", name: "策略交付层", description: "结构化输出由策略分发、风险门控与回放研究消费；策略保持独立，并对最终动作和执行风险负责。", inputs: ["Forecast", "结构快照", "结构事件", "因子流"], core: "策略分发", outputs: ["风险门控", "独立量化策略", "回放与研究"] },
 ];
 
 function FlowLine({ active }: { active: boolean }) {
@@ -49,7 +49,7 @@ export function DevelopersSection() {
         </div>
         <div className="grid lg:grid-cols-[330px_1fr] border-b border-[#1e1e1e]">
           <div className="border-r border-[#1e1e1e]">
-            <div className="border-b border-[#1e1e1e] p-6"><p className="text-sm text-[#5a5a5a] leading-relaxed">市场数据、智能研究与策略消费保持模块独立，通过清晰契约交换结构化市场信息。</p></div>
+            <div className="border-b border-[#1e1e1e] p-6"><p className="text-sm text-[#5a5a5a] leading-relaxed">市场数据、确定性分析、AI 判断与策略执行保持职责独立，通过清晰契约交换结构化市场信息。</p></div>
             {ARCHITECTURE_LAYERS.map((item, index) => <button key={item.id} onClick={() => setActive(index)} className={`w-full text-left border-b border-[#1e1e1e] px-6 py-5 transition-colors ${active === index ? "bg-[#0e0e0e]" : "hover:bg-[#0a0a0a]"}`}><div className="flex items-center justify-between"><span className={`font-mono text-[11px] tracking-wider ${active === index ? "text-[#2196f3]" : "text-[#595959]"}`}>{item.name}</span><span className="font-mono text-[10px] text-[#3a3a3a]">{item.id}</span></div><p className="mt-2 text-xs leading-relaxed text-[#4d4d4d]">{item.description}</p>{active === index && <div className="mt-4 h-px overflow-hidden bg-[#1e1e1e]"><div key={active} className="h-full bg-[#2196f3]" style={{ width: 0, animation: "draw-line 5s linear forwards" }} /></div>}</button>)}
             <div className="p-6"><a href="#" className="font-mono text-[11px] text-[#2196f3] tracking-wider hover:underline">查看系统架构 →</a></div>
           </div>
@@ -63,7 +63,7 @@ export function DevelopersSection() {
               <div className="my-5 flex items-center gap-3"><span className="h-7 w-px bg-[#215a8d] ml-[80px]" /><span className="font-mono text-[9px] tracking-widest text-[#3a3a3a]">STRUCTURED OUTPUT</span></div>
               <div className="grid grid-cols-3 gap-3">{layer.outputs.map((output, index) => <div key={output} className={`border px-3 py-3 font-mono text-[10px] transition-colors ${index === 0 ? "border-[#2c5d8d] bg-[#0b1117] text-[#62b8ff]" : "border-[#242424] bg-[#090909] text-[#626262]"}`}>{output}</div>)}</div>
             </div></div>
-            <div className="border-t border-[#1e1e1e] px-6 py-3 flex items-center justify-between bg-[#080808]"><span className="font-mono text-[10px] text-[#3a3a3a]">模块通过清晰契约保持独立，并在研究与策略链路中协同工作。</span><span className="font-mono text-[10px] text-[#2196f3]">架构视图</span></div>
+            <div className="border-t border-[#1e1e1e] px-6 py-3 flex items-center justify-between bg-[#080808]"><span className="font-mono text-[10px] text-[#3a3a3a]">事实、判断与执行分层协作，任何研究输出都不直接获得交易权限。</span><span className="font-mono text-[10px] text-[#2196f3]">架构视图</span></div>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AgentParticleCanvas } from "./agent-particle-canvas";
 
-const VERBS = ["拆成结构", "提炼因子", "生成信号", "验证证据"];
+const VERBS = ["看清多周期结构", "捕捉关键变化", "验证量化因子", "识别潜在风险"];
 
 
 
@@ -51,9 +51,9 @@ export function HeroSection() {
               </div>
 
               {/* Big headline */}
-              <h1 className="font-sans text-[clamp(3.5rem,11vw,10rem)] font-semibold leading-[0.95] tracking-normal text-[#f2ede6]">
-                <span className="block">把复杂市场</span>
-                <span className="relative block h-[clamp(3.5rem,11vw,10rem)] overflow-hidden leading-[0.95]">
+              <h1 className="font-sans text-[clamp(3.5rem,11vw,10rem)] max-sm:text-4xl font-semibold leading-[0.95] tracking-normal text-[#f2ede6]">
+                <span className="block">在复杂市场中</span>
+                <span className="relative block h-[clamp(3.5rem,11vw,10rem)] max-sm:h-9 overflow-hidden leading-[0.95]">
                   <span
                   key={verbIdx}
                     className="absolute inset-0 text-[#2196f3]"
@@ -62,7 +62,7 @@ export function HeroSection() {
                     {VERBS[verbIdx]}
                   </span>
                 </span>
-                <span className="block">交给量化策略</span>
+                <span className="block">服务量化策略</span>
               </h1>
             </div>
 
@@ -71,7 +71,7 @@ export function HeroSection() {
               className={`mt-14 transition-all duration-700 delay-300 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
             >
               <p className="text-base text-[#5a5a5a] leading-relaxed max-w-xl">
-                UMAKER 通过 AI Agent 持续分析价格、成交量、资金费率、持仓、清算与多周期市场结构，从碎片化市场数据中发现可验证的因子、信号和策略输入。
+                UMAKER 持续汇聚价格、成交、持仓、资金费率、清算与多周期结构。确定性计算组织市场事实，AI 在受控边界内解释复杂证据，再将可追溯的量化上下文交给独立策略。
               </p>
 
               {/* CTAs */}
@@ -100,7 +100,7 @@ export function HeroSection() {
                   ))}
                 </div>
                 <span className="font-mono text-[10px] text-[#3a3a3a]">
-                  AI 因子发现 / 多周期结构识别 / 策略验证 / 风险门控
+                  结构化事实 / 多周期状态 / AI 概率判断 / 策略独立决策
                 </span>
               </div>
             </div>
@@ -123,10 +123,10 @@ export function HeroSection() {
                   "实时市场数据",
                   "多周期市场结构",
                   "衍生品状态识别",
-                  "AI 因子发现",
-                  "Agent 驱动研究",
-                  "实时因子流",
-                  "策略输入信号",
+                  "确定性因子计算",
+                  "AI 证据解释",
+                  "结构快照与事件",
+                  "可追溯策略输入",
                   "回测与验证",
                   "风险门控分析",
                 ].map(item => (

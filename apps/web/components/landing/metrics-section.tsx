@@ -59,7 +59,7 @@ const METRICS = [
   {
     end: 4204,
     label: "结构快照",
-    sub: "多周期市场状态审计记录",
+    sub: "多周期结构与状态基线记录",
     density: 100,
   },
   {

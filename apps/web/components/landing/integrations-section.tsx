@@ -14,10 +14,10 @@ const ROW1 = [
 ];
 
 const ROW2 = [
-  { name: "市场智能", cat: "市场状态" },
-  { name: "市场预测", cat: "概率判断" },
-  { name: "结构快照", cat: "状态输出" },
-  { name: "结构事件", cat: "事件输出" },
+  { name: "市场智能", cat: "持续理解" },
+  { name: "市场预测", cat: "AI 判断" },
+  { name: "结构快照", cat: "状态基线" },
+  { name: "结构事件", cat: "变化证据" },
   { name: "因子流", cat: "策略输入" },
   { name: "策略分发", cat: "数据交付" },
   { name: "策略工厂", cat: "研究验证" },
@@ -90,7 +90,7 @@ export function IntegrationsSection() {
       </div>
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-5 flex items-center justify-between">
-        <span className="font-mono text-[10px] text-[#3a3a3a]">模块通过清晰契约交换结构化市场信息</span>
+        <span className="font-mono text-[10px] text-[#3a3a3a]">确定性事实、AI 概率判断与策略执行通过清晰契约协同</span>
         <a href="#" className="font-mono text-[10px] text-[#2196f3] hover:underline tracking-wider">
           查看系统架构 →
         </a>
