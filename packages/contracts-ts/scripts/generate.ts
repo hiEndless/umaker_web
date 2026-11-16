@@ -10,7 +10,14 @@ const OUT_DIR = path.join(__dirname, "../src/generated");
 type JsonSchema = {
   $id?: string;
   title?: string;
-  type?: string;
+  type?: string | string[];
+  items?: JsonSchema;
+  minimum?: number;
+  maximum?: number;
+  maxLength?: number;
+  minItems?: number;
+  maxItems?: number;
+  pattern?: string;
   properties?: Record<string, JsonSchema>;
   required?: string[];
   enum?: string[];
@@ -30,24 +37,40 @@ function toPascalCase(input: string): string {
 }
 
 function zodForProperty(schema: JsonSchema): string {
-  if (schema.enum && schema.enum.length > 0) {
-    const values = schema.enum.map((v) => JSON.stringify(v)).join(", ");
-    return `z.enum([${values}])`;
+  if (Array.isArray(schema.type)) {
+    const types = schema.type.filter((t) => t !== "null");
+    if (types.length !== 1) throw new Error("unsupported schema type union");
+    return zodForProperty({ ...schema, type: types[0] }) + (schema.type.includes("null") ? ".nullable()" : "");
   }
+  if (schema.enum?.length) return `z.enum([${schema.enum.map((v) => JSON.stringify(v)).join(", ")}])`;
+  let result: string;
   if (schema.type === "string") {
-    return schema.minLength && schema.minLength > 0
-      ? `z.string().min(${schema.minLength})`
-      : "z.string()";
+    result = "z.string()";
+    if (schema.minLength !== undefined) result += `.min(${schema.minLength})`;
+    if (schema.maxLength !== undefined) result += `.max(${schema.maxLength})`;
+    if (schema.pattern) result += `.regex(new RegExp(${JSON.stringify(schema.pattern)}))`;
+    return result;
   }
   if (schema.type === "object") {
-    return "z.record(z.unknown())";
+    if (!schema.properties) return "z.record(z.unknown())";
+    const required = new Set(schema.required ?? []);
+    const fields = Object.entries(schema.properties).map(([key, prop]) => `${JSON.stringify(key)}: ${zodForProperty(prop)}${required.has(key) ? "" : ".optional()"}`);
+    return `z.object({${fields.join(", ")}})${schema.additionalProperties === false ? ".strict()" : ""}`;
+  }
+  if (schema.type === "array") {
+    if (!schema.items) throw new Error("array items required");
+    result = `z.array(${zodForProperty(schema.items)})`;
+    if (schema.minItems !== undefined) result += `.min(${schema.minItems})`;
+    if (schema.maxItems !== undefined) result += `.max(${schema.maxItems})`;
+    return result;
   }
   if (schema.type === "number" || schema.type === "integer") {
-    return "z.number()";
+    result = "z.number().finite()" + (schema.type === "integer" ? ".int().safe()" : "");
+    if (schema.minimum !== undefined) result += `.min(${schema.minimum})`;
+    if (schema.maximum !== undefined) result += `.max(${schema.maximum})`;
+    return result;
   }
-  if (schema.type === "boolean") {
-    return "z.boolean()";
-  }
+  if (schema.type === "boolean") return "z.boolean()";
   return "z.unknown()";
 }
 

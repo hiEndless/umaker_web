@@ -1,0 +1,173 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": [
+        "1.0.0"
+      ]
+    },
+    "generated_at_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "candidate_pool"
+      ]
+    },
+    "pool_size": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "boards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "view": {
+            "type": "string",
+            "enum": [
+              "returns",
+              "momentum"
+            ]
+          },
+          "window": {
+            "type": "string",
+            "enum": [
+              "5m",
+              "15m",
+              "1h",
+              "4h",
+              "24h",
+              "5d"
+            ]
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "gainers",
+              "losers"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "partial",
+              "not_ready",
+              "unavailable",
+              "stale"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "none",
+              "unconfigured",
+              "upstream_unavailable",
+              "invalid_payload",
+              "expired"
+            ]
+          },
+          "as_of_ms": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "available_at_ms": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "expires_at_ms": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "eligible_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "insufficient_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9\\u3400-\\u4DBF\\u4E00-\\u9FFF]{1,28}USDT$(?![\\s\\S])"
+                },
+                "rank": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                "value": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?$(?![\\s\\S])"
+                }
+              },
+              "required": [
+                "symbol",
+                "rank",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 10
+          }
+        },
+        "required": [
+          "view",
+          "window",
+          "direction",
+          "status",
+          "reason",
+          "as_of_ms",
+          "available_at_ms",
+          "expires_at_ms",
+          "eligible_count",
+          "insufficient_count",
+          "entries"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 16,
+      "maxItems": 16
+    }
+  },
+  "required": [
+    "schema_version",
+    "generated_at_ms",
+    "scope",
+    "pool_size",
+    "boards"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "market_workspace",
+  "title": "MarketWorkspace",
+  "x-version": "1.0.0"
+}

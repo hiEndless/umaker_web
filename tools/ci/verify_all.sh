@@ -16,6 +16,7 @@ pnpm --filter @umaker/contracts-ts run build
 pnpm -r run typecheck
 pnpm --filter @umaker/api run typecheck:workers
 pnpm --filter @umaker/cloudflare-adapters run typecheck
+run verification/validators/test_market_workspace.ts
 run verification/replay/run_replay.ts
 run verification/replay/compare_replay_cases.ts
 run verification/diff/compare_outputs.ts

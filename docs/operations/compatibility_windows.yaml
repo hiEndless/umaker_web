@@ -6,3 +6,10 @@ windows:
     compatibility_window: v1
     sunset_condition: 示例契约无生产下游；作为模板样板保留
     rollback_note: 复跑 replay/snapshot 并回退 contracts-ts 生成物
+  - contract_id: market_workspace
+    schema: market_workspace.schema.json
+    owner_service: web
+    introduced_at: 2026-11-17
+    compatibility_window: market-v1
+    sunset_condition: 首次真实榜单接入；1.x新增字段先optional，破坏性变更须升版
+    rollback_note: 回退web代码；不得在真实接口失败时静默回退样例

@@ -15,3 +15,7 @@ coverage/
 .tmp/
 verification/reports/*.json
 !verification/reports/README.md
+
+# Local server-side API credentials
+.env.local
+.env.*.local

@@ -1,0 +1,26 @@
+{
+  "schema": "market_workspace.schema.json",
+  "version": "1.0.0",
+  "field_mappings": [
+    {
+      "from": "schema_version",
+      "to": "schema_version"
+    },
+    {
+      "from": "generated_at_ms",
+      "to": "generated_at_ms"
+    },
+    {
+      "from": "scope",
+      "to": "scope"
+    },
+    {
+      "from": "pool_size",
+      "to": "pool_size"
+    },
+    {
+      "from": "boards",
+      "to": "boards"
+    }
+  ]
+}

@@ -7,6 +7,14 @@
       "compatibility_window": "v1",
       "tier": "example",
       "owner_service": "api"
+    },
+    {
+      "schema": "market_workspace.schema.json",
+      "mapping": "market_workspace.mapping.json",
+      "version": "1.0.0",
+      "compatibility_window": "market-v1",
+      "tier": "production",
+      "owner_service": "web"
     }
   ]
 }

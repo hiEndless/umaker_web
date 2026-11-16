@@ -1,0 +1,372 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_ms": 1794800040000,
+  "scope": "candidate_pool",
+  "pool_size": 2,
+  "boards": [
+    {
+      "view": "returns",
+      "window": "5m",
+      "direction": "gainers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "OUSDT",
+          "rank": 1,
+          "value": "0.02"
+        },
+        {
+          "symbol": "牛来USDT",
+          "rank": 2,
+          "value": "-0.01"
+        }
+      ]
+    },
+    {
+      "view": "returns",
+      "window": "5m",
+      "direction": "losers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "牛来USDT",
+          "rank": 1,
+          "value": "-0.01"
+        },
+        {
+          "symbol": "OUSDT",
+          "rank": 2,
+          "value": "0.02"
+        }
+      ]
+    },
+    {
+      "view": "returns",
+      "window": "15m",
+      "direction": "gainers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "OUSDT",
+          "rank": 1,
+          "value": "0.02"
+        },
+        {
+          "symbol": "牛来USDT",
+          "rank": 2,
+          "value": "-0.01"
+        }
+      ]
+    },
+    {
+      "view": "returns",
+      "window": "15m",
+      "direction": "losers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "牛来USDT",
+          "rank": 1,
+          "value": "-0.01"
+        },
+        {
+          "symbol": "OUSDT",
+          "rank": 2,
+          "value": "0.02"
+        }
+      ]
+    },
+    {
+      "view": "returns",
+      "window": "1h",
+      "direction": "gainers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "OUSDT",
+          "rank": 1,
+          "value": "0.02"
+        },
+        {
+          "symbol": "牛来USDT",
+          "rank": 2,
+          "value": "-0.01"
+        }
+      ]
+    },
+    {
+      "view": "returns",
+      "window": "1h",
+      "direction": "losers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "牛来USDT",
+          "rank": 1,
+          "value": "-0.01"
+        },
+        {
+          "symbol": "OUSDT",
+          "rank": 2,
+          "value": "0.02"
+        }
+      ]
+    },
+    {
+      "view": "returns",
+      "window": "4h",
+      "direction": "gainers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "OUSDT",
+          "rank": 1,
+          "value": "0.02"
+        },
+        {
+          "symbol": "牛来USDT",
+          "rank": 2,
+          "value": "-0.01"
+        }
+      ]
+    },
+    {
+      "view": "returns",
+      "window": "4h",
+      "direction": "losers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "牛来USDT",
+          "rank": 1,
+          "value": "-0.01"
+        },
+        {
+          "symbol": "OUSDT",
+          "rank": 2,
+          "value": "0.02"
+        }
+      ]
+    },
+    {
+      "view": "returns",
+      "window": "24h",
+      "direction": "gainers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800100000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "OUSDT",
+          "rank": 1,
+          "value": "0.02"
+        },
+        {
+          "symbol": "牛来USDT",
+          "rank": 2,
+          "value": "-0.01"
+        }
+      ]
+    },
+    {
+      "view": "returns",
+      "window": "24h",
+      "direction": "losers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800100000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "牛来USDT",
+          "rank": 1,
+          "value": "-0.01"
+        },
+        {
+          "symbol": "OUSDT",
+          "rank": 2,
+          "value": "0.02"
+        }
+      ]
+    },
+    {
+      "view": "returns",
+      "window": "5d",
+      "direction": "gainers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "OUSDT",
+          "rank": 1,
+          "value": "0.02"
+        },
+        {
+          "symbol": "牛来USDT",
+          "rank": 2,
+          "value": "-0.01"
+        }
+      ]
+    },
+    {
+      "view": "returns",
+      "window": "5d",
+      "direction": "losers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "牛来USDT",
+          "rank": 1,
+          "value": "-0.01"
+        },
+        {
+          "symbol": "OUSDT",
+          "rank": 2,
+          "value": "0.02"
+        }
+      ]
+    },
+    {
+      "view": "momentum",
+      "window": "5m",
+      "direction": "gainers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "OUSDT",
+          "rank": 1,
+          "value": "0.005"
+        }
+      ]
+    },
+    {
+      "view": "momentum",
+      "window": "5m",
+      "direction": "losers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "牛来USDT",
+          "rank": 1,
+          "value": "-0.006"
+        }
+      ]
+    },
+    {
+      "view": "momentum",
+      "window": "15m",
+      "direction": "gainers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "OUSDT",
+          "rank": 1,
+          "value": "0.005"
+        }
+      ]
+    },
+    {
+      "view": "momentum",
+      "window": "15m",
+      "direction": "losers",
+      "status": "ready",
+      "reason": "none",
+      "as_of_ms": 1794799980000,
+      "available_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000,
+      "eligible_count": 2,
+      "insufficient_count": 0,
+      "entries": [
+        {
+          "symbol": "牛来USDT",
+          "rank": 1,
+          "value": "-0.006"
+        }
+      ]
+    }
+  ]
+}

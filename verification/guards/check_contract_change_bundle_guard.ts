@@ -15,7 +15,7 @@ type Manifest = {
 function changedPaths(): Set<string> {
   if (!exists(".git")) return new Set();
   const out = new Set<string>();
-  for (const cmd of ["git diff --name-only HEAD", "git diff --cached --name-only"]) {
+  for (const cmd of ["git -c core.quotepath=false diff --name-only HEAD", "git -c core.quotepath=false diff --cached --name-only", "git -c core.quotepath=false ls-files --others --exclude-standard"]) {
     try {
       const text = execSync(cmd, { cwd: rootPath(), encoding: "utf8" });
       for (const line of text.split("\n")) {

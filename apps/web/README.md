@@ -4,8 +4,8 @@ UMAKER public landing page, implemented with Next.js App Router and deployed as 
 
 Current scope:
 
-- One public landing page only.
-- Current public scope is a single Chinese-first landing page. Multilingual routing was intentionally deferred after the Jarvis template migration.
+- Public landing and existing informational pages; `/market` is a noindex market workspace connected through a server-side UMaker API adapter.
+- Chinese-first public pages. Multilingual routing was intentionally deferred after the Jarvis template migration.
 - Strategy detail pages and public strategy monitor are intentionally out of scope.
 - Public metrics are marked as demo or scope indicators, not live performance.
 - Particle visuals are semantic topology components. They receive generic nodes and edges, and must not couple directly to strategy or exchange business logic.
@@ -53,3 +53,5 @@ pnpm --filter @umaker/web deploy
 ```
 
 Future dynamic blog content should be fetched server-side from GitHub in Next.js route handlers, server components, or cached data functions. When ISR or persistent incremental cache is introduced, add explicit Cloudflare KV/R2 bindings and document the cache invalidation strategy.
+
+Market workspace design and sample boundaries: [市场观察工作台](../../docs/design/market_workspace.md). Run local dev and open `/market`. Server-only configuration and deployment requirements: [迁移说明](docs/迁移说明.md).

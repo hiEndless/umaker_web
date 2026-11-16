@@ -3,3 +3,7 @@
 # CLOUDFLARE_TURNSTILE_SECRET_KEY=
 # CLOUDFLARE_IMAGES_ACCOUNT_HASH=
 NEXT_PUBLIC_SITE_URL=https://umaker.local
+
+# Server-side UMaker API; deployed token should be set with wrangler secret put.
+UMAKER_API_BASE_URL=https://api.umaker.org
+UMAKER_API_TOKEN=
