@@ -11,3 +11,5 @@
 - `docker/`：Compose 与镜像
 - `docs/cookbook/新增服务.md`：从样例复制出新应用
 - `.agents/notes/`：非琐碎决策记录
+
+- `apps/web/components/dashboard`：共用工作台展示组件；市场数据/契约仍归原src分层。组件与依赖迁移说明见 `docs/design/dashboard_shell.md`。

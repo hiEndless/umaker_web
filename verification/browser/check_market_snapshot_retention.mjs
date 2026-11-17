@@ -1,6 +1,8 @@
 // Requires local Next dev server and a dedicated Chrome with --remote-debugging-port=9334.
 // Run: node verification/browser/check_market_snapshot_retention.mjs
 import fs from 'node:fs/promises';
+import process from 'node:process';
+const baseUrl = process.env.MARKET_TEST_BASE_URL ?? 'http://127.0.0.1:3000';
 import assert from 'node:assert/strict';
 import { Buffer } from 'node:buffer';
 import { URL } from 'node:url';
@@ -52,7 +54,7 @@ try {
   preload = await call('Page.addScriptToEvaluateOnNewDocument', { source: `window.__marketTestHidden=false;Object.defineProperty(document,'visibilityState',{configurable:true,get:()=>window.__marketTestHidden?'hidden':'visible'});` });
   await call('Fetch.enable', { patterns: [{ urlPattern: '*/api/market/*', requestStage: 'Request' }] });
   const previousOrigin = await evaluate('performance.timeOrigin');
-  await call('Page.navigate', { url: 'http://127.0.0.1:3000/market/?window=15m&symbol=OUSDT' });
+  await call('Page.navigate', { url: `${baseUrl}/market/?window=15m&symbol=OUSDT` });
   await until(() => evaluate(`performance.timeOrigin !== ${previousOrigin}`), 'navigation did not finish');
   await until(async () => requests > 0 && inFlight === 0 && await evaluate(`document.querySelector('table')?.innerText.includes('1.00')`), 'initial snapshot missing');
   assert.equal(await evaluate(`document.querySelector('table').innerText.includes('12.35M') && document.querySelector('aside').innerText.includes('0.0000123')`), true);

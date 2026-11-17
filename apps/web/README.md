@@ -55,3 +55,11 @@ pnpm --filter @umaker/web deploy
 Future dynamic blog content should be fetched server-side from GitHub in Next.js route handlers, server components, or cached data functions. When ISR or persistent incremental cache is introduced, add explicit Cloudflare KV/R2 bindings and document the cache invalidation strategy.
 
 Market workspace design and sample boundaries: [市场观察工作台](../../docs/design/market_workspace.md). Run local dev and open `/market`. Server-only configuration and deployment requirements: [迁移说明](docs/迁移说明.md).
+
+## Dashboard工作台
+
+`/market`使用UMaker主题的轻量Dashboard壳，`/dashboard`重定向到该页。共享组件位于`components/dashboard`，来源、MIT许可、组件边界与版本升级记录见[Dashboard壳](../../docs/design/dashboard_shell.md)。不包含前端登录流程；行情读取令牌仍由服务器管理。
+
+依赖升级后Node要求>=22.12.0。根目录通过Volta、.nvmrc及pnpm的.npmrc use-node-version声明22.12.0；pnpm自动为脚本使用此版本，不需要修改全局默认Node。构建入口仍为`pnpm build:web-worker`。
+
+本地浏览器回归：启动独立Chrome CDP端口9334，设置`MARKET_TEST_BASE_URL`为本地开发或Workers预览地址，执行`node verification/browser/check_dashboard_shell.mjs`与`node verification/browser/check_market_snapshot_retention.mjs`。测试使用隔离行情快照，不访问生产、不代表线上验收。
