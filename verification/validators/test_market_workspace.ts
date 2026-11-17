@@ -38,6 +38,15 @@ async function altered(edit: (v: Record<string, unknown>)=>void): Promise<Awaite
   const f: typeof fetch=async(input)=>{const d=source(String(input).split("/api/v1/market/")[1]);edit(d);return Response.json({schema_version:"0.1.0",generated_at_ms:NOW,data:d});};
   return new HttpMarketReader(config,f,()=>NOW).board(req);
 }
+// The 24h candidate source may contain 20 ranks per direction; the workspace exposes top 10.
+const twenty = Array.from({length:20}, (_,i)=>({symbol:`T${i}USDT`,return_24h:String((20-i)/100),rank_gainers:i+1,rank_losers:20-i}));
+const expanded = new HttpMarketReader(config, async()=>Response.json({schema_version:"0.1.0",generated_at_ms:NOW,data:{...base,scope:"full",eligible_count:20,expected_count:20,entries:twenty}}),()=>NOW);
+for (const direction of ["gainers","losers"] as const) {
+ const board = await expanded.board({view:"returns",window:"24h",direction});
+ assert.equal(board.status,"ready"); assert.equal(board.entries.length,10);
+ assert.deepEqual(board.entries.map(e=>e.rank),Array.from({length:10},(_,i)=>i+1));
+ assert.equal(board.entries[0].symbol,direction==="gainers"?"T0USDT":"T19USDT");
+}
 assert.equal((await altered(d=>{d.eligible_count=0;d.insufficient_count=2;d.entries=[];d.status="not_ready";})).status,"not_ready");
 assert.equal((await altered(d=>{d.available_at_ms=NOW-200000;d.expires_at_ms=NOW-100000;d.as_of_ms=NOW-210000;d.entries=[];})).status,"stale");
 for (const edit of [
