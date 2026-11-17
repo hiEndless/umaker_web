@@ -11,6 +11,7 @@ export async function readMarket(reader: MarketReader, clock: () => number = Dat
     }
   }));
   const poolSize = await reader.poolSize().catch(() => null);
+  const quotes = await reader.quotes().catch(() => undefined);
   const now = clock();
-  return parseWorkspace({ schema_version: "1.0.0", generated_at_ms: now, scope: "candidate_pool", pool_size: poolSize, boards: boards.map((b) => b.expires_at_ms !== null && b.expires_at_ms <= now ? emptyBoard(b, "expired") : b) });
+  return parseWorkspace({ schema_version: "1.0.0", generated_at_ms: now, scope: "candidate_pool", pool_size: poolSize, ...(quotes === undefined ? {} : { quotes: quotes.filter((q) => q.expires_at_ms > now) }), boards: boards.map((b) => b.expires_at_ms !== null && b.expires_at_ms <= now ? emptyBoard(b, "expired") : b) });
 }

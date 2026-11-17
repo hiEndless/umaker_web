@@ -21,6 +21,10 @@
     {
       "from": "boards",
       "to": "boards"
+    },
+    {
+      "from": "quotes",
+      "to": "quotes"
     }
   ]
 }

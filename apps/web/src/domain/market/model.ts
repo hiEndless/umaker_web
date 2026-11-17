@@ -2,6 +2,7 @@ import { marketWorkspaceSchema, type MarketWorkspace } from "../../../../../pack
 export { marketWorkspaceSchema };
 export type Workspace = MarketWorkspace;
 export type Board = Workspace["boards"][number];
+export type Quote = NonNullable<Workspace["quotes"]>[number];
 export type Entry = Board["entries"][number];
 export type BoardMode = Board["view"];
 export type MarketWindow = Board["window"];
@@ -15,6 +16,7 @@ export const REQUESTS: readonly BoardRequest[] = (["returns", "momentum"] as con
 export interface MarketReader {
   board(request: BoardRequest): Promise<Board>;
   poolSize(): Promise<number | null>;
+  quotes(): Promise<Quote[] | undefined>;
 }
 export function emptyBoard(request: BoardRequest, reason: Board["reason"]): Board {
   return { ...request, status: reason === "expired" ? "stale" : "unavailable", reason, as_of_ms: null, available_at_ms: null, expires_at_ms: null, eligible_count: null, insufficient_count: null, entries: [] };
@@ -31,6 +33,7 @@ export function parseWorkspace(value: unknown): Workspace {
     if (board.entries.some((e, i) => e.rank !== i + 1 || !Number.isFinite(Number(e.value)) || Math.abs(Number(e.value)) > 1e60) || new Set(board.entries.map((e) => e.symbol)).size !== board.entries.length) throw new Error("workspace_entries_invalid");
     if (board.status !== "unavailable" && board.status !== "stale" && (board.as_of_ms === null || board.available_at_ms === null || board.expires_at_ms === null || board.as_of_ms > board.available_at_ms || board.available_at_ms >= board.expires_at_ms)) throw new Error("workspace_times_invalid");
   }
+  if (parsed.quotes && (new Set(parsed.quotes.map((q) => q.symbol)).size !== parsed.quotes.length || parsed.quotes.some((q) => !Number.isFinite(Number(q.last_price)) || Number(q.last_price) <= 0 || Number(q.last_price) > 1e60 || !Number.isFinite(Number(q.quote_volume_24h)) || Number(q.quote_volume_24h) > 1e60 || q.price_at_ms > q.available_at_ms || q.price_at_ms < q.available_at_ms - 60000 || q.expires_at_ms <= q.available_at_ms || q.expires_at_ms > q.price_at_ms + 60000))) throw new Error("workspace_quotes_invalid");
   return parsed;
 }
 export function signedFraction(value: string): string {

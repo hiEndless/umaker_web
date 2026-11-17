@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BOARD_LIMIT, emptyBoard, type Board, type BoardRequest, type MarketReader } from "../domain/market/model";
+import { BOARD_LIMIT, emptyBoard, marketWorkspaceSchema, type Quote, type Board, type BoardRequest, type MarketReader } from "../domain/market/model";
 const integer = z.number().int().safe().nonnegative();
 const decimal = z.string().max(128).regex(/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?$(?![\s\S])/).refine((s) => Number.isFinite(Number(s)) && Math.abs(Number(s)) <= 1e60);
 const symbol = z.string().regex(/^[A-Z0-9\u3400-\u4DBF\u4E00-\u9FFF]{1,28}USDT$(?![\s\S])/);
@@ -7,6 +7,8 @@ const envelope = z.object({ schema_version: z.literal("0.1.0"), generated_at_ms:
 const base = z.object({ schema_version: z.literal("1.0.0"), as_of_ms: integer, available_at_ms: integer, expires_at_ms: integer, limit: integer.min(1).max(100) });
 const poolSchema = base.extend({ scope: z.enum(["full", "valid_samples"]), entries: z.array(z.object({ symbol, return_24h: decimal, rank_gainers: integer.min(1).max(100).nullable(), rank_losers: integer.min(1).max(100).nullable() })).max(200), eligible_count: integer.max(4096), expected_count: integer.max(4096) });
 const sampledSchema = base.extend({ scope: z.literal("candidate_pool"), window: z.string(), direction: z.string(), candidate_symbols: z.array(symbol).max(200), eligible_count: integer.max(200), insufficient_count: integer.max(200), entries: z.array(z.object({ symbol, rank: integer.min(1).max(100), return: decimal.optional(), momentum_change: decimal.optional(), recent_return: decimal.optional(), previous_return: decimal.optional(), price_at_ms: integer, anchor_at_ms: integer.optional(), anchor_lag_ms: integer.optional() })).max(100), status: z.enum(["not_ready", "valid_samples", "ready"]).optional() });
+const quoteEntry = marketWorkspaceSchema.shape.quotes.unwrap().element.omit({ available_at_ms: true });
+const quoteSchema = z.object({ schema_version: z.literal("1.0.0"), exchange: z.literal("binance"), market_type: z.literal("usdm_perpetual"), quote_asset: z.literal("USDT"), scope: z.literal("candidate_pool"), as_of_ms: integer, available_at_ms: integer, expires_at_ms: integer, candidate_symbols: z.array(symbol).max(200), entries: z.array(quoteEntry).max(200) }).strict();
 export interface MarketConfig { readonly baseUrl: string; readonly token: string }
 export function marketConfig(env: Readonly<Record<string, string | undefined>>): MarketConfig | null {
   const baseUrl = env.UMAKER_API_BASE_URL; const token = env.UMAKER_API_TOKEN;
@@ -39,6 +41,14 @@ export class HttpMarketReader implements MarketReader {
   }
   async poolSize(): Promise<number | null> {
     try { const pool = await this.loadPool(); return pool.expires_at_ms > this.clock() && pool.available_at_ms <= this.clock() ? pool.entries.length : null; } catch { return null; }
+  }
+  async quotes(): Promise<Quote[] | undefined> {
+    try {
+      const p = quoteSchema.parse(await this.get("quotes")); const now = this.clock();
+      if (p.as_of_ms % 60000 !== 0 || p.as_of_ms > p.available_at_ms || p.available_at_ms > now || p.expires_at_ms <= now || p.expires_at_ms > Math.min(p.as_of_ms + 120000, p.available_at_ms + 60000) || new Set(p.candidate_symbols).size !== p.candidate_symbols.length || new Set(p.entries.map((q) => q.symbol)).size !== p.entries.length) return undefined;
+      if (p.entries.some((q) => !p.candidate_symbols.includes(q.symbol) || Number(q.last_price) <= 0 || Number(q.last_price) > 1e60 || !Number.isFinite(Number(q.last_price)) || !Number.isFinite(Number(q.quote_volume_24h)) || Number(q.quote_volume_24h) > 1e60 || q.price_at_ms > p.available_at_ms || q.price_at_ms < p.available_at_ms - 60000 || q.expires_at_ms !== Math.min(p.expires_at_ms, q.price_at_ms + 60000))) return undefined;
+      return p.entries.filter((q) => q.expires_at_ms > now).map((q) => ({ ...q, available_at_ms: p.available_at_ms }));
+    } catch { return undefined; }
   }
   async board(request: BoardRequest): Promise<Board> {
     try {

@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "exchange": "binance",
+  "market_type": "usdm_perpetual",
+  "quote_asset": "USDT",
+  "scope": "candidate_pool",
+  "as_of_ms": 1794799980000,
+  "available_at_ms": 1794800039500,
+  "expires_at_ms": 1794800099500,
+  "candidate_symbols": [
+    "OUSDT",
+    "牛来USDT"
+  ],
+  "entries": [
+    {
+      "symbol": "OUSDT",
+      "last_price": "0.0000123",
+      "quote_volume_24h": "12345678.9",
+      "price_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000
+    },
+    {
+      "symbol": "牛来USDT",
+      "last_price": "123.45",
+      "quote_volume_24h": "0",
+      "price_at_ms": 1794800039000,
+      "expires_at_ms": 1794800099000
+    }
+  ]
+}

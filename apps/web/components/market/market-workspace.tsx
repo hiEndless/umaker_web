@@ -23,11 +23,15 @@ export function MarketWorkspace(): React.JSX.Element {
   const requested = params.get("window");
   const window: MarketWindow = WINDOWS.includes(requested as MarketWindow) && (mode === "returns" || requested === "5m" || requested === "15m") ? requested as MarketWindow : "15m";
   const { data, loading, error, now, refresh } = useMarketData();
+  const quoteFor = (symbol: string) => data?.quotes?.find((q) => q.symbol === symbol);
+  const priceText = (value: string): string => Number(value).toLocaleString("en-US", { maximumSignificantDigits: 10 });
+  const turnoverText = (value: string): string => Number(value).toLocaleString("en-US", { notation: "compact", maximumFractionDigits: 2 });
   const boardFor = (view: BoardMode, period: MarketWindow, direction: Direction): Board | undefined => data?.boards.find((b) => b.view === view && b.window === period && b.direction === direction);
   const currentBoards = (["gainers", "losers"] as const).map((d) => boardFor(mode, window, d));
   const visibleEntries = currentBoards.flatMap((b) => hasSnapshot(b) ? b.entries : []);
   const showingOld = currentBoards.some((b) => oldSnapshot(b, now));
   const selectedSymbol = params.get("symbol") ?? visibleEntries[0]?.symbol ?? "";
+  const selectedQuote = quoteFor(selectedSymbol);
   const selectedEntry = visibleEntries.find((e) => e.symbol === selectedSymbol);
   const updatedAt = Math.max(0, ...currentBoards.map((b) => b?.as_of_ms ?? 0));
   const stamp = (time: number): string => new Intl.DateTimeFormat("zh-CN", { timeZone: "Asia/Shanghai", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(time);
@@ -60,11 +64,12 @@ export function MarketWorkspace(): React.JSX.Element {
       <div className={styles.tableScroll}><table className={styles.rankTable}>
         <thead><tr><th scope="col">排名 / 交易对</th><th scope="col">{mode === "momentum" ? "动量变化" : `${window} 涨跌幅`}</th><th scope="col">24h 成交额</th></tr></thead>
         <tbody>{assets.map((asset) => {
+          const quote = quoteFor(asset.symbol);
           const v = Number(asset.value); const active = asset.symbol === selectedSymbol;
           return <tr key={asset.symbol} className={active ? styles.activeRow : ""}>
             <td><button type="button" className={styles.pairButton} onClick={() => selectPair(asset.symbol)} aria-pressed={active} aria-label={`查看 ${asset.symbol}`}><span className={styles.rank}>{String(asset.rank).padStart(2, "0")}</span><Pair symbol={asset.symbol} showQuote={false} /></button></td>
             <td className={`${styles.number} ${tone(v)}`}>{signedFraction(asset.value)}<span className={styles.unit}>{mode === "momentum" ? " pp" : "%"}</span></td>
-            <td className={`${styles.number} ${styles.turnover}`}><span title="当前榜单API未提供24h成交额">—</span></td>
+            <td className={`${styles.number} ${styles.turnover}`}><span title={quote ? `24h USDT成交额 ${quote.quote_volume_24h} · 行情时间 ${stamp(quote.price_at_ms)}` : "报价暂不可用"}>{quote ? turnoverText(quote.quote_volume_24h) : "—"}{quote && quote.expires_at_ms <= now && <small> · 旧快照</small>}</span></td>
           </tr>;
         })}</tbody>
       </table></div>
@@ -96,7 +101,7 @@ export function MarketWorkspace(): React.JSX.Element {
         <div className={styles.boards}><Board direction="gainers" /><Board direction="losers" /></div>
         <aside ref={detailRef} className={styles.detail} aria-label="交易对详情">
           <div className={styles.detailTop}><span>交易对详情</span><span className={styles.outlineTag}>{showingOld ? "含旧快照" : "当前榜单"}</span></div>
-          <div className={styles.assetHeading}>{selectedSymbol ? <Pair symbol={selectedSymbol} /> : <span className={styles.muted}>选择一个交易对</span>}<span className={styles.assetMarket}>USDT 计价 · 共享候选池</span><div className={styles.price}>—<span> USDT</span></div><span className={styles.assetMarket}>当前榜单接口未提供最新价格</span><div className={`${styles.priceChange} ${selectedEntry ? tone(Number(selectedEntry.value)) : styles.muted}`}>{selectedEntry ? `${signedFraction(selectedEntry.value)}${mode === "momentum" ? " pp" : "%"}` : "—"}<span>{window} {mode === "momentum" ? "动量变化" : "周期涨跌"}</span></div></div>
+          <div className={styles.assetHeading}>{selectedSymbol ? <Pair symbol={selectedSymbol} /> : <span className={styles.muted}>选择一个交易对</span>}<span className={styles.assetMarket}>币安 USDT 永续 · 共享候选池</span><div className={styles.price}>{selectedQuote ? priceText(selectedQuote.last_price) : "—"}<span> USDT</span></div><span className={styles.assetMarket}>{selectedQuote ? `${selectedQuote.expires_at_ms <= now ? "旧快照" : "最新成交价"} · ${stamp(selectedQuote.price_at_ms)}` : "报价暂不可用"}</span><div className={`${styles.priceChange} ${selectedEntry ? tone(Number(selectedEntry.value)) : styles.muted}`}>{selectedEntry ? `${signedFraction(selectedEntry.value)}${mode === "momentum" ? " pp" : "%"}` : "—"}<span>{window} {mode === "momentum" ? "动量变化" : "周期涨跌"}</span></div></div>
           <div className={styles.matrixHeading}><h2>多周期榜单归属</h2><span>收益榜</span></div>
           <table className={styles.matrix}><thead><tr><th>周期</th><th>涨跌幅</th><th>所属榜单 / 排名</th></tr></thead><tbody>{WINDOWS.map((w) => {
             const up = boardFor("returns", w, "gainers"), down = boardFor("returns", w, "losers");
@@ -109,7 +114,7 @@ export function MarketWorkspace(): React.JSX.Element {
           <div className={styles.detailFooter}><Info size={13} /><p>榜单反映市场表现，不能单独作为交易依据。</p></div>
         </aside>
       </div>
-      <div className={styles.dataNote}><Info size={14} /><p><strong>关于这份数据</strong> 榜单来自 UMaker API，使用时自动刷新，切回页面立即补刷。过期或更新失败时保留上次快照并标注状态，新快照到达后自动替换；缺失数据不填0。当前接口不含价格和24h成交额，以“—”表示。动量单位为百分点（pp）。</p></div>
+      <div className={styles.dataNote}><Info size={14} /><p><strong>关于这份数据</strong> 榜单来自 UMaker API，使用时自动刷新，切回页面立即补刷。过期或更新失败时保留上次快照并标注状态，新快照到达后自动替换；缺失数据不填0。价格为最新成交价，24h成交额以USDT计价；报价缺失时以“—”表示，过期保留并标注旧快照。动量单位为百分点（pp）。</p></div>
       <footer className={styles.footer}><span>UMAKER <span>/ MARKET INTELLIGENCE</span></span><span>数据 → 榜单 → 观察 → 验证 <ArrowRight size={12} /></span></footer>
     </main>
   </div>;

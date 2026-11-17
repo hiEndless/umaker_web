@@ -21,7 +21,7 @@ function call(method, params = {}) {
 function snapshot() {
   const n = Date.now();
   const failed = b => ({ ...b, status: 'unavailable', reason: 'upstream_unavailable', as_of_ms: null, available_at_ms: null, expires_at_ms: null, entries: [] });
-  return { ...fixture, generated_at_ms: n, boards: fixture.boards.map(b => {
+  return { ...fixture, generated_at_ms: n, quotes: mode === "failure" ? undefined : (fixture.quotes ?? []).map(q => ({ ...q, price_at_ms: n - 1000, available_at_ms: n - 500, expires_at_ms: n + (mode === "initial" ? 3000 : 59000) })), boards: fixture.boards.map(b => {
     if (mode === 'failure' || mode === 'partial' && b.direction === 'losers') return failed(b);
     return { ...b, as_of_ms: n - 1000, available_at_ms: n - 500, expires_at_ms: n + (mode === 'initial' ? 3000 : 90000), entries: mode === 'empty' ? [] : b.entries.map(e => ({ ...e, value: mode === 'initial' ? '0.01' : '0.4' })) };
   }) };
@@ -55,12 +55,14 @@ try {
   await call('Page.navigate', { url: 'http://127.0.0.1:3000/market/?window=15m&symbol=OUSDT' });
   await until(() => evaluate(`performance.timeOrigin !== ${previousOrigin}`), 'navigation did not finish');
   await until(async () => requests > 0 && inFlight === 0 && await evaluate(`document.querySelector('table')?.innerText.includes('1.00')`), 'initial snapshot missing');
+  assert.equal(await evaluate(`document.querySelector('table').innerText.includes('12.35M') && document.querySelector('aside').innerText.includes('0.0000123')`), true);
+  console.log('PASS native last price and USDT turnover rendered without percent scaling');
   await pause(300); peak = 0;
   const first = requests;
   await evaluate(`window.__marketTestHidden=true;document.dispatchEvent(new Event('visibilitychange'));`);
   await pause(6500);
   assert.equal(requests, first, 'background page must not poll');
-  assert.equal(await evaluate(`document.querySelector('table')?.querySelector('tbody tr') !== null && document.body.innerText.includes('旧快照')`), true);
+  assert.equal(await evaluate(`document.querySelector('table')?.querySelector('tbody tr') !== null && [...document.querySelectorAll('section[aria-label$="方向榜单"]')].some(s=>s.innerText.includes('旧快照'))`), true);
   assert.equal(await evaluate(`document.querySelector('aside').innerText.includes('1.00') && document.querySelector('aside').innerText.includes('旧快照')`), true);
   console.log('PASS hidden page does not poll; expiry retains table, detail and matrix as old snapshots');
   mode = 'failure';
@@ -78,7 +80,7 @@ try {
   console.log('PASS partial failure preserves only failed boards; focus/visibility coalesce');
   mode = 'fresh';
   await evaluate(`window.dispatchEvent(new Event('focus'));`);
-  await until(() => evaluate(`document.querySelectorAll('table')[1].innerText.includes('40.00') && !document.body.innerText.includes('旧快照')`), 'recovery did not replace all old snapshots');
+  await until(() => evaluate(`document.querySelectorAll('table')[1].innerText.includes('40.00') && ![...document.querySelectorAll('section[aria-label$="方向榜单"]')].some(s=>s.innerText.includes('旧快照'))`), 'recovery did not replace all old snapshots');
   assert.equal(await evaluate(`location.search.includes('window=15m')&&location.search.includes('symbol=OUSDT')`), true);
   mode = 'empty';
   await evaluate(`window.dispatchEvent(new Event('focus'));`);

@@ -11,5 +11,5 @@ windows:
     owner_service: web
     introduced_at: 2026-11-17
     compatibility_window: market-v1
-    sunset_condition: 首次真实榜单接入；1.x新增字段先optional，破坏性变更须升版
+    sunset_condition: quotes先optional，至少market-v1窗口内保留旧后端无quotes兼容；破坏性变更须升版
     rollback_note: 回退web代码；不得在真实接口失败时静默回退样例

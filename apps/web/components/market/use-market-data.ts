@@ -12,7 +12,7 @@ export function useMarketData(): { data: Workspace | null; loading: boolean; err
     const controller = new AbortController(); active.current = controller;
     const timer = setTimeout(() => controller.abort(), 12000); setLoading(true);
     try {
-      const response = await fetch("/api/market/", { cache: "no-store", signal: controller.signal });
+      const response = await fetch("/api/market/?include_quotes=1", { cache: "no-store", signal: controller.signal });
       const value: unknown = await response.json(); const next = parseWorkspace(value);
       if (controller.signal.aborted || active.current !== controller) return;
       setError(!response.ok || next.boards.some((b) => b.status === "unavailable" || b.status === "stale"));

@@ -11,6 +11,7 @@ const NOW = 1794800040000; const ASOF = Math.floor((NOW - 1000) / 60000) * 60000
 const config = { baseUrl: "https://api.example.invalid", token: "test-only-read-token-not-a-real-secret" };
 const base = { schema_version: "1.0.0", as_of_ms: ASOF, available_at_ms: NOW - 1000, expires_at_ms: ASOF + 120000, limit: 20 };
 function source(path: string): Record<string, unknown> {
+  if (path === "quotes") return JSON.parse(fs.readFileSync("fixtures/upstream/market_quotes.json","utf8")) as Record<string, unknown>;
   if (path === "candidates") return { ...base, scope: "full", eligible_count: 2, expected_count: 2, entries: [{ symbol: "OUSDT", return_24h: "0.02", rank_gainers: 1, rank_losers: 2 }, { symbol: "牛来USDT", return_24h: "-0.01", rank_gainers: 2, rank_losers: 1 }] };
   const url = new URL(`https://x/${path}`); const view = path.startsWith("momentum") ? "momentum" : "returns";
   const direction = url.searchParams.get("direction"); const up = direction === "gainers" || direction === "increasing";
@@ -28,7 +29,7 @@ const fetcher: typeof fetch = async (input, options) => {
   return Response.json({ schema_version: "0.1.0", generated_at_ms: NOW, data: source(path) });
 };
 const value = await readMarket(new HttpMarketReader(config, fetcher, () => NOW), () => NOW);
-assert.equal(calls,15); assert(peak<=4); assert.equal(value.boards.length,16);
+assert.equal(calls,16); assert(peak<=4); assert.equal(value.boards.length,16);
 assert(value.boards.every((b)=>b.status==="ready")); assert.equal(value.pool_size,2);
 assert.equal(value.boards.find((b)=>b.view==="returns" && b.window==="24h" && b.direction==="gainers")?.entries.length,2,"negative return in gainers is preserved");
 // Browser-only retention preserves original facts, including expired timestamps.
@@ -55,6 +56,24 @@ assert.equal(refreshDelay(expiring(90000),NOW,true),5000);
 assert.equal(refreshDelay(null,NOW,true),5000);
 assert.equal(refreshDelay({...expiring(90000),boards:value.boards.map((b,i)=>i?{...b,expires_at_ms:NOW+90000}:{...b,expires_at_ms:NOW+9000})},NOW,false),5000);
 assert.equal(refreshDelay({...expiring(90000),boards:value.boards.map(b=>({...b,status:"stale",reason:"expired",entries:[]}))},NOW,false),5000);
+assert.equal(value.quotes?.[0].last_price,"0.0000123");
+assert.equal(value.quotes?.[0].quote_volume_24h,"12345678.9");
+assert.equal(value.quotes?.[1].quote_volume_24h,"0");
+const missingQuotes=await readMarket(new HttpMarketReader(config,async(input)=>String(input).endsWith("/quotes")?new Response(null,{status:404}):fetcher(input,{headers:{Authorization:`Bearer ${config.token}`},redirect:"manual",cache:"no-store"}),()=>NOW),()=>NOW);
+assert.equal(missingQuotes.quotes,undefined);assert(missingQuotes.boards.every(b=>b.status==="ready"));
+for (const edit of [
+ (p:Record<string,unknown>)=>{p.market_type="spot";},
+ (p:Record<string,unknown>)=>{p.expires_at_ms=NOW-1;},
+ (p:Record<string,unknown>)=>{p.entries=[{...(p.entries as Record<string,unknown>[])[0],last_price:"0"}];},
+ (p:Record<string,unknown>)=>{p.entries=[{...(p.entries as Record<string,unknown>[])[0],quote_volume_24h:"-1"}];},
+ (p:Record<string,unknown>)=>{p.entries=[{...(p.entries as Record<string,unknown>[])[0],price_at_ms:NOW+10000}];},
+]) {
+ const p=source("quotes");edit(p);
+ const reader=new HttpMarketReader(config,async()=>Response.json({schema_version:"0.1.0",generated_at_ms:NOW,data:p}),()=>NOW);
+ assert.equal(await reader.quotes(),undefined);
+}
+assert.throws(()=>parseWorkspace({...value,quotes:[{...value.quotes![0],last_price:"0"}]}));
+assert.throws(()=>parseWorkspace({...value,quotes:[value.quotes![0],value.quotes![0]]}));
 assert.equal(signedFraction("0.005"),"+0.50"); assert.equal(signedFraction("-0.01"),"-1.00");
 const schema = JSON.parse(fs.readFileSync("contracts/schemas/market_workspace.schema.json","utf8")) as JsonSchema;
 assert.deepEqual(validateSchema(value,schema),[]); assert.deepEqual(parseWorkspace(value),value);
@@ -108,20 +127,23 @@ try {
   if (Array.isArray(d.entries)) d.entries=d.entries.map((entry:Record<string,unknown>)=>({...entry,price_at_ms:NOW-51000}));
   return Response.json({schema_version:"0.1.0",generated_at_ms:NOW,data:d});
  };
- assert.equal((await GET()).status,200);
- assert.equal((await GET()).status,200);
- assert.equal(requests,30,"near-expiry responses must not suppress source refresh");
+ assert.equal((await GET(new Request("https://web.example.invalid/api/market/"))).status,200);
+ assert.equal((await GET(new Request("https://web.example.invalid/api/market/"))).status,200);
+ assert.equal(requests,32,"near-expiry responses must not suppress source refresh");
  // With ample validity the same endpoint still coalesces reads in its bounded cache.
  process.env.UMAKER_API_TOKEN=config.token+"-fresh";
  requests=0;
  globalThis.fetch=async(input)=>{requests++;return Response.json({schema_version:"0.1.0",generated_at_ms:NOW,data:source(String(input).split("/api/v1/market/")[1])});};
- await GET();await GET();assert.equal(requests,15);
+ const legacyResponse=await GET(new Request("https://web.example.invalid/api/market/"));assert.equal((await legacyResponse.json() as Record<string,unknown>).quotes,undefined);
+ const quoteResponse=await GET(new Request("https://web.example.invalid/api/market/?include_quotes=1"));
+ assert.equal((await quoteResponse.json() as {quotes:unknown[]}).quotes.length,2);
+ assert.equal(requests,16);
 } finally {
  globalThis.fetch=savedFetch;Date.now=savedNow;
  if(savedBase===undefined)delete process.env.UMAKER_API_BASE_URL;else process.env.UMAKER_API_BASE_URL=savedBase;
  if(savedToken===undefined)delete process.env.UMAKER_API_TOKEN;else process.env.UMAKER_API_TOKEN=savedToken;
 }
-console.log("market workspace production output/schema, 15-call/4-concurrency, units, Unicode, source failure, TTL and configuration tests PASS");
+console.log("market workspace production output/schema, 16-call/4-concurrency, units, Unicode, source failure, TTL and configuration tests PASS");
 
 }
 void main().catch((error: unknown) => { console.error(error); process.exitCode = 1; });
