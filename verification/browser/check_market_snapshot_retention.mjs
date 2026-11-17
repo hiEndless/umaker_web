@@ -22,7 +22,7 @@ function snapshot() {
   const n = Date.now();
   const failed = b => ({ ...b, status: 'unavailable', reason: 'upstream_unavailable', as_of_ms: null, available_at_ms: null, expires_at_ms: null, entries: [] });
   return { ...fixture, generated_at_ms: n, quotes: mode === "failure" ? undefined : (fixture.quotes ?? []).map(q => ({ ...q, price_at_ms: n - 1000, available_at_ms: n - 500, expires_at_ms: n + (mode === "initial" ? 3000 : 59000) })), boards: fixture.boards.map(b => {
-    if (mode === 'failure' || mode === 'partial' && b.direction === 'losers') return failed(b);
+    if (mode === 'failure' || mode === 'partial' && b.direction === 'losers' || mode === 'other-window-failure' && b.window === '5m') return failed(b);
     return { ...b, as_of_ms: n - 1000, available_at_ms: n - 500, expires_at_ms: n + (mode === 'initial' ? 3000 : 90000), entries: mode === 'empty' ? [] : b.entries.map(e => ({ ...e, value: mode === 'initial' ? '0.01' : '0.4' })) };
   }) };
 }
@@ -82,6 +82,16 @@ try {
   await evaluate(`window.dispatchEvent(new Event('focus'));`);
   await until(() => evaluate(`document.querySelectorAll('table')[1].innerText.includes('40.00') && ![...document.querySelectorAll('section[aria-label$="方向榜单"]')].some(s=>s.innerText.includes('旧快照'))`), 'recovery did not replace all old snapshots');
   assert.equal(await evaluate(`location.search.includes('window=15m')&&location.search.includes('symbol=OUSDT')`), true);
+  mode = 'other-window-failure';
+  const beforeOther = requests;
+  await evaluate(`window.dispatchEvent(new Event('focus'));`);
+  await until(() => requests > beforeOther && inFlight === 0, 'other-window response missing');await pause(200);
+  assert.equal(await evaluate(`document.body.innerText.includes('更新暂未成功')`), false);
+  await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='5m').click()`);
+  await until(() => evaluate(`document.body.innerText.includes('更新暂未成功')`), 'failed window must explain its own status');
+  await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='15m').click()`);
+  await until(() => evaluate(`!document.body.innerText.includes('更新暂未成功')`), 'healthy window must not inherit unrelated failure');
+  console.log('PASS only the selected failed window shows update failure');
   mode = 'empty';
   await evaluate(`window.dispatchEvent(new Event('focus'));`);
   await until(() => evaluate(`document.querySelector('table')?.querySelector('tbody tr') === null`), 'successful empty response must clear old ranking');

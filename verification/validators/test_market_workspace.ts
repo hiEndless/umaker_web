@@ -4,9 +4,13 @@ import { GET } from "../../apps/web/app/api/market/route.js";
 import { refreshDelay } from "../../apps/web/components/market/refresh-schedule.js";
 import fs from "node:fs";
 import { HttpMarketReader, marketConfig } from "../../apps/web/src/infrastructure/market_reader.js";
+import { MARKET_READ_BUDGET } from "../../apps/web/src/config/market_read_budget.js";
 import { readMarket } from "../../apps/web/src/application/read_market.js";
 import { parseWorkspace, signedFraction, usable, type BoardRequest } from "../../apps/web/src/domain/market/model.js";
 import { validateSchema, type JsonSchema } from "../lib/schema.js";
+assert(MARKET_READ_BUDGET.upstreamMs > 3000,"HTTP budget must cover backend's three-second execution budget and network overhead");
+assert(MARKET_READ_BUDGET.aggregateMs >= 4 * MARKET_READ_BUDGET.upstreamMs + 1000);
+assert(MARKET_READ_BUDGET.clientMs >= MARKET_READ_BUDGET.aggregateMs + 3000);
 const NOW = 1794800040000; const ASOF = Math.floor((NOW - 1000) / 60000) * 60000;
 const config = { baseUrl: "https://api.example.invalid", token: "test-only-read-token-not-a-real-secret" };
 const base = { schema_version: "1.0.0", as_of_ms: ASOF, available_at_ms: NOW - 1000, expires_at_ms: ASOF + 120000, limit: 20 };
@@ -74,6 +78,37 @@ for (const edit of [
 }
 assert.throws(()=>parseWorkspace({...value,quotes:[{...value.quotes![0],last_price:"0"}]}));
 assert.throws(()=>parseWorkspace({...value,quotes:[value.quotes![0],value.quotes![0]]}));
+// A quote validated when fetched can expire while other windows load; preserve its original expiry for the old-snapshot UI.
+const inTransit = await readMarket(new HttpMarketReader(config,fetcher,()=>NOW),()=>NOW+60000);
+assert.equal(inTransit.quotes?.length,2);
+assert(inTransit.quotes!.every(q=>q.expires_at_ms<=NOW+60000));
+assert.deepEqual(inTransit.quotes,value.quotes,"aggregation must not renew or erase quote timestamps");
+// Reproduce a total-budget cancellation: quotes must not wait behind all ranking requests.
+const budgetController=new AbortController();
+const started: string[]=[];let delayedActive=0,delayedPeak=0;
+const delayed: typeof fetch=async(input,options)=>{
+ const path=String(input).split("/api/v1/market/")[1];started.push(path);
+ delayedActive++;delayedPeak=Math.max(delayedPeak,delayedActive);
+ try {
+  await new Promise<void>((resolve,reject)=>{
+   const signal=options?.signal;
+   if(signal?.aborted){reject(new DOMException("Aborted","AbortError"));return;}
+   const abort=():void=>{clearTimeout(timer);signal?.removeEventListener("abort",abort);reject(new DOMException("Aborted","AbortError"));};
+   const timer=setTimeout(()=>{signal?.removeEventListener("abort",abort);resolve();},20);
+   signal?.addEventListener("abort",abort,{once:true});
+  });
+  return Response.json({schema_version:"0.1.0",generated_at_ms:NOW,data:source(path)});
+ }finally{delayedActive--;}
+};
+const budgetTimer=setTimeout(()=>budgetController.abort(),65);
+try {
+ const result=await readMarket(new HttpMarketReader(config,delayed,()=>NOW,budgetController.signal),()=>NOW);
+ assert.deepEqual(started.slice(0,2),["candidates","quotes"]);
+ assert(delayedPeak<=4);assert.equal(started.filter(p=>p==="candidates").length,1);
+ assert.equal(result.quotes?.length,2,"early quote result survives later ranking cancellation");
+ assert(result.boards.some(b=>b.status==="ready"));
+ assert(result.boards.some(b=>b.status==="unavailable"),"deadline scenario must actually cancel late jobs");
+}finally{clearTimeout(budgetTimer);}
 assert.equal(signedFraction("0.005"),"+0.50"); assert.equal(signedFraction("-0.01"),"-1.00");
 const schema = JSON.parse(fs.readFileSync("contracts/schemas/market_workspace.schema.json","utf8")) as JsonSchema;
 assert.deepEqual(validateSchema(value,schema),[]); assert.deepEqual(parseWorkspace(value),value);

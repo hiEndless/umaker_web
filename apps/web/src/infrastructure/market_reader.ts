@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { MARKET_READ_BUDGET } from "../config/market_read_budget";
 import { BOARD_LIMIT, emptyBoard, marketWorkspaceSchema, type Quote, type Board, type BoardRequest, type MarketReader } from "../domain/market/model";
 const integer = z.number().int().safe().nonnegative();
 const decimal = z.string().max(128).regex(/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?$(?![\s\S])/).refine((s) => Number.isFinite(Number(s)) && Math.abs(Number(s)) <= 1e60);
@@ -24,7 +25,7 @@ export class HttpMarketReader implements MarketReader {
     const controller = new AbortController();
     const abort = (): void => controller.abort(); this.signal?.addEventListener("abort", abort, { once: true });
     if (this.signal?.aborted) controller.abort();
-    const timer = setTimeout(abort, 2500);
+    const timer = setTimeout(abort, MARKET_READ_BUDGET.upstreamMs);
     try {
       const response = await this.fetcher(`${this.config.baseUrl}/api/v1/market/${path}`, { headers: { Authorization: `Bearer ${this.config.token}`, Accept: "application/json" }, signal: controller.signal, cache: "no-store", redirect: "manual" });
       if (!response.ok) throw new Error("market_upstream_unavailable");

@@ -22,13 +22,14 @@ export function MarketWorkspace(): React.JSX.Element {
   const mode: BoardMode = params.get("view") === "momentum" ? "momentum" : "returns";
   const requested = params.get("window");
   const window: MarketWindow = WINDOWS.includes(requested as MarketWindow) && (mode === "returns" || requested === "5m" || requested === "15m") ? requested as MarketWindow : "15m";
-  const { data, loading, error, now, refresh } = useMarketData();
+  const { data, loading, error, failedBoards, now, refresh } = useMarketData();
   const quoteFor = (symbol: string) => data?.quotes?.find((q) => q.symbol === symbol);
   const priceText = (value: string): string => Number(value).toLocaleString("en-US", { maximumSignificantDigits: 10 });
   const turnoverText = (value: string): string => Number(value).toLocaleString("en-US", { notation: "compact", maximumFractionDigits: 2 });
   const boardFor = (view: BoardMode, period: MarketWindow, direction: Direction): Board | undefined => data?.boards.find((b) => b.view === view && b.window === period && b.direction === direction);
   const currentBoards = (["gainers", "losers"] as const).map((d) => boardFor(mode, window, d));
   const visibleEntries = currentBoards.flatMap((b) => hasSnapshot(b) ? b.entries : []);
+  const refreshFailed = error || failedBoards.some((b) => b.view === mode && b.window === window);
   const showingOld = currentBoards.some((b) => oldSnapshot(b, now));
   const selectedSymbol = params.get("symbol") ?? visibleEntries[0]?.symbol ?? "";
   const selectedQuote = quoteFor(selectedSymbol);
@@ -82,7 +83,7 @@ export function MarketWorkspace(): React.JSX.Element {
     <header className={styles.nav}><Link href="/" className={styles.wordmark}>UMAKER<span>®</span></Link><span className={styles.navDivider} /><Link href="/market" className={styles.navCurrent}>市场观察</Link><span className={styles.navSubtitle}>MARKET INTELLIGENCE</span><Link href="/" className={styles.homeLink}>返回官网 <ArrowUpRight size={14} /></Link></header>
     <main className={styles.main}>
       <div className={styles.breadcrumb}>工作台 <ChevronRight size={12} /><span>市场观察</span></div>
-      <div className={styles.pageHeading}><div><div className={styles.eyebrow}><span /> MARKET OBSERVATORY / 01</div><h1>发现异动<span>，</span>看清来由<span>。</span></h1><p>从榜单出发，追踪每一个交易对的多周期表现。</p></div><div className={styles.snapshot}><span className={styles.demoBadge}>{loading ? "正在更新" : error ? "更新失败" : "自动更新"}</span><span className={styles.timestamp}><Clock3 size={12} />{updatedAt ? stamp(updatedAt) : "等待数据"} <small>UTC+8</small></span></div></div>
+      <div className={styles.pageHeading}><div><div className={styles.eyebrow}><span /> MARKET OBSERVATORY / 01</div><h1>发现异动<span>，</span>看清来由<span>。</span></h1><p>从榜单出发，追踪每一个交易对的多周期表现。</p></div><div className={styles.snapshot}><span className={styles.demoBadge}>{loading ? "正在更新" : refreshFailed ? "更新失败" : "自动更新"}</span><span className={styles.timestamp}><Clock3 size={12} />{updatedAt ? stamp(updatedAt) : "等待数据"} <small>UTC+8</small></span></div></div>
       <div className={styles.summary}>
         <div><span className={styles.summaryLabel}>观察范围</span><strong>共享候选池 <span className={styles.smallTag}>USDT</span></strong><small>非全市场排名</small></div>
         <div><span className={styles.summaryLabel}>候选池交易对</span><strong className={styles.mono}>{data?.pool_size ?? "—"} <small>PAIRS</small></strong><small>24h涨跌榜候选去重数量</small></div>
@@ -96,7 +97,7 @@ export function MarketWorkspace(): React.JSX.Element {
         <button type="button" className={styles.reset} aria-label="重置视图" title="重置周期、搜索和交易对" onClick={() => { setSearch(""); router.replace("/market", { scroll: false }); }}><RotateCcw size={15} /></button>
       </div>
       <div className={styles.sectionCaption}><span><span className={styles.blueDot} /> {mode === "returns" ? "收益排行" : "动量排行"}<span className={styles.captionLine} />{window} · {updatedAt ? `快照 ${stamp(updatedAt)}` : "等待有效快照"}{search && ` · 匹配 ${matched} 个交易对`}</span><span><SlidersHorizontal size={12} /> 按{mode === "returns" ? "周期收益率" : "动量变化"}排序</span></div>
-      {(error || showingOld) && <div className={styles.updateBar} role="status"><span>{error ? "更新暂未成功，保留上次榜单，将自动重试。" : "当前显示旧快照，等待自动更新。"}</span><button type="button" onClick={refresh} disabled={loading}>重新获取</button></div>}
+      {(refreshFailed || showingOld) && <div className={styles.updateBar} role="status"><span>{refreshFailed ? "更新暂未成功，保留上次榜单，将自动重试。" : "当前显示旧快照，等待自动更新。"}</span><button type="button" onClick={refresh} disabled={loading}>重新获取</button></div>}
       <div className={styles.content}>
         <div className={styles.boards}><Board direction="gainers" /><Board direction="losers" /></div>
         <aside ref={detailRef} className={styles.detail} aria-label="交易对详情">

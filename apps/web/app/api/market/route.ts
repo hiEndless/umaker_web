@@ -1,3 +1,4 @@
+import { MARKET_READ_BUDGET } from "../../../src/config/market_read_budget";
 import { readMarket } from "../../../src/application/read_market";
 import { REQUESTS, emptyBoard, type Workspace } from "../../../src/domain/market/model";
 import { HttpMarketReader, marketConfig } from "../../../src/infrastructure/market_reader";
@@ -12,7 +13,7 @@ async function load(): Promise<Workspace> {
   const key = `${config.baseUrl}\n${config.token}`;
   if (cached && cached.key === key && Date.now() < cached.until) return cached.value;
   if (flight?.key === key) return flight.promise;
-  const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), 8000);
+  const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), MARKET_READ_BUDGET.aggregateMs);
   const promise = readMarket(new HttpMarketReader(config, fetch, Date.now, controller.signal)).then((value) => {
     // Leave the client time to refresh instead of caching snapshots that are about to expire.
     const retrying = value.boards.some((b) => b.status === "unavailable" || b.status === "stale");
