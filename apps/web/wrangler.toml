@@ -9,3 +9,4 @@ binding = "ASSETS"
 
 [vars]
 UMAKER_API_BASE_URL = "https://api.umaker.org"
+UMAKER_API_TOKEN = "C5T5rTA2IvvsmU3h7LJ7xLnlrqEBA69FYUBm3Wzi8No"
