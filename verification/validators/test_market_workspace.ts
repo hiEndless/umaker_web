@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { retainSnapshots, oldSnapshot } from "../../apps/web/components/market/snapshot-retention.js";
 import { GET } from "../../apps/web/app/api/market/route.js";
 import { refreshDelay } from "../../apps/web/components/market/refresh-schedule.js";
 import fs from "node:fs";
@@ -30,6 +31,20 @@ const value = await readMarket(new HttpMarketReader(config, fetcher, () => NOW),
 assert.equal(calls,15); assert(peak<=4); assert.equal(value.boards.length,16);
 assert(value.boards.every((b)=>b.status==="ready")); assert.equal(value.pool_size,2);
 assert.equal(value.boards.find((b)=>b.view==="returns" && b.window==="24h" && b.direction==="gainers")?.entries.length,2,"negative return in gainers is preserved");
+// Browser-only retention preserves original facts, including expired timestamps.
+const later=NOW+200000;
+const failure={...value,generated_at_ms:later,boards:value.boards.map(b=>({...b,status:"unavailable" as const,reason:"upstream_unavailable" as const,as_of_ms:null,available_at_ms:null,expires_at_ms:null,entries:[]}))};
+const held=retainSnapshots(value,failure,later);
+assert.deepEqual(held.boards,value.boards);
+assert(oldSnapshot(held.boards[0],later));assert(!usable(held.boards[0],later));
+assert.deepEqual(retainSnapshots(null,failure,later),failure);
+const mixed={...failure,boards:failure.boards.map((b,i)=>i?b:{...value.boards[0],as_of_ms:later-1000,available_at_ms:later,expires_at_ms:later+60000,entries:[]})};
+const partial=retainSnapshots(value,mixed,later);
+assert.equal(partial.boards[0].entries.length,0,"new successful empty result clears previous ranking");
+assert.deepEqual(partial.boards[1],value.boards[1],"other failed boards keep their own snapshot");
+assert.deepEqual(retainSnapshots(partial,value,later).boards[0],partial.boards[0],"older success cannot replace newer board");
+assert.deepEqual(retainSnapshots(value,{...failure,boards:failure.boards.map(b=>({...b,status:"not_ready" as const}))},later).boards,value.boards);
+assert.deepEqual(retainSnapshots(held,{...value,boards:mixed.boards.map((b,i)=>({...value.boards[i],as_of_ms:later-1000,available_at_ms:later,expires_at_ms:later+60000}))},later).boards[0].available_at_ms,later);
 // A production snapshot can arrive with only nine seconds left; do not wait thirty seconds.
 const expiring = (remaining: number): typeof value => ({...value,boards:value.boards.map(b=>({...b,expires_at_ms:NOW+remaining}))});
 assert.equal(refreshDelay(expiring(9000),NOW,false),5000);
