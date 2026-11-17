@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { GET } from "../../apps/web/app/api/market/route.js";
+import { refreshDelay } from "../../apps/web/components/market/refresh-schedule.js";
 import fs from "node:fs";
 import { HttpMarketReader, marketConfig } from "../../apps/web/src/infrastructure/market_reader.js";
 import { readMarket } from "../../apps/web/src/application/read_market.js";
@@ -28,6 +30,16 @@ const value = await readMarket(new HttpMarketReader(config, fetcher, () => NOW),
 assert.equal(calls,15); assert(peak<=4); assert.equal(value.boards.length,16);
 assert(value.boards.every((b)=>b.status==="ready")); assert.equal(value.pool_size,2);
 assert.equal(value.boards.find((b)=>b.view==="returns" && b.window==="24h" && b.direction==="gainers")?.entries.length,2,"negative return in gainers is preserved");
+// A production snapshot can arrive with only nine seconds left; do not wait thirty seconds.
+const expiring = (remaining: number): typeof value => ({...value,boards:value.boards.map(b=>({...b,expires_at_ms:NOW+remaining}))});
+assert.equal(refreshDelay(expiring(9000),NOW,false),5000);
+assert.equal(refreshDelay(expiring(35000),NOW,false),25000);
+assert.equal(refreshDelay(expiring(90000),NOW,false),30000);
+assert.equal(refreshDelay(expiring(-1000),NOW,false),5000);
+assert.equal(refreshDelay(expiring(90000),NOW,true),5000);
+assert.equal(refreshDelay(null,NOW,true),5000);
+assert.equal(refreshDelay({...expiring(90000),boards:value.boards.map((b,i)=>i?{...b,expires_at_ms:NOW+90000}:{...b,expires_at_ms:NOW+9000})},NOW,false),5000);
+assert.equal(refreshDelay({...expiring(90000),boards:value.boards.map(b=>({...b,status:"stale",reason:"expired",entries:[]}))},NOW,false),5000);
 assert.equal(signedFraction("0.005"),"+0.50"); assert.equal(signedFraction("-0.01"),"-1.00");
 const schema = JSON.parse(fs.readFileSync("contracts/schemas/market_workspace.schema.json","utf8")) as JsonSchema;
 assert.deepEqual(validateSchema(value,schema),[]); assert.deepEqual(parseWorkspace(value),value);
@@ -68,6 +80,31 @@ assert(marketConfig({UMAKER_API_BASE_URL:"http://127.0.0.1:8092",UMAKER_API_TOKE
 assert(!usable(value.boards[0],NOW+200000));
 for (const broken of [ {...value,boards:value.boards.slice(1)}, {...value,scope:"full"}, {...value,boards:value.boards.map((b,i)=>i?b:{...b,entries:[{symbol:"OUSDT",rank:11,value:"1"}]})}, {...value,boards:value.boards.map((b,i)=>i?b:{...b,status:"stale"})} ]) {
  assert.throws(()=>parseWorkspace(broken));
+}
+// Exercise the actual BFF cache: a nine-second snapshot must not be replayed from cache.
+const savedFetch=globalThis.fetch, savedNow=Date.now;
+const savedBase=process.env.UMAKER_API_BASE_URL, savedToken=process.env.UMAKER_API_TOKEN;
+try {
+ process.env.UMAKER_API_BASE_URL=config.baseUrl; process.env.UMAKER_API_TOKEN=config.token;
+ Date.now=()=>NOW;
+ let requests=0;
+ globalThis.fetch=async(input)=>{
+  requests++;const d=source(String(input).split("/api/v1/market/")[1]);
+  if (Array.isArray(d.entries)) d.entries=d.entries.map((entry:Record<string,unknown>)=>({...entry,price_at_ms:NOW-51000}));
+  return Response.json({schema_version:"0.1.0",generated_at_ms:NOW,data:d});
+ };
+ assert.equal((await GET()).status,200);
+ assert.equal((await GET()).status,200);
+ assert.equal(requests,30,"near-expiry responses must not suppress source refresh");
+ // With ample validity the same endpoint still coalesces reads in its bounded cache.
+ process.env.UMAKER_API_TOKEN=config.token+"-fresh";
+ requests=0;
+ globalThis.fetch=async(input)=>{requests++;return Response.json({schema_version:"0.1.0",generated_at_ms:NOW,data:source(String(input).split("/api/v1/market/")[1])});};
+ await GET();await GET();assert.equal(requests,15);
+} finally {
+ globalThis.fetch=savedFetch;Date.now=savedNow;
+ if(savedBase===undefined)delete process.env.UMAKER_API_BASE_URL;else process.env.UMAKER_API_BASE_URL=savedBase;
+ if(savedToken===undefined)delete process.env.UMAKER_API_TOKEN;else process.env.UMAKER_API_TOKEN=savedToken;
 }
 console.log("market workspace production output/schema, 15-call/4-concurrency, units, Unicode, source failure, TTL and configuration tests PASS");
 

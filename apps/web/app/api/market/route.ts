@@ -14,7 +14,9 @@ async function load(): Promise<Workspace> {
   if (flight?.key === key) return flight.promise;
   const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), 8000);
   const promise = readMarket(new HttpMarketReader(config, fetch, Date.now, controller.signal)).then((value) => {
-    const expiry = Math.min(Date.now() + 10000, ...value.boards.filter((b) => b.expires_at_ms !== null).map((b) => b.expires_at_ms!));
+    // Leave the client time to refresh instead of caching snapshots that are about to expire.
+    const retrying = value.boards.some((b) => b.status === "unavailable" || b.status === "stale");
+    const expiry = Math.min(Date.now() + (retrying ? 5000 : 10000), ...value.boards.filter((b) => b.expires_at_ms !== null).map((b) => b.expires_at_ms! - 10000));
     cached = { value, key, until: expiry }; return value;
   }).finally(() => { clearTimeout(timer); if (flight?.promise === promise) flight = undefined; });
   flight = { key, promise }; return promise;

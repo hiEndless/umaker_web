@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { parseWorkspace, type Workspace } from "@/src/domain/market/model";
+import { refreshDelay } from "./refresh-schedule";
 export function useMarketData(): { data: Workspace | null; loading: boolean; error: boolean; now: number; refresh: () => void } {
   const [data, setData] = useState<Workspace | null>(null);
   const [loading, setLoading] = useState(true); const [error, setError] = useState(false); const [now, setNow] = useState(0);
@@ -20,11 +21,15 @@ export function useMarketData(): { data: Workspace | null; loading: boolean; err
   }, []);
   useEffect(() => {
     void refresh(); setNow(Date.now());
-    const poll = setInterval(() => { if (document.visibilityState === "visible") void refresh(); }, 30000);
     const tick = setInterval(() => setNow(Date.now()), 1000);
     const visible = (): void => { if (document.visibilityState === "visible") void refresh(); };
     document.addEventListener("visibilitychange", visible);
-    return () => { clearInterval(poll); clearInterval(tick); document.removeEventListener("visibilitychange", visible); active.current?.abort(); active.current = null; };
+    return () => { clearInterval(tick); document.removeEventListener("visibilitychange", visible); active.current?.abort(); active.current = null; };
   }, [refresh]);
+  useEffect(() => {
+    if (loading) return;
+    const timer = setTimeout(() => { if (document.visibilityState === "visible") void refresh(); }, refreshDelay(data, Date.now(), error));
+    return () => clearTimeout(timer);
+  }, [data, error, loading, refresh]);
   return { data, loading, error, now, refresh: () => { void refresh(); } };
 }
